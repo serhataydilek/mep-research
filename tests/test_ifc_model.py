@@ -9,6 +9,7 @@ from tempfile import TemporaryDirectory
 import unittest
 
 import ifcopenshell
+import ifcopenshell.geom
 import ifcopenshell.util.unit
 
 from src.ifc_model import create_ifc_model
@@ -19,6 +20,18 @@ CONFIG_PATH = Path(__file__).resolve().parents[1] / "config" / "building.json"
 
 def load_config() -> dict[str, object]:
     return json.loads(CONFIG_PATH.read_text(encoding="utf-8"))
+
+
+def tessellated_bounds(
+    model: ifcopenshell.file, slab: ifcopenshell.entity_instance
+) -> tuple[float, float, float, float, float, float]:
+    settings = ifcopenshell.geom.settings()
+    settings.set(settings.USE_WORLD_COORDS, True)
+    shape = ifcopenshell.geom.create_shape(settings, slab)
+    vertices = shape.geometry.verts
+    coordinates = list(zip(vertices[::3], vertices[1::3], vertices[2::3], strict=True))
+    xs, ys, zs = zip(*coordinates, strict=True)
+    return min(xs), max(xs), min(ys), max(ys), min(zs), max(zs)
 
 
 class IfcModelTests(unittest.TestCase):
@@ -32,12 +45,16 @@ class IfcModelTests(unittest.TestCase):
         self.assertEqual(len(self.model.by_type("IfcSite")), 1)
         self.assertEqual(len(self.model.by_type("IfcBuilding")), 1)
         self.assertEqual(len(self.model.by_type("IfcBuildingStorey")), self.config["floors"])
+        self.assertEqual(len(self.model.by_type("IfcSlab")), self.config["floors"])
 
     def test_current_configuration_has_one_storey_at_zero_elevation(self) -> None:
         storeys = self.model.by_type("IfcBuildingStorey")
 
         self.assertEqual(len(storeys), 1)
         self.assertEqual(storeys[0].Elevation, 0.0)
+
+    def test_current_configuration_has_one_slab(self) -> None:
+        self.assertEqual(len(self.model.by_type("IfcSlab")), 1)
 
     def test_aggregation_links_project_to_storey(self) -> None:
         project = self.model.by_type("IfcProject")[0]
@@ -56,6 +73,44 @@ class IfcModelTests(unittest.TestCase):
 
         self.assertEqual(
             [storey.Elevation for storey in model.by_type("IfcBuildingStorey")],
+            [0.0, 3.5, 7.0],
+        )
+
+    def test_slab_geometry_matches_configured_dimensions(self) -> None:
+        slab = self.model.by_type("IfcSlab")[0]
+        minimum_x, maximum_x, minimum_y, maximum_y, minimum_z, maximum_z = tessellated_bounds(
+            self.model, slab
+        )
+
+        self.assertIsNotNone(slab.Representation)
+        self.assertTrue(slab.Representation.Representations)
+        self.assertAlmostEqual(maximum_x - minimum_x, self.config["width_m"], places=6)
+        self.assertAlmostEqual(maximum_y - minimum_y, self.config["length_m"], places=6)
+        self.assertAlmostEqual(maximum_z - minimum_z, self.config["slab_thickness_m"], places=6)
+
+    def test_slab_is_contained_in_exactly_one_matching_storey(self) -> None:
+        slab = self.model.by_type("IfcSlab")[0]
+        storey = self.model.by_type("IfcBuildingStorey")[0]
+
+        self.assertEqual(len(slab.ContainedInStructure), 1)
+        self.assertEqual(slab.ContainedInStructure[0].RelatingStructure, storey)
+
+    def test_slab_global_id_is_deterministic_between_models(self) -> None:
+        second_model = create_ifc_model(self.config)
+
+        self.assertEqual(
+            self.model.by_type("IfcSlab")[0].GlobalId,
+            second_model.by_type("IfcSlab")[0].GlobalId,
+        )
+
+    def test_multiple_floors_create_slabs_at_storey_elevations(self) -> None:
+        config = copy.deepcopy(self.config)
+        config["floors"] = 3
+        model = create_ifc_model(config)
+
+        self.assertEqual(len(model.by_type("IfcSlab")), 3)
+        self.assertEqual(
+            [tessellated_bounds(model, slab)[4] for slab in model.by_type("IfcSlab")],
             [0.0, 3.5, 7.0],
         )
 
@@ -90,3 +145,10 @@ class IfcModelTests(unittest.TestCase):
 
         self.assertEqual(reopened.schema, "IFC4")
         self.assertEqual(len(reopened.by_type("IfcBuildingStorey")), 1)
+        self.assertEqual(len(reopened.by_type("IfcSlab")), 1)
+        minimum_x, maximum_x, minimum_y, maximum_y, minimum_z, maximum_z = tessellated_bounds(
+            reopened, reopened.by_type("IfcSlab")[0]
+        )
+        self.assertAlmostEqual(maximum_x - minimum_x, self.config["width_m"], places=6)
+        self.assertAlmostEqual(maximum_y - minimum_y, self.config["length_m"], places=6)
+        self.assertAlmostEqual(maximum_z - minimum_z, self.config["slab_thickness_m"], places=6)
