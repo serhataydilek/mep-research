@@ -5,7 +5,9 @@ from __future__ import annotations
 from uuid import UUID
 import unittest
 
-from src.guid import semantic_uuid
+import ifcopenshell.guid
+
+from src.guid import semantic_ifc_guid, semantic_uuid
 
 
 class SemanticUuidTests(unittest.TestCase):
@@ -30,3 +32,10 @@ class SemanticUuidTests(unittest.TestCase):
         self.assertIsInstance(expected, UUID)
         for _ in range(3):
             self.assertEqual(semantic_uuid("storey/0/shaft/main"), expected)
+
+    def test_ifc_guid_is_deterministic_and_compressed(self) -> None:
+        guid = semantic_ifc_guid("storey/0/wall/north")
+
+        self.assertEqual(guid, semantic_ifc_guid("storey/0/wall/north"))
+        self.assertEqual(len(guid), 22)
+        self.assertEqual(ifcopenshell.guid.expand(guid), semantic_uuid("storey/0/wall/north").hex)
