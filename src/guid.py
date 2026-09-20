@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from uuid import NAMESPACE_URL, uuid5
+from uuid import NAMESPACE_URL, UUID, uuid5
 
 
-def semantic_guid(element_kind: str, element_name: str) -> str:
-    """Return a stable UUID for a semantic element name."""
-    if not element_kind or not element_name:
-        raise ValueError("Element kind and name must be non-empty.")
+def semantic_uuid(semantic_path: str) -> UUID:
+    """Return a stable UUID for an explicit hierarchical semantic path."""
+    if not semantic_path or not semantic_path.strip():
+        raise ValueError("semantic_path must be non-empty.")
 
-    return str(uuid5(NAMESPACE_URL, f"mep-research/{element_kind}/{element_name}"))
+    return uuid5(NAMESPACE_URL, f"mep-research/{semantic_path}")
