@@ -25,6 +25,13 @@ SOURCE_OFFSETS = {
     "fire": (0.25, -0.25),
     "electrical": (0.0, 0.0),
 }
+EGRESS_PREFERENCES = {
+    "hvac": (("north", -0.30), ("north", 0.0), ("north", 0.30), ("east", -0.30), ("west", 0.30)),
+    "drainage": (("east", 0.30), ("east", 0.0), ("east", -0.30), ("north", 0.30), ("south", -0.30)),
+    "water": (("west", -0.30), ("west", 0.0), ("west", 0.30), ("south", -0.30), ("north", 0.30)),
+    "fire": (("south", 0.30), ("south", 0.0), ("south", -0.30), ("west", 0.30), ("east", -0.30)),
+    "electrical": (("north", 0.30), ("north", 0.0), ("north", -0.30), ("east", 0.30), ("west", -0.30)),
+}
 
 
 def _load_json(path: Path) -> dict[str, Any]:
@@ -85,6 +92,48 @@ def load_demand_profiles(demands_directory: Path) -> list[dict[str, Any]]:
     return loaded_profiles
 
 
+def service_routing_margins(definition: dict[str, Any], clearance_m: float) -> dict[str, float]:
+    """Return conservative benchmark centerline margins for one nominal service.
+
+    This baseline uses nominal service envelopes plus routing clearance. It is
+    not a full fabrication-geometry model.
+    """
+    if definition["envelope_type"] == "circular":
+        planar_half_extent = float(definition["diameter_m"]) / 2
+        vertical_half_extent = planar_half_extent
+    else:
+        planar_half_extent = max(float(definition["width_m"]), float(definition["height_m"])) / 2
+        vertical_half_extent = float(definition["height_m"]) / 2
+    return {
+        "planar_half_extent_m": planar_half_extent,
+        "vertical_half_extent_m": vertical_half_extent,
+        "required_planar_margin_m": planar_half_extent + clearance_m,
+        "required_vertical_margin_m": vertical_half_extent + clearance_m,
+    }
+
+
+def preflight_service_feasibility(
+    config: dict[str, Any], systems: dict[str, dict[str, Any]]
+) -> dict[str, float | bool]:
+    """Reject a geometry-demand combination whose plenum cannot fit a service."""
+    plenum_height = float(calculate_metrics(config)["plenum_height_m"])
+    clearance = float(config["routing"]["clearance_m"])
+    required_envelopes = []
+    for system in SYSTEM_ORDER:
+        margins = service_routing_margins(systems[system], clearance)
+        required_envelope = 2 * margins["required_vertical_margin_m"]
+        if required_envelope > plenum_height:
+            raise ValueError(
+                f"Scenario plenum cannot fit the nominal {system} envelope with routing clearance."
+            )
+        required_envelopes.append(required_envelope)
+    return {
+        "all_service_envelopes_fit_plenum": True,
+        "plenum_height_m": plenum_height,
+        "maximum_required_service_vertical_envelope_m": max(required_envelopes),
+    }
+
+
 def _load_scenarios(scenarios_directory: Path) -> list[tuple[dict[str, Any], dict[str, Any]]]:
     manifest = _load_json(scenarios_directory / "manifest.json")
     scenarios = manifest.get("scenarios")
@@ -109,14 +158,18 @@ def _routing_z(config: dict[str, Any]) -> float:
     return routing_z_min + (routing_z_max - routing_z_min) / 2
 
 
-def _point_is_valid_terminal_candidate(config: dict[str, Any], x: float, y: float) -> bool:
-    clearance = float(config["routing"]["clearance_m"])
+def _point_is_valid_service_candidate(
+    config: dict[str, Any], definition: dict[str, Any], x: float, y: float
+) -> bool:
+    margin = service_routing_margins(definition, float(config["routing"]["clearance_m"]))[
+        "required_planar_margin_m"
+    ]
     wall_thickness = float(config["wall_thickness_m"])
     width = float(config["width_m"])
     length = float(config["length_m"])
-    if not (wall_thickness + clearance < x < width - wall_thickness - clearance):
+    if not (wall_thickness + margin < x < width - wall_thickness - margin):
         return False
-    if not (wall_thickness + clearance < y < length - wall_thickness - clearance):
+    if not (wall_thickness + margin < y < length - wall_thickness - margin):
         return False
 
     shaft = config["shaft"]
@@ -124,10 +177,10 @@ def _point_is_valid_terminal_candidate(config: dict[str, Any], x: float, y: floa
         shaft_clear_bounds(width, length, float(shaft["width_m"]), float(shaft["length_m"])),
         wall_thickness,
     )
-    if outer_min_x - clearance <= x <= outer_max_x + clearance and outer_min_y - clearance <= y <= outer_max_y + clearance:
+    if outer_min_x - margin <= x <= outer_max_x + margin and outer_min_y - margin <= y <= outer_max_y + margin:
         return False
 
-    half_column = float(config["column_size_m"]) / 2 + clearance
+    half_column = float(config["column_size_m"]) / 2 + margin
     for _, center_x in interior_grid_positions(float(config["grid_spacing_x_m"]), width):
         for _, center_y in interior_grid_positions(float(config["grid_spacing_y_m"]), length):
             if center_x - half_column <= x <= center_x + half_column and center_y - half_column <= y <= center_y + half_column:
@@ -135,8 +188,8 @@ def _point_is_valid_terminal_candidate(config: dict[str, Any], x: float, y: floa
     return True
 
 
-def _terminal_candidate_positions(config: dict[str, Any], required_count: int) -> list[tuple[float, float]]:
-    """Select a stable farthest-spread subset of a normalized candidate lattice."""
+def _terminal_candidate_lattice(config: dict[str, Any]) -> list[tuple[float, float]]:
+    """Return a stable normalized candidate lattice inside the wall inner boundary."""
     width = float(config["width_m"])
     length = float(config["length_m"])
     wall_thickness = float(config["wall_thickness_m"])
@@ -150,21 +203,8 @@ def _terminal_candidate_positions(config: dict[str, Any], required_count: int) -
         for y_index in y_indices:
             x = minimum_x + (maximum_x - minimum_x) * x_index / (divisions + 1)
             y = minimum_y + (maximum_y - minimum_y) * y_index / (divisions + 1)
-            if _point_is_valid_terminal_candidate(config, x, y):
-                candidates.append((x, y))
-    if len(candidates) < required_count:
-        raise ValueError("Deterministic terminal candidate lattice cannot satisfy the demand profile.")
-
-    selected = [candidates[0]]
-    remaining = candidates[1:]
-    while len(selected) < required_count:
-        candidate = max(
-            remaining,
-            key=lambda point: min((point[0] - chosen[0]) ** 2 + (point[1] - chosen[1]) ** 2 for chosen in selected),
-        )
-        selected.append(candidate)
-        remaining.remove(candidate)
-    return selected
+            candidates.append((x, y))
+    return candidates
 
 
 def _source_anchors(config: dict[str, Any]) -> list[dict[str, Any]]:
@@ -191,18 +231,47 @@ def _source_anchors(config: dict[str, Any]) -> list[dict[str, Any]]:
     return anchors
 
 
-def _terminal_anchor_catalog(config: dict[str, Any], profiles: list[dict[str, Any]]) -> dict[str, list[dict[str, Any]]]:
+def _select_farthest_candidate(
+    candidates: list[tuple[float, float]], selected: list[tuple[float, float]]
+) -> tuple[float, float]:
+    if not selected:
+        return candidates[0]
+    return max(
+        candidates,
+        key=lambda point: min(
+            (point[0] - chosen[0]) ** 2 + (point[1] - chosen[1]) ** 2
+            for chosen in selected
+        ),
+    )
+
+
+def _terminal_anchor_catalog(
+    config: dict[str, Any], profiles: list[dict[str, Any]], systems: dict[str, dict[str, Any]]
+) -> dict[str, list[dict[str, Any]]]:
+    """Allocate service-aware terminal anchors in stable round-robin order."""
     maximum_counts = {
         system: max(profile["systems"][system]["terminal_count"] for profile in profiles)
         for system in SYSTEM_ORDER
     }
-    candidates = iter(_terminal_candidate_positions(config, sum(maximum_counts.values())))
+    lattice = _terminal_candidate_lattice(config)
+    selected_coordinates: list[tuple[float, float]] = []
     catalog = {system: [] for system in SYSTEM_ORDER}
     z = _routing_z(config)
     for terminal_index in range(max(maximum_counts.values())):
         for system in SYSTEM_ORDER:
             if terminal_index < maximum_counts[system]:
-                x, y = next(candidates)
+                available = [
+                    point
+                    for point in lattice
+                    if point not in selected_coordinates
+                    and _point_is_valid_service_candidate(config, systems[system], point[0], point[1])
+                ]
+                if not available:
+                    raise ValueError(
+                        f"No valid deterministic terminal candidate exists for nominal {system} routing demand."
+                    )
+                x, y = _select_farthest_candidate(available, selected_coordinates)
+                selected_coordinates.append((x, y))
                 catalog[system].append(
                     {
                         "anchor_id": f"terminal/{system}/{terminal_index}",
@@ -216,14 +285,84 @@ def _terminal_anchor_catalog(config: dict[str, Any], profiles: list[dict[str, An
     return catalog
 
 
+def _egress_candidate(
+    config: dict[str, Any], definition: dict[str, Any], side: str, offset: float
+) -> tuple[float, float]:
+    width = float(config["width_m"])
+    length = float(config["length_m"])
+    wall_thickness = float(config["wall_thickness_m"])
+    shaft = config["shaft"]
+    clear_min_x, clear_max_x, clear_min_y, clear_max_y = shaft_clear_bounds(
+        width, length, float(shaft["width_m"]), float(shaft["length_m"])
+    )
+    outer_min_x, outer_max_x, outer_min_y, outer_max_y = shaft_outer_bounds(
+        (clear_min_x, clear_max_x, clear_min_y, clear_max_y), wall_thickness
+    )
+    margin = service_routing_margins(definition, float(config["routing"]["clearance_m"]))[
+        "required_planar_margin_m"
+    ]
+    epsilon = 0.000001
+    center_x, center_y = (clear_min_x + clear_max_x) / 2, (clear_min_y + clear_max_y) / 2
+    if side == "north":
+        return center_x + offset * (clear_max_x - clear_min_x), outer_max_y + margin + epsilon
+    if side == "east":
+        return outer_max_x + margin + epsilon, center_y + offset * (clear_max_y - clear_min_y)
+    if side == "south":
+        return center_x + offset * (clear_max_x - clear_min_x), outer_min_y - margin - epsilon
+    if side == "west":
+        return outer_min_x - margin - epsilon, center_y + offset * (clear_max_y - clear_min_y)
+    raise ValueError(f"Unsupported shaft egress side: {side}")
+
+
+def _egress_anchors(config: dict[str, Any], systems: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    """Choose one deterministic room-side egress for each shaft source."""
+    anchors = []
+    used_coordinates = set()
+    z = _routing_z(config)
+    for system in SYSTEM_ORDER:
+        for side, offset in EGRESS_PREFERENCES[system]:
+            x, y = _egress_candidate(config, systems[system], side, offset)
+            if _point_is_valid_service_candidate(config, systems[system], x, y) and (x, y, z) not in used_coordinates:
+                anchors.append(
+                    {
+                        "anchor_id": f"egress/{system}",
+                        "system": system,
+                        "wall_side": side,
+                        "x_m": x,
+                        "y_m": y,
+                        "z_m": z,
+                    }
+                )
+                used_coordinates.add((x, y, z))
+                break
+        else:
+            raise ValueError(f"No valid deterministic shaft egress exists for nominal {system} routing demand.")
+    return anchors
+
+
 def _nominal_cross_section(definition: dict[str, Any]) -> float:
     if definition["envelope_type"] == "circular":
         return pi * float(definition["diameter_m"]) ** 2 / 4
     return float(definition["width_m"]) * float(definition["height_m"])
 
 
+def _anchor_has_valid_vertical_clearance(
+    config: dict[str, Any], definition: dict[str, Any], z: float
+) -> bool:
+    margin = service_routing_margins(definition, float(config["routing"]["clearance_m"]))[
+        "required_vertical_margin_m"
+    ]
+    routing_z_min = float(config["slab_thickness_m"]) + float(config["ceiling_height_m"])
+    routing_z_max = float(config["floor_to_floor_m"])
+    return routing_z_min <= z - margin and z + margin <= routing_z_max
+
+
 def _validate_anchors(
-    config: dict[str, Any], source_anchors: list[dict[str, Any]], terminal_anchors: list[dict[str, Any]]
+    config: dict[str, Any],
+    systems: dict[str, dict[str, Any]],
+    source_anchors: list[dict[str, Any]],
+    egress_anchors: list[dict[str, Any]],
+    terminal_anchors: list[dict[str, Any]],
 ) -> None:
     clear_bounds = shaft_clear_bounds(
         float(config["width_m"]),
@@ -231,8 +370,6 @@ def _validate_anchors(
         float(config["shaft"]["width_m"]),
         float(config["shaft"]["length_m"]),
     )
-    routing_z_min = float(config["slab_thickness_m"]) + float(config["ceiling_height_m"])
-    routing_z_max = float(config["floor_to_floor_m"])
     source_coordinates = set()
     for anchor in source_anchors:
         coordinates = (anchor["x_m"], anchor["y_m"], anchor["z_m"])
@@ -240,20 +377,41 @@ def _validate_anchors(
             raise ValueError("Source anchors must have finite coordinates.")
         if not (clear_bounds[0] < anchor["x_m"] < clear_bounds[1] and clear_bounds[2] < anchor["y_m"] < clear_bounds[3]):
             raise ValueError("Source anchors must remain inside the clear shaft.")
-        if not routing_z_min < anchor["z_m"] < routing_z_max:
+        planar_margin = service_routing_margins(
+            systems[anchor["system"]], float(config["routing"]["clearance_m"])
+        )["required_planar_margin_m"]
+        if not (
+            clear_bounds[0] + planar_margin <= anchor["x_m"] <= clear_bounds[1] - planar_margin
+            and clear_bounds[2] + planar_margin <= anchor["y_m"] <= clear_bounds[3] - planar_margin
+        ):
+            raise ValueError("Source anchors must keep their nominal service envelope inside the clear shaft.")
+        if not _anchor_has_valid_vertical_clearance(config, systems[anchor["system"]], anchor["z_m"]):
             raise ValueError("Source anchors must remain inside the routing plenum.")
         source_coordinates.add(coordinates)
     if len(source_coordinates) != len(source_anchors):
         raise ValueError("Source anchors must be unique.")
+
+    egress_coordinates = set()
+    for anchor in egress_anchors:
+        coordinates = (anchor["x_m"], anchor["y_m"], anchor["z_m"])
+        if not all(isfinite(value) for value in coordinates):
+            raise ValueError("Egress anchors must have finite coordinates.")
+        if not _point_is_valid_service_candidate(config, systems[anchor["system"]], anchor["x_m"], anchor["y_m"]):
+            raise ValueError("Egress anchors must respect service-aware fixed-obstacle margins.")
+        if not _anchor_has_valid_vertical_clearance(config, systems[anchor["system"]], anchor["z_m"]):
+            raise ValueError("Egress anchors must remain inside the routing plenum.")
+        egress_coordinates.add(coordinates)
+    if len(egress_coordinates) != len(egress_anchors):
+        raise ValueError("Egress anchors must be unique.")
 
     terminal_coordinates = set()
     for anchor in terminal_anchors:
         coordinates = (anchor["x_m"], anchor["y_m"], anchor["z_m"])
         if not all(isfinite(value) for value in coordinates):
             raise ValueError("Terminal anchors must have finite coordinates.")
-        if not _point_is_valid_terminal_candidate(config, anchor["x_m"], anchor["y_m"]):
+        if not _point_is_valid_service_candidate(config, systems[anchor["system"]], anchor["x_m"], anchor["y_m"]):
             raise ValueError("Terminal anchors must remain outside fixed obstacles and clearance zones.")
-        if not routing_z_min < anchor["z_m"] < routing_z_max:
+        if not _anchor_has_valid_vertical_clearance(config, systems[anchor["system"]], anchor["z_m"]):
             raise ValueError("Terminal anchors must remain inside the routing plenum.")
         terminal_coordinates.add(coordinates)
     if len(terminal_coordinates) != len(terminal_anchors):
@@ -269,23 +427,39 @@ def generate_benchmark_cases(
     cases = []
     for scenario, config in _load_scenarios(scenarios_directory):
         building_metrics = calculate_metrics(config)
+        preflight = preflight_service_feasibility(config, systems)
         source_anchors = _source_anchors(config)
-        terminal_catalog = _terminal_anchor_catalog(config, profiles)
+        egress_anchors = _egress_anchors(config, systems)
+        terminal_catalog = _terminal_anchor_catalog(config, profiles, systems)
+        egress_ids = {anchor["system"]: anchor["anchor_id"] for anchor in egress_anchors}
+        fixed_breakouts = [
+            {
+                "breakout_id": f"breakout/{system}",
+                "system": system,
+                "source_anchor": f"source/{system}",
+                "egress_anchor": egress_ids[system],
+                "wall_side": next(anchor["wall_side"] for anchor in egress_anchors if anchor["system"] == system),
+            }
+            for system in SYSTEM_ORDER
+        ]
         for profile in profiles:
             terminal_anchors = [
                 anchor
                 for system in SYSTEM_ORDER
                 for anchor in terminal_catalog[system][: profile["systems"][system]["terminal_count"]]
             ]
-            anchor_ids = {anchor["anchor_id"] for anchor in [*source_anchors, *terminal_anchors]}
+            anchor_ids = {
+                anchor["anchor_id"]
+                for anchor in [*source_anchors, *egress_anchors, *terminal_anchors]
+            }
             connection_requests = []
             for anchor in terminal_anchors:
                 system = anchor["system"]
-                source_id = f"source/{system}"
+                egress_id = egress_ids[system]
                 start_anchor, end_anchor = (
-                    (anchor["anchor_id"], source_id)
+                    (anchor["anchor_id"], egress_id)
                     if systems[system]["flow_direction"] == "terminal_to_source"
-                    else (source_id, anchor["anchor_id"])
+                    else (egress_id, anchor["anchor_id"])
                 )
                 connection_requests.append(
                     {
@@ -301,7 +475,7 @@ def generate_benchmark_cases(
                 for request in connection_requests
             ):
                 raise ValueError("Connection requests must reference anchors in the same case.")
-            _validate_anchors(config, source_anchors, terminal_anchors)
+            _validate_anchors(config, systems, source_anchors, egress_anchors, terminal_anchors)
             total_terminals = len(terminal_anchors)
             demand_metrics = {
                 "total_terminal_count": total_terminals,
@@ -328,8 +502,15 @@ def generate_benchmark_cases(
                     "intended_demand_load": profile["intended_load"],
                     "building_metrics": building_metrics,
                     "demand_metrics": demand_metrics,
+                    "preflight": {
+                        **preflight,
+                        "all_egress_anchors_valid": True,
+                        "all_terminal_anchors_valid": True,
+                    },
                     "source_anchors": source_anchors,
+                    "egress_anchors": egress_anchors,
                     "terminal_anchors": terminal_anchors,
+                    "fixed_breakouts": fixed_breakouts,
                     "connection_requests": connection_requests,
                 }
             )
@@ -365,6 +546,21 @@ def main() -> int:
             f"{metrics['terminal_density_per_100m2']:.4f}           "
             f"{metrics['connection_density_per_1000m3']:.4f}                "
             f"{metrics['aggregate_nominal_cross_section_m2']:.6f}"
+        )
+    print("preflight case  plenum(m)  max-service-envelope(m)  egress  terminals  result")
+    for case in cases:
+        preflight = case["preflight"]
+        passed = (
+            preflight["all_service_envelopes_fit_plenum"]
+            and preflight["all_egress_anchors_valid"]
+            and preflight["all_terminal_anchors_valid"]
+        )
+        print(
+            f"preflight {case['case_id']:<8} {preflight['plenum_height_m']:.2f}       "
+            f"{preflight['maximum_required_service_vertical_envelope_m']:.3f}                    "
+            f"{str(preflight['all_egress_anchors_valid']):<6}  "
+            f"{str(preflight['all_terminal_anchors_valid']):<9}  "
+            f"{'PASS' if passed else 'FAIL'}"
         )
     return 0
 

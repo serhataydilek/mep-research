@@ -62,3 +62,17 @@ Phase 2B separates three independent demand profiles from the four geometry scen
 5. Deterministic output is byte-identical across runs.
 6. Connection-direction semantics are correct.
 7. Prior phase regressions remain green.
+
+## Phase 2C — Routing Feasibility Hardening
+
+Phase 2C applies nominal service-envelope plus clearance margins to routing centerlines and rejects plenum-infeasible cases before routing. Source anchors remain inside the shaft; deterministic room-side egress anchors define the horizontal routing boundary. A fixed breakout record links each source to its egress as benchmark metadata only, not an IFC opening or optimized route. Architecture remains unchanged and no pathfinding is implemented.
+
+### Phase 2C gate
+
+1. Every scenario can fit all nominal service envelopes vertically.
+2. Every source anchor remains inside the shaft.
+3. Every egress anchor is in the room-side routing domain.
+4. Every terminal and egress anchor respects service-aware margins.
+5. All horizontal requests use egress endpoints.
+6. All 12 cases are deterministic.
+7. Prior phase regressions remain green.
