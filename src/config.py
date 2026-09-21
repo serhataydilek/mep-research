@@ -51,6 +51,47 @@ def interior_grid_positions(spacing: float, extent: float) -> list[tuple[int, fl
     return positions
 
 
+def shaft_clear_bounds(
+    width: float, length: float, shaft_width: float, shaft_length: float
+) -> tuple[float, float, float, float]:
+    """Return centered clear-shaft bounds as (min_x, max_x, min_y, max_y)."""
+    center_x = width / 2
+    center_y = length / 2
+    return (
+        center_x - shaft_width / 2,
+        center_x + shaft_width / 2,
+        center_y - shaft_length / 2,
+        center_y + shaft_length / 2,
+    )
+
+
+def shaft_outer_bounds(
+    clear_bounds: tuple[float, float, float, float], wall_thickness: float
+) -> tuple[float, float, float, float]:
+    """Return shaft-wall envelope bounds around a clear shaft zone."""
+    minimum_x, maximum_x, minimum_y, maximum_y = clear_bounds
+    return (
+        minimum_x - wall_thickness,
+        maximum_x + wall_thickness,
+        minimum_y - wall_thickness,
+        maximum_y + wall_thickness,
+    )
+
+
+def rectangles_intersect(
+    first: tuple[float, float, float, float], second: tuple[float, float, float, float]
+) -> bool:
+    """Return whether two axis-aligned rectangles overlap with positive area."""
+    first_min_x, first_max_x, first_min_y, first_max_y = first
+    second_min_x, second_max_x, second_min_y, second_max_y = second
+    return (
+        first_min_x < second_max_x
+        and first_max_x > second_min_x
+        and first_min_y < second_max_y
+        and first_max_y > second_min_y
+    )
+
+
 def load_building_config(path: Path) -> dict[str, Any]:
     """Load and validate the current parametric building configuration."""
     with path.open(encoding="utf-8") as config_file:
@@ -113,8 +154,34 @@ def load_building_config(path: Path) -> dict[str, Any]:
     shaft_position = _require_value(shaft, "position", label="shaft.position")
     if shaft_position != "center":
         raise ValueError('shaft.position must be "center".')
-    if shaft_width > width or shaft_length > length:
-        raise ValueError("shaft dimensions must fit inside the building footprint.")
+    clear_shaft_bounds = shaft_clear_bounds(width, length, shaft_width, shaft_length)
+    outer_shaft_bounds = shaft_outer_bounds(clear_shaft_bounds, wall_thickness)
+    outer_min_x, outer_max_x, outer_min_y, outer_max_y = outer_shaft_bounds
+    if (
+        outer_min_x <= wall_thickness
+        or outer_max_x >= width - wall_thickness
+        or outer_min_y <= wall_thickness
+        or outer_max_y >= length - wall_thickness
+    ):
+        raise ValueError(
+            "shaft wall envelope must fit strictly inside the perimeter wall inner boundary."
+        )
+
+    for x_index, x_center in x_positions:
+        for y_index, y_center in y_positions:
+            column_bounds = (
+                x_center - half_column,
+                x_center + half_column,
+                y_center - half_column,
+                y_center + half_column,
+            )
+            if rectangles_intersect(column_bounds, clear_shaft_bounds) or rectangles_intersect(
+                column_bounds, outer_shaft_bounds
+            ):
+                raise ValueError(
+                    "Configured column footprint at grid "
+                    f"({x_index}, {y_index}) intersects the shaft clear zone or wall envelope."
+                )
 
     routing = _require_object(config, "routing")
     _require_number(routing, "voxel_size_m", minimum=0, label="routing.voxel_size_m")

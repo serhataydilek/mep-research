@@ -5,10 +5,11 @@ from __future__ import annotations
 from typing import Any
 
 import ifcopenshell
+import ifcopenshell.api.feature
 import ifcopenshell.api.geometry
 import ifcopenshell.util.unit
 
-from .config import interior_grid_positions
+from .config import interior_grid_positions, shaft_clear_bounds, shaft_outer_bounds
 from .guid import semantic_ifc_guid
 
 
@@ -227,6 +228,140 @@ def _create_structural_columns(
     return columns
 
 
+def _create_shaft_walls(
+    model: ifcopenshell.file,
+    body_context: ifcopenshell.entity_instance,
+    storey: ifcopenshell.entity_instance,
+    floor_index: int,
+    clear_bounds: tuple[float, float, float, float],
+    wall_thickness: float,
+    slab_thickness: float,
+    wall_height: float,
+) -> list[ifcopenshell.entity_instance]:
+    """Create the shaft envelope with non-overlapping corner wall volumes."""
+    clear_min_x, clear_max_x, clear_min_y, clear_max_y = clear_bounds
+    outer_min_x, outer_max_x, outer_min_y, outer_max_y = shaft_outer_bounds(
+        clear_bounds, wall_thickness
+    )
+    wall_specs = (
+        ("south", "South", outer_min_x, outer_min_y, outer_max_x - outer_min_x, wall_thickness),
+        ("north", "North", outer_min_x, clear_max_y, outer_max_x - outer_min_x, wall_thickness),
+        ("west", "West", outer_min_x, clear_min_y, wall_thickness, clear_max_y - clear_min_y),
+        ("east", "East", clear_max_x, clear_min_y, wall_thickness, clear_max_y - clear_min_y),
+    )
+    walls = []
+    for direction, label, x, y, wall_width, wall_length in wall_specs:
+        representation = ifcopenshell.api.geometry.add_slab_representation(
+            model,
+            context=body_context,
+            depth=wall_height,
+            polyline=[
+                (0.0, 0.0),
+                (wall_width, 0.0),
+                (wall_width, wall_length),
+                (0.0, wall_length),
+            ],
+        )
+        wall = model.create_entity(
+            "IfcWall",
+            GlobalId=semantic_ifc_guid(f"storey/{floor_index}/shaft/main/wall/{direction}"),
+            Name=f"Shaft {label} Wall {floor_index}",
+            ObjectPlacement=_create_local_placement(
+                model, storey.ObjectPlacement, x, y, slab_thickness
+            ),
+        )
+        wall.Representation = model.create_entity(
+            "IfcProductDefinitionShape", Representations=[representation]
+        )
+        walls.append(wall)
+    return walls
+
+
+def _create_shaft_space(
+    model: ifcopenshell.file,
+    body_context: ifcopenshell.entity_instance,
+    storey: ifcopenshell.entity_instance,
+    floor_index: int,
+    clear_bounds: tuple[float, float, float, float],
+    floor_to_floor: float,
+) -> ifcopenshell.entity_instance:
+    clear_min_x, clear_max_x, clear_min_y, clear_max_y = clear_bounds
+    representation = ifcopenshell.api.geometry.add_slab_representation(
+        model,
+        context=body_context,
+        depth=floor_to_floor,
+        polyline=[
+            (0.0, 0.0),
+            (clear_max_x - clear_min_x, 0.0),
+            (clear_max_x - clear_min_x, clear_max_y - clear_min_y),
+            (0.0, clear_max_y - clear_min_y),
+        ],
+    )
+    shaft_space = model.create_entity(
+        "IfcSpace",
+        GlobalId=semantic_ifc_guid(f"storey/{floor_index}/shaft/main/space"),
+        Name=f"Service Shaft {floor_index}",
+        CompositionType="ELEMENT",
+        PredefinedType="INTERNAL",
+        ObjectPlacement=_create_local_placement(
+            model, storey.ObjectPlacement, clear_min_x, clear_min_y
+        ),
+    )
+    shaft_space.Representation = model.create_entity(
+        "IfcProductDefinitionShape", Representations=[representation]
+    )
+    _aggregate(
+        model,
+        f"relationship/storey/{floor_index}/shaft/main/space",
+        storey,
+        shaft_space,
+    )
+    return shaft_space
+
+
+def _create_slab_shaft_opening(
+    model: ifcopenshell.file,
+    body_context: ifcopenshell.entity_instance,
+    storey: ifcopenshell.entity_instance,
+    slab: ifcopenshell.entity_instance,
+    floor_index: int,
+    clear_bounds: tuple[float, float, float, float],
+    slab_thickness: float,
+) -> ifcopenshell.entity_instance:
+    """Create a semantic opening whose representation voids the host slab."""
+    clear_min_x, clear_max_x, clear_min_y, clear_max_y = clear_bounds
+    epsilon = 0.01
+    representation = ifcopenshell.api.geometry.add_slab_representation(
+        model,
+        context=body_context,
+        depth=slab_thickness + (2 * epsilon),
+        polyline=[
+            (0.0, 0.0),
+            (clear_max_x - clear_min_x, 0.0),
+            (clear_max_x - clear_min_x, clear_max_y - clear_min_y),
+            (0.0, clear_max_y - clear_min_y),
+        ],
+    )
+    opening = model.create_entity(
+        "IfcOpeningElement",
+        GlobalId=semantic_ifc_guid(f"storey/{floor_index}/shaft/main/slab-opening"),
+        Name=f"Shaft Slab Opening {floor_index}",
+        ObjectPlacement=_create_local_placement(
+            model, storey.ObjectPlacement, clear_min_x, clear_min_y, -epsilon
+        ),
+    )
+    opening.Representation = model.create_entity(
+        "IfcProductDefinitionShape", Representations=[representation]
+    )
+    void_relationship = ifcopenshell.api.feature.add_feature(
+        model, feature=opening, element=slab
+    )
+    void_relationship.GlobalId = semantic_ifc_guid(
+        f"relationship/storey/{floor_index}/slab/main/voids/shaft/main"
+    )
+    return opening
+
+
 def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
     """Create an IFC4 project, site, building, and configured storeys."""
     floors = config["floors"]
@@ -238,6 +373,9 @@ def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
     column_size = config["column_size_m"]
     grid_spacing_x = config["grid_spacing_x_m"]
     grid_spacing_y = config["grid_spacing_y_m"]
+    shaft_width = config["shaft"]["width_m"]
+    shaft_length = config["shaft"]["length_m"]
+    shaft_clear = shaft_clear_bounds(width, length, shaft_width, shaft_length)
 
     model = ifcopenshell.file(schema="IFC4")
     units = _create_units(model)
@@ -292,6 +430,15 @@ def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
             length,
             slab_thickness,
         )
+        _create_slab_shaft_opening(
+            model,
+            body_context,
+            storey,
+            slab,
+            floor_index,
+            shaft_clear,
+            slab_thickness,
+        )
         walls = _create_perimeter_walls(
             model,
             body_context,
@@ -316,10 +463,28 @@ def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
             slab_thickness,
             floor_to_floor - slab_thickness,
         )
+        shaft_walls = _create_shaft_walls(
+            model,
+            body_context,
+            storey,
+            floor_index,
+            shaft_clear,
+            wall_thickness,
+            slab_thickness,
+            floor_to_floor - slab_thickness,
+        )
+        _create_shaft_space(
+            model,
+            body_context,
+            storey,
+            floor_index,
+            shaft_clear,
+            floor_to_floor,
+        )
         model.create_entity(
             "IfcRelContainedInSpatialStructure",
             GlobalId=semantic_ifc_guid(f"relationship/storey/{floor_index}/contains/elements"),
-            RelatedElements=[slab, *walls, *columns],
+            RelatedElements=[slab, *walls, *columns, *shaft_walls],
             RelatingStructure=storey,
         )
 

@@ -34,4 +34,4 @@ This model provides the benchmark environment for later routing experiments; it 
 6. Required modeled elements have geometry.
 7. Semantic element GUIDs are deterministic across repeated runs.
 
-Phase 1 is complete only when every gate item is demonstrated by validation.
+Phase 1 is implemented and validated: every gate item above is demonstrated by the focused test suite and IFC CLI verification.

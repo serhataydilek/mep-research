@@ -35,6 +35,7 @@ class BuildingConfigTests(unittest.TestCase):
 
         self.assertEqual(config["floors"], 1)
         self.assertEqual(config["wall_thickness_m"], 0.2)
+        self.assertEqual(config["shaft"], {"width_m": 2.0, "length_m": 2.0, "position": "center"})
 
     def test_zero_or_negative_wall_thickness_fails(self) -> None:
         for wall_thickness in (0.0, -0.1):
@@ -89,8 +90,16 @@ class BuildingConfigTests(unittest.TestCase):
             self.load_with_changes({"shaft.position": "north"})
 
     def test_oversized_shaft_fails(self) -> None:
-        with self.assertRaisesRegex(ValueError, "shaft dimensions"):
+        with self.assertRaisesRegex(ValueError, "shaft"):
             self.load_with_changes({"shaft.width_m": 21.0})
+
+    def test_shaft_wall_envelope_touching_perimeter_inner_boundary_fails(self) -> None:
+        with self.assertRaisesRegex(ValueError, "shaft wall envelope"):
+            self.load_with_changes({"shaft.width_m": 19.2})
+
+    def test_shaft_column_intersection_fails(self) -> None:
+        with self.assertRaisesRegex(ValueError, "intersects the shaft"):
+            self.load_with_changes({"shaft.length_m": 6.0})
 
     def test_zero_voxel_size_fails(self) -> None:
         with self.assertRaisesRegex(ValueError, "routing.voxel_size_m"):
