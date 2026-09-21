@@ -53,7 +53,7 @@ The following future comparison is intended for experimental evaluation:
 | B2 | Conflict-aware coordination baseline: routing decisions account for conflicts between systems. |
 | P | Proposed generative constructability-aware coordination: heterogeneous discipline constraints, multiple candidate layouts, verification, diagnosis, and selective repair/rerouting. |
 
-These are planned comparisons and hypotheses; no superiority claim has been demonstrated.
+These are implemented deterministic baselines for B0 and B1; C0 now operationalizes a controlled benchmark hard-feasibility definition. None of these results claim real-world code compliance or proposed-method superiority.
 
 ## Generative design and evaluation
 

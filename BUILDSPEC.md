@@ -150,3 +150,17 @@ Phase 4B applies the same deterministic swept-envelope evaluator to successful B
 5. Routing completion and conflict compliance remain separate metrics.
 6. Comparison output is byte-identical across runs.
 7. Earlier phase regressions remain green.
+
+## Phase 5A — C0 Constructability Verification
+
+Phase 5A defines C0, the benchmark-only Core Heterogeneous Constructability Constraints. C0 requires complete connections, valid continuous endpoints and base-grid obstacle compliance, zero inter-system hard conflicts and clearance violations, plus a 1% monotonic drainage stair-step gravity abstraction. It is not building-code or fabrication compliance: sizing, supports, access, fittings, continuous slope geometry, and jurisdiction rules remain outside C0.
+
+### Phase 5A gate
+
+1. Both baselines are verified under the same C0 rules.
+2. C0 preserves route and fixed-obstacle integrity checks.
+3. Drainage slope and no-uphill checks are deterministic.
+4. Incomplete routing cannot pass C0.
+5. Conflict and clearance checks reuse the shared evaluator.
+6. Verification output is byte-identical across runs.
+7. Earlier phase regressions remain green.

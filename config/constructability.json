@@ -1,0 +1,9 @@
+{
+  "constraint_set_id": "C0",
+  "constraint_set_name": "Core Heterogeneous Constructability Constraints",
+  "benchmark_only": true,
+  "drainage": {
+    "minimum_slope_ratio": 0.01,
+    "allow_uphill_steps": false
+  }
+}
