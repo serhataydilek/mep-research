@@ -1,0 +1,22 @@
+{
+  "profiles": [
+    {
+      "profile_id": "d01",
+      "config_file": "d01_low.json",
+      "intended_load": "low",
+      "description": "Low experimental demand with 13 independent connection requests."
+    },
+    {
+      "profile_id": "d02",
+      "config_file": "d02_medium.json",
+      "intended_load": "medium",
+      "description": "Medium experimental demand with 24 independent connection requests."
+    },
+    {
+      "profile_id": "d03",
+      "config_file": "d03_high.json",
+      "intended_load": "high",
+      "description": "High experimental demand with 36 independent connection requests."
+    }
+  ]
+}

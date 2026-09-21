@@ -61,6 +61,8 @@ The proposed framework should eventually generate multiple valid design alternat
 
 Experiments are planned around parametric benchmark scenarios, varying floor dimensions, column spacing, shaft size and position, terminal density, routing-space height, obstacle density, service count, and congestion level. The goal is to assess robustness across many reproducible scenarios rather than one hand-picked case study.
 
+Before routes exist, the benchmark distinguishes geometric obstruction (fixed architectural and structural XY obstacles) from pre-routing demand density (terminal and connection demand relative to floor area or routing-volume proxy). Neither is true MEP congestion. Post-routing occupancy or congestion requires actual route geometry and is future work.
+
 Planned ablation studies include comparisons of the full proposed system against variants without iterative repair, constructability constraints, dynamic/conflict-aware coordination, or generative alternative search.
 
 ## Role of LLMs

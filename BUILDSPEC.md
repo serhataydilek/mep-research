@@ -48,3 +48,17 @@ Phase 2A provides four deterministic architectural/structural configurations in 
 4. Obstruction ratios follow the intended ordering.
 5. Generated benchmark results are reproducible.
 6. Phase 1 regressions remain green.
+
+## Phase 2B — Deterministic Routing Demand
+
+Phase 2B separates three independent demand profiles from the four geometry scenarios. Five heterogeneous services use controlled nominal benchmark envelopes, not code-compliant engineering sizes, deterministic shaft source anchors, and terminal anchors in a simplified star topology. The resulting 4 × 3 cross-product reports raw demand metrics only; it creates routing problems, not paths or route occupancy.
+
+### Phase 2B gate
+
+1. All three demand profiles validate.
+2. All 12 geometry-demand combinations generate successfully.
+3. All anchors are geometrically valid.
+4. Low, medium, and high terminal layouts are nested.
+5. Deterministic output is byte-identical across runs.
+6. Connection-direction semantics are correct.
+7. Prior phase regressions remain green.

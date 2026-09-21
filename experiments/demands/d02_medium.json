@@ -1,0 +1,11 @@
+{
+  "profile_id": "d02",
+  "intended_load": "medium",
+  "systems": {
+    "hvac": {"terminal_count": 5},
+    "drainage": {"terminal_count": 4},
+    "water": {"terminal_count": 4},
+    "fire": {"terminal_count": 6},
+    "electrical": {"terminal_count": 5}
+  }
+}

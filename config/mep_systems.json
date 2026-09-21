@@ -1,0 +1,31 @@
+{
+  "systems": {
+    "hvac": {
+      "envelope_type": "rectangular",
+      "width_m": 0.4,
+      "height_m": 0.25,
+      "flow_direction": "source_to_terminal"
+    },
+    "drainage": {
+      "envelope_type": "circular",
+      "diameter_m": 0.1,
+      "flow_direction": "terminal_to_source"
+    },
+    "water": {
+      "envelope_type": "circular",
+      "diameter_m": 0.05,
+      "flow_direction": "source_to_terminal"
+    },
+    "fire": {
+      "envelope_type": "circular",
+      "diameter_m": 0.04,
+      "flow_direction": "source_to_terminal"
+    },
+    "electrical": {
+      "envelope_type": "rectangular",
+      "width_m": 0.3,
+      "height_m": 0.1,
+      "flow_direction": "source_to_terminal"
+    }
+  }
+}
