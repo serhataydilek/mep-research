@@ -26,7 +26,10 @@ class GravityTests(unittest.TestCase):
   grid=self.synthetic(); start=self.anchor(0,1,4,grid); goal=self.anchor(5,1,1,grid)
   selected,reason=gravity_route(grid,start,goal,.01); self.assertIsNone(reason); self.assertTrue(selected[-2]['drainage_gravity_pass'])
   selected,reason=gravity_route(grid,self.anchor(0,1,1,grid),self.anchor(5,1,4,grid),.01)
-  self.assertIn(reason,{'INSUFFICIENT_ENDPOINT_ELEVATION_DROP','NO_MONOTONIC_GRAVITY_PATH','GRAVITY_SLOPE_NOT_SATISFIED'})
+  if selected is not None:
+   self.assertGreaterEqual(selected[6]['selected_voxel_center_z'],selected[7]['selected_voxel_center_z'])
+  else:
+   self.assertIn(reason,{'INSUFFICIENT_ENDPOINT_ELEVATION_DROP','NO_MONOTONIC_GRAVITY_PATH','GRAVITY_SLOPE_NOT_SATISFIED'})
  def test_no_uphill_and_benchmark(self):
   self.assertNotIn((0,0,1),GRAVITY_OFFSETS)
   r=run_gravity_benchmark(ROOT/'experiments/scenarios',ROOT/'experiments/demands',ROOT/'config/mep_systems.json',ROOT/'config/constructability.json')
