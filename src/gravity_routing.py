@@ -44,11 +44,24 @@ def run_gravity_benchmark(scenarios:Path,demands:Path,systems:Path,constraints:P
       for req in sorted((r for r in case['connection_requests'] if r['system']=='drainage'),key=lambda r:(r['terminal_index'],r['connection_id'])):
         selected,reason=gravity_route(grid,anchors[req['start_anchor']],anchors[req['end_anchor']],slope)
         base={'case_id':case['case_id'],'scenario_id':case['scenario_id'],'demand_profile_id':case['demand_profile_id'],'connection_id':req['connection_id'],'system':'drainage'}
-        if selected is None: routes.append({**base,'path_found':False,'failure_reason':reason,'path_cells':[],'gravity':None}); continue
+        if selected is None:
+            routes.append({**base,'path_found':False,'failure_reason':reason,
+                'reference_start':snap_anchor_to_free_cell(grid,anchors[req['start_anchor']]),
+                'reference_end':snap_anchor_to_free_cell(grid,anchors[req['end_anchor']]),
+                'selected_start':None,'selected_end':None,'step_count':None,'grid_route_length_m':None,
+                'horizontal_step_count':None,'vertical_step_count':None,'vertical_travel_m':None,
+                'bend_count':None,'expanded_node_count':None,'endpoint_snap_distance_total_m':None,
+                'gravity':None,'path_cells':[]}); continue
         _,_,_,_,_,_,start,end,result,gravity,metrics=selected; routes.append({**base,'path_found':True,'failure_reason':None,'reference_start':snap_anchor_to_free_cell(grid,anchors[req['start_anchor']]),'reference_end':snap_anchor_to_free_cell(grid,anchors[req['end_anchor']]),'selected_start':start,'selected_end':end,**metrics,'endpoint_snap_distance_total_m':start['snap_distance_m']+end['snap_distance_m'],'gravity':gravity,'path_cells':[list(x) for x in result.path_cells]})
-      cases.append({'case_id':case['case_id'],'scenario_id':case['scenario_id'],'demand_profile_id':case['demand_profile_id'],'routes':routes})
+      successful=[r for r in routes if r['path_found']]
+      cases.append({'case_id':case['case_id'],'scenario_id':case['scenario_id'],'demand_profile_id':case['demand_profile_id'],
+        'requested_drainage_routes':len(routes),'successful_drainage_routes':len(successful),'failed_drainage_routes':len(routes)-len(successful),
+        'drainage_connection_success_rate':len(successful)/len(routes),'gravity_compliant_routes':sum(r['gravity']['drainage_gravity_pass'] for r in successful),
+        'total_grid_route_length_m':sum(r['grid_route_length_m'] for r in successful),'total_bend_count':sum(r['bend_count'] for r in successful),'total_vertical_travel_m':sum(r['vertical_travel_m'] for r in successful),
+        'maximum_absolute_endpoint_elevation_adjustment_m':max((abs(e['elevation_adjustment_m']) for r in successful for e in (r['selected_start'],r['selected_end'])),default=0.0),'routes':routes})
     routes=[r for c in cases for r in c['routes']]; success=[r for r in routes if r['path_found']]; failures={x:sum(r['failure_reason']==x for r in routes) for x in sorted({r['failure_reason'] for r in routes if not r['path_found']})}
-    return {'method':{'id':'D-GRAVITY-C0','name':'C0 Gravity-Aware Drainage Routing Primitive'},'constraint':config['drainage'],'global_summary':{'total_drainage_requests':len(routes),'successful_drainage_routes':len(success),'failed_drainage_routes':len(routes)-len(success),'gravity_compliant_successful_routes':sum(r['gravity']['drainage_gravity_pass'] for r in success),'failure_reason_counts':failures},'cases':cases}
+    snaps=[r['endpoint_snap_distance_total_m'] for r in success]
+    return {'method':{'id':'D-GRAVITY-C0','name':'C0 Gravity-Aware Drainage Routing Primitive'},'constraint':config['drainage'],'global_summary':{'total_drainage_requests':len(routes),'successful_drainage_routes':len(success),'failed_drainage_routes':len(routes)-len(success),'drainage_connection_success_rate':len(success)/len(routes),'gravity_compliant_successful_routes':sum(r['gravity']['drainage_gravity_pass'] for r in success),'gravity_compliance_rate_among_successful':sum(r['gravity']['drainage_gravity_pass'] for r in success)/len(success) if success else 0.0,'total_grid_route_length_m':sum(r['grid_route_length_m'] for r in success),'total_bend_count':sum(r['bend_count'] for r in success),'total_vertical_travel_m':sum(r['vertical_travel_m'] for r in success),'mean_endpoint_snap_distance_m':sum(snaps)/len(snaps) if snaps else 0.0,'maximum_endpoint_snap_distance_m':max((max(r['selected_start']['snap_distance_m'],r['selected_end']['snap_distance_m']) for r in success),default=0.0),'failure_reason_counts':failures},'cases':cases}
 
 def main():
  p=argparse.ArgumentParser(); [p.add_argument('--'+n,required=True,type=Path) for n in ('scenarios','demands','systems','constraints','output')]; a=p.parse_args(); r=run_gravity_benchmark(a.scenarios,a.demands,a.systems,a.constraints); a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(json.dumps(r,indent=2,sort_keys=True)+'\n'); print(r['global_summary'])
