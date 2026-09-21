@@ -21,6 +21,7 @@ FREE = 0
 BLOCKED_FIXED = 1
 RESERVED_SHAFT = 2
 BLOCKED_VERTICAL_BOUNDARY = 3
+BLOCKED_PRIOR_ROUTE = 4
 SYSTEM_ORDER = ("hvac", "drainage", "water", "fire", "electrical")
 
 
@@ -137,6 +138,17 @@ def _index_range(spec: GridSpec, low: float, high: float, axis: str) -> range:
     start = max(0, ceil((low - origin) / size - 0.5 - 0.000000001))
     end = min(count - 1, floor((high - origin) / size - 0.5 + 0.000000001))
     return range(start, end + 1) if start <= end else range(0)
+
+
+def aabb_index_ranges(
+    spec: GridSpec, bounds: tuple[float, float, float, float, float, float]
+) -> tuple[range, range, range]:
+    """Return center-in-AABB voxel index ranges using the Phase 3A convention."""
+    return (
+        _index_range(spec, bounds[0], bounds[1], "x"),
+        _index_range(spec, bounds[2], bounds[3], "y"),
+        _index_range(spec, bounds[4], bounds[5], "z"),
+    )
 
 
 def _mark_aabb(grid: OccupancyGrid, bounds: tuple[float, float, float, float, float, float], state: int) -> None:

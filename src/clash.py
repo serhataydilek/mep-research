@@ -8,7 +8,6 @@ claims exact fabrication clash detection or layout feasibility.
 from __future__ import annotations
 
 import argparse
-from dataclasses import dataclass
 from itertools import combinations
 import json
 from math import floor
@@ -16,6 +15,7 @@ from pathlib import Path
 from typing import Any
 
 from .demand import SYSTEM_ORDER, load_service_definitions
+from .route_geometry import Segment, compress_path_cells, nominal_half_extents, swept_segment_aabb
 from .routing import run_b0_benchmark
 from .voxel import GridSpec, build_occupancy_grids
 
@@ -29,61 +29,6 @@ SYSTEM_PAIR_ORDER = tuple(
 )
 
 
-@dataclass(frozen=True)
-class Segment:
-    """An axis-aligned world-space B0 centerline segment."""
-
-    start: tuple[float, float, float]
-    end: tuple[float, float, float]
-
-
-def compress_path_cells(path_cells: list[list[int]], spec: GridSpec) -> tuple[Segment, ...]:
-    """Compress raw voxel cells into deterministic maximal collinear segments."""
-    centers = [spec.cell_center(*cell) for cell in path_cells]
-    if not centers:
-        return ()
-    if len(centers) == 1:
-        return (Segment(centers[0], centers[0]),)
-    segments = []
-    start = centers[0]
-    previous = centers[0]
-    direction = tuple(centers[1][axis] - centers[0][axis] for axis in range(3))
-    for current in centers[1:]:
-        current_direction = tuple(current[axis] - previous[axis] for axis in range(3))
-        if current_direction != direction:
-            segments.append(Segment(start, previous))
-            start = previous
-            direction = current_direction
-        previous = current
-    segments.append(Segment(start, previous))
-    return tuple(segments)
-
-
-def nominal_half_extents(definition: dict[str, Any]) -> tuple[float, float]:
-    """Return Phase 2C planar and vertical nominal service half extents."""
-    if definition["envelope_type"] == "circular":
-        half = float(definition["diameter_m"]) / 2
-        return half, half
-    return (
-        max(float(definition["width_m"]), float(definition["height_m"])) / 2,
-        float(definition["height_m"]) / 2,
-    )
-
-
-def swept_segment_aabb(
-    segment: Segment, planar_half_extent: float, vertical_half_extent: float, extra: float = 0.0
-) -> tuple[float, float, float, float, float, float]:
-    """Create the nominal (or half-clearance-inflated) swept segment AABB."""
-    planar = planar_half_extent + extra
-    vertical = vertical_half_extent + extra
-    return (
-        min(segment.start[0], segment.end[0]) - planar,
-        max(segment.start[0], segment.end[0]) + planar,
-        min(segment.start[1], segment.end[1]) - planar,
-        max(segment.start[1], segment.end[1]) + planar,
-        min(segment.start[2], segment.end[2]) - vertical,
-        max(segment.start[2], segment.end[2]) + vertical,
-    )
 
 
 def positive_aabb_overlap(

@@ -121,3 +121,18 @@ Phase 3C jointly evaluates immutable B0 paths after independent routing. Its pri
 6. Output is byte-identical across runs.
 7. B0 paths remain unchanged.
 8. Earlier phase regressions remain green.
+
+## Phase 4A — B1 Fixed-Priority Sequential Routing
+
+Phase 4A uses the fixed controlled priority HVAC, drainage, water, fire, electrical. Successful higher-priority systems reserve pair-specific nominal-envelope plus 0.05 m clearance space on copied lower-system grids; same-system requests remain independent and may overlap. Earlier routes are never repaired, so a blocked endpoint or no path is a legitimate order-dependent baseline failure. B1 generates routes only: it does not evaluate B1 clashes in this phase.
+
+### Phase 4A gate
+
+1. Fixed priority is deterministic.
+2. All 292 requests are attempted.
+3. Higher-priority successful routes dynamically constrain lower systems.
+4. Same-system routes do not block each other.
+5. Base Phase 3A occupancy is unchanged.
+6. First-priority HVAC routes match B0.
+7. B1 results are byte-identical across runs.
+8. Earlier phase regressions remain green.
