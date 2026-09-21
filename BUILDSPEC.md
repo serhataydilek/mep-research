@@ -136,3 +136,17 @@ Phase 4A uses the fixed controlled priority HVAC, drainage, water, fire, electri
 6. First-priority HVAC routes match B0.
 7. B1 results are byte-identical across runs.
 8. Earlier phase regressions remain green.
+
+## Phase 4B — B0 vs B1 Baseline Comparison
+
+Phase 4B applies the same deterministic swept-envelope evaluator to successful B0 and B1 geometry. Conflict rates use only successful inter-system route pairs, so connection success remains a required companion metric. A common-success subset compares both geometries on identical routed connection membership, while routing-complete-and-compliant counts remain provisional coordination metrics rather than feasible-layout claims. Fixed-priority order dependence is descriptive baseline behavior; no routes are modified.
+
+### Phase 4B gate
+
+1. Both baselines attempt all 292 requests.
+2. B0 conflict evaluation remains byte-identical.
+3. B1 uses the same geometric evaluator.
+4. Common-success pair denominators match between methods.
+5. Routing completion and conflict compliance remain separate metrics.
+6. Comparison output is byte-identical across runs.
+7. Earlier phase regressions remain green.

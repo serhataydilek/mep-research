@@ -17,6 +17,7 @@ from typing import Any
 from .demand import SYSTEM_ORDER, load_service_definitions
 from .route_geometry import Segment, compress_path_cells, nominal_half_extents, swept_segment_aabb
 from .routing import run_b0_benchmark
+from .sequential import run_b1_benchmark
 from .voxel import GridSpec, build_occupancy_grids
 
 
@@ -129,18 +130,14 @@ def _pair_summary(records: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
-def evaluate_b0_conflicts(
-    scenarios_directory: Path, demands_directory: Path, systems_path: Path
+def evaluate_route_result_conflicts(
+    routing_result: dict[str, Any], grids: dict[tuple[str, str], Any],
+    definitions: dict[str, dict[str, Any]], evaluation_id: str, evaluation_name: str,
+    summary_key: str, summary_value: dict[str, Any], *, include_requested_counts: bool = False,
 ) -> dict[str, Any]:
-    """Jointly measure, but never coordinate, all independent B0 route instances."""
-    grids = build_occupancy_grids(scenarios_directory, systems_path)
-    before = {key: bytes(grid.cells) for key, grid in grids.items()}
-    b0 = run_b0_benchmark(scenarios_directory, demands_directory, systems_path, grids=grids)
-    if before != {key: bytes(grid.cells) for key, grid in grids.items()}:
-        raise RuntimeError("B0 conflict evaluation must not mutate Phase 3A occupancy.")
-    definitions = load_service_definitions(systems_path)
+    """Evaluate compatible successful-route geometry with the single Phase 3C rule set."""
     evaluated_cases = []
-    for case in b0["cases"]:
+    for case in routing_result["cases"]:
         successful = sorted((route for route in case["routes"] if route["path_found"]), key=_route_key)
         route_burdens = {
             (route["system"], route["connection_id"]): {"hard": set(), "clearance": set()}
@@ -182,7 +179,7 @@ def evaluate_b0_conflicts(
         hard_segments = sum(record["hard_segment_intersection_count"] for record in inter_records)
         clearance_segments = sum(record["clearance_segment_intersection_count"] for record in inter_records)
         details = [record for record in inter_records if record["hard_envelope_conflict"] or record["clearance_violation"]]
-        evaluated_cases.append({
+        evaluated_case = {
             "case_id": case["case_id"], "scenario_id": case["scenario_id"], "demand_profile_id": case["demand_profile_id"],
             "successful_route_count": len(successful),
             **primary,
@@ -198,10 +195,14 @@ def evaluate_b0_conflicts(
             "system_pair_summaries": summaries_by_pair,
             "conflict_details": details,
             "routes": routes,
-        })
+        }
+        if include_requested_counts:
+            evaluated_case["requested_route_count"] = case["connection_count"]
+            evaluated_case["failed_route_count"] = case["connection_count"] - len(successful)
+        evaluated_cases.append(evaluated_case)
     return {
-        "method": {"id": "B0-3C", "name": "B0 Inter-System Conflict Evaluation"},
-        "b0_search_statistics": b0["search_statistics"],
+        "method": {"id": evaluation_id, "name": evaluation_name},
+        summary_key: summary_value,
         "cases": evaluated_cases,
         "grouped_metrics": {
             "scenario": _group_metrics(evaluated_cases, "scenario_id"),
@@ -210,6 +211,37 @@ def evaluate_b0_conflicts(
         "system_pair_metrics": _system_pair_metrics(evaluated_cases),
         "global_metrics": _global_metrics(evaluated_cases),
     }
+
+
+def evaluate_b0_conflicts(
+    scenarios_directory: Path, demands_directory: Path, systems_path: Path
+) -> dict[str, Any]:
+    """Jointly measure, but never coordinate, all independent B0 route instances."""
+    grids = build_occupancy_grids(scenarios_directory, systems_path)
+    before = {key: bytes(grid.cells) for key, grid in grids.items()}
+    b0 = run_b0_benchmark(scenarios_directory, demands_directory, systems_path, grids=grids)
+    if before != {key: bytes(grid.cells) for key, grid in grids.items()}:
+        raise RuntimeError("B0 conflict evaluation must not mutate Phase 3A occupancy.")
+    return evaluate_route_result_conflicts(
+        b0, grids, load_service_definitions(systems_path), "B0-3C",
+        "B0 Inter-System Conflict Evaluation", "b0_search_statistics", b0["search_statistics"],
+    )
+
+
+def evaluate_b1_conflicts(
+    scenarios_directory: Path, demands_directory: Path, systems_path: Path
+) -> dict[str, Any]:
+    """Evaluate only successful B1 geometry while retaining requested/failure counts."""
+    grids = build_occupancy_grids(scenarios_directory, systems_path)
+    before = {key: bytes(grid.cells) for key, grid in grids.items()}
+    b1 = run_b1_benchmark(scenarios_directory, demands_directory, systems_path, grids=grids)
+    if before != {key: bytes(grid.cells) for key, grid in grids.items()}:
+        raise RuntimeError("B1 conflict evaluation must not mutate Phase 3A occupancy.")
+    return evaluate_route_result_conflicts(
+        b1, grids, load_service_definitions(systems_path), "B1-4B",
+        "B1 Inter-System Conflict Evaluation", "b1_global_summary", b1["global_summary"],
+        include_requested_counts=True,
+    )
 
 
 def _group_metrics(cases: list[dict[str, Any]], key: str) -> list[dict[str, Any]]:
