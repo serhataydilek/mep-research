@@ -252,7 +252,10 @@ def _load_scenarios(directory: Path) -> list[tuple[dict[str, Any], dict[str, Any
     return [(entry, load_building_config(directory / entry["config_file"])) for entry in manifest["scenarios"]]
 
 
-def build_voxel_summary(scenarios_directory: Path, demands_directory: Path, systems_path: Path) -> dict[str, Any]:
+def build_occupancy_grids(
+    scenarios_directory: Path, systems_path: Path
+) -> dict[tuple[str, str], OccupancyGrid]:
+    """Build the twenty immutable Phase 3A scenario/service occupancy grids."""
     systems = load_service_definitions(systems_path)
     grids = {}
     scenario_configs = _load_scenarios(scenarios_directory)
@@ -266,6 +269,12 @@ def build_voxel_summary(scenarios_directory: Path, demands_directory: Path, syst
             grids[(scenario["scenario_id"], system)] = build_occupancy_grid(
                 scenario["scenario_id"], config, system, systems[system], obstacles, shaft_bounds
             )
+    return grids
+
+
+def build_voxel_summary(scenarios_directory: Path, demands_directory: Path, systems_path: Path) -> dict[str, Any]:
+    grids = build_occupancy_grids(scenarios_directory, systems_path)
+    scenario_configs = _load_scenarios(scenarios_directory)
     cases = generate_benchmark_cases(scenarios_directory, demands_directory, systems_path)
     mappings = []
     for case in cases:
