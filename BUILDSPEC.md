@@ -164,3 +164,7 @@ Phase 5A defines C0, the benchmark-only Core Heterogeneous Constructability Cons
 5. Conflict and clearance checks reuse the shared evaluator.
 6. Verification output is byte-identical across runs.
 7. Earlier phase regressions remain green.
+
+## Phase 5B — Gravity-Aware Drainage Routing
+
+Phase 5B adds a reusable drainage-only primitive using terminal-to-egress flow, no uphill neighbour, and the same C0 1% aggregate stair-step slope check. It preserves snapped XY anchors, permits controlled vertical candidates only within the existing two-voxel tolerance, and accepts arbitrary occupancy grids. Synthetic demand anchors permit this elevation flexibility; external IFC endpoints will need explicit metadata. This is not multi-system coordination.

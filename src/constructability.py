@@ -43,7 +43,7 @@ def load_constructability_config(path: Path) -> dict[str, Any]:
     return config
 
 
-def _drainage_metrics(route: dict[str, Any], voxel_size: float, slope: float) -> dict[str, Any] | None:
+def drainage_gravity_metrics(route: dict[str, Any], voxel_size: float, slope: float) -> dict[str, Any] | None:
     if not route["path_found"]:
         return None
     cells = route["path_cells"]
@@ -66,6 +66,9 @@ def _drainage_metrics(route: dict[str, Any], voxel_size: float, slope: float) ->
     }
 
 
+_drainage_metrics = drainage_gravity_metrics  # Backward-compatible private test alias.
+
+
 def _verify_route(route: dict[str, Any], grid: Any, slope: float) -> dict[str, Any]:
     if not route["path_found"]:
         return {
@@ -85,7 +88,7 @@ def _verify_route(route: dict[str, Any], grid: Any, slope: float) -> dict[str, A
         0 <= cell[0] < grid.spec.nx and 0 <= cell[1] < grid.spec.ny and 0 <= cell[2] < grid.spec.nz
         and grid.state_at(*cell) == FREE for cell in path
     )
-    drainage = _drainage_metrics(route, grid.spec.voxel_size_m, slope) if route["system"] == "drainage" else None
+    drainage = drainage_gravity_metrics(route, grid.spec.voxel_size_m, slope) if route["system"] == "drainage" else None
     return {
         "case_id": route["case_id"], "system": route["system"], "connection_id": route["connection_id"],
         "path_found": True, "endpoint_integrity_pass": endpoints, "path_continuity_pass": continuous,

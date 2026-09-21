@@ -47,8 +47,9 @@ def _validate_free_index(grid: OccupancyGrid, index: tuple[int, int, int], label
     return linear
 
 
-def astar_3d(
-    grid: OccupancyGrid, start_index: tuple[int, int, int], goal_index: tuple[int, int, int]
+def astar_3d_with_offsets(
+    grid: OccupancyGrid, start_index: tuple[int, int, int], goal_index: tuple[int, int, int],
+    neighbour_offsets: tuple[tuple[int, int, int], ...],
 ) -> AStarResult:
     """Find a deterministic shortest raw voxel path, or explicit no-route result.
 
@@ -86,7 +87,7 @@ def astar_3d(
                 expanded,
             )
 
-        for di, dj, dk in NEIGHBOUR_OFFSETS:
+        for di, dj, dk in neighbour_offsets:
             next_i, next_j, next_k = i + di, j + dj, k + dk
             if not (0 <= next_i < spec.nx and 0 <= next_j < spec.ny and 0 <= next_k < spec.nz):
                 continue
@@ -104,6 +105,11 @@ def astar_3d(
                 (next_g + h_steps, h_steps, next_g, next_k, next_j, next_i, neighbour),
             )
     return AStarResult(False, (), None, expanded)
+
+
+def astar_3d(grid: OccupancyGrid, start_index: tuple[int, int, int], goal_index: tuple[int, int, int]) -> AStarResult:
+    """Existing B0/B1 six-neighbour deterministic A* wrapper."""
+    return astar_3d_with_offsets(grid, start_index, goal_index, NEIGHBOUR_OFFSETS)
 
 
 def _direction(first: tuple[int, int, int], second: tuple[int, int, int]) -> tuple[int, int, int]:
