@@ -1,0 +1,28 @@
+{
+  "scenarios": [
+    {
+      "scenario_id": "s01",
+      "config_file": "s01_low.json",
+      "intended_difficulty": "low",
+      "description": "Wide spacing and generous routing volume."
+    },
+    {
+      "scenario_id": "s02",
+      "config_file": "s02_medium.json",
+      "intended_difficulty": "medium",
+      "description": "Moderate column density and reduced plenum height."
+    },
+    {
+      "scenario_id": "s03",
+      "config_file": "s03_high.json",
+      "intended_difficulty": "high",
+      "description": "Dense large columns, a larger shaft, and a constrained plenum."
+    },
+    {
+      "scenario_id": "s04",
+      "config_file": "s04_extreme.json",
+      "intended_difficulty": "extreme",
+      "description": "High fixed obstruction density and minimal routing-volume proxy."
+    }
+  ]
+}

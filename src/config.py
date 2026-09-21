@@ -114,8 +114,10 @@ def load_building_config(path: Path) -> dict[str, Any]:
     grid_spacing_x = _require_number(config, "grid_spacing_x_m", minimum=0)
     grid_spacing_y = _require_number(config, "grid_spacing_y_m", minimum=0)
 
-    if ceiling_height >= floor_to_floor:
-        raise ValueError("ceiling_height_m must be less than floor_to_floor_m.")
+    if ceiling_height + slab_thickness >= floor_to_floor:
+        raise ValueError(
+            "ceiling_height_m plus slab_thickness_m must be less than floor_to_floor_m."
+        )
     if slab_thickness >= floor_to_floor:
         raise ValueError("slab_thickness_m must be less than floor_to_floor_m.")
     if wall_thickness >= width or wall_thickness >= length:

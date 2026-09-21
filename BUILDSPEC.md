@@ -35,3 +35,16 @@ This model provides the benchmark environment for later routing experiments; it 
 7. Semantic element GUIDs are deterministic across repeated runs.
 
 Phase 1 is implemented and validated: every gate item above is demonstrated by the focused test suite and IFC CLI verification.
+
+## Phase 2A — Benchmark Scenario Framework
+
+Phase 2A provides four deterministic architectural/structural configurations in `experiments/scenarios/` for future routing experiments. The benchmark CLI measures gross and interior floor area, fixed structural obstruction area, geometric obstruction ratio, plenum height, and a geometric routing-volume proxy. Geometric obstruction is fixed XY obstacle density, not MEP congestion; the proxy is not true available routing volume because MEP envelopes are not modeled yet. Results contain no timestamps or machine-dependent values.
+
+### Phase 2A gate
+
+1. Four scenarios validate.
+2. Four scenarios generate valid IFC models.
+3. Metrics are deterministic.
+4. Obstruction ratios follow the intended ordering.
+5. Generated benchmark results are reproducible.
+6. Phase 1 regressions remain green.

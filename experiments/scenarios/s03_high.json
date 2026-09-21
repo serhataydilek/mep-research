@@ -1,0 +1,21 @@
+{
+  "floors": 1,
+  "width_m": 24.0,
+  "length_m": 20.0,
+  "floor_to_floor_m": 3.7,
+  "ceiling_height_m": 2.9,
+  "slab_thickness_m": 0.2,
+  "wall_thickness_m": 0.2,
+  "column_size_m": 0.8,
+  "grid_spacing_x_m": 4.8,
+  "grid_spacing_y_m": 4.8,
+  "shaft": {
+    "width_m": 3.0,
+    "length_m": 3.0,
+    "position": "center"
+  },
+  "routing": {
+    "voxel_size_m": 0.1,
+    "clearance_m": 0.05
+  }
+}

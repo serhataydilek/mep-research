@@ -3,5 +3,7 @@ __pycache__/
 *.pyc
 out/*
 !out/.gitkeep
+experiments/results/*
+!experiments/results/.gitkeep
 .env
 .DS_Store

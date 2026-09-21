@@ -85,6 +85,10 @@ class BuildingConfigTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "ceiling_height_m"):
             self.load_with_changes({"ceiling_height_m": 3.5})
 
+    def test_ceiling_and_slab_without_routing_plenum_fails(self) -> None:
+        with self.assertRaisesRegex(ValueError, "ceiling_height_m plus slab_thickness_m"):
+            self.load_with_changes({"ceiling_height_m": 3.3})
+
     def test_invalid_shaft_position_fails(self) -> None:
         with self.assertRaisesRegex(ValueError, "shaft.position"):
             self.load_with_changes({"shaft.position": "north"})
