@@ -8,6 +8,7 @@ import ifcopenshell
 import ifcopenshell.api.geometry
 import ifcopenshell.util.unit
 
+from .config import interior_grid_positions
 from .guid import semantic_ifc_guid
 
 
@@ -175,6 +176,57 @@ def _create_perimeter_walls(
     return walls
 
 
+def _create_structural_columns(
+    model: ifcopenshell.file,
+    body_context: ifcopenshell.entity_instance,
+    storey: ifcopenshell.entity_instance,
+    floor_index: int,
+    width: float,
+    length: float,
+    column_size: float,
+    grid_spacing_x: float,
+    grid_spacing_y: float,
+    slab_thickness: float,
+    wall_height: float,
+) -> list[ifcopenshell.entity_instance]:
+    """Create interior square columns in stable X-then-Y grid order."""
+    columns = []
+    half_column = column_size / 2
+    for x_index, x_center in interior_grid_positions(grid_spacing_x, width):
+        for y_index, y_center in interior_grid_positions(grid_spacing_y, length):
+            representation = ifcopenshell.api.geometry.add_slab_representation(
+                model,
+                context=body_context,
+                depth=wall_height,
+                polyline=[
+                    (0.0, 0.0),
+                    (column_size, 0.0),
+                    (column_size, column_size),
+                    (0.0, column_size),
+                ],
+            )
+            column = model.create_entity(
+                "IfcColumn",
+                GlobalId=semantic_ifc_guid(
+                    f"storey/{floor_index}/column/{x_index}/{y_index}"
+                ),
+                Name=f"Column {floor_index}-{x_index}-{y_index}",
+                PredefinedType="COLUMN",
+                ObjectPlacement=_create_local_placement(
+                    model,
+                    storey.ObjectPlacement,
+                    x_center - half_column,
+                    y_center - half_column,
+                    slab_thickness,
+                ),
+            )
+            column.Representation = model.create_entity(
+                "IfcProductDefinitionShape", Representations=[representation]
+            )
+            columns.append(column)
+    return columns
+
+
 def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
     """Create an IFC4 project, site, building, and configured storeys."""
     floors = config["floors"]
@@ -183,6 +235,9 @@ def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
     length = config["length_m"]
     slab_thickness = config["slab_thickness_m"]
     wall_thickness = config["wall_thickness_m"]
+    column_size = config["column_size_m"]
+    grid_spacing_x = config["grid_spacing_x_m"]
+    grid_spacing_y = config["grid_spacing_y_m"]
 
     model = ifcopenshell.file(schema="IFC4")
     units = _create_units(model)
@@ -248,10 +303,23 @@ def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
             wall_thickness,
             floor_to_floor - slab_thickness,
         )
+        columns = _create_structural_columns(
+            model,
+            body_context,
+            storey,
+            floor_index,
+            width,
+            length,
+            column_size,
+            grid_spacing_x,
+            grid_spacing_y,
+            slab_thickness,
+            floor_to_floor - slab_thickness,
+        )
         model.create_entity(
             "IfcRelContainedInSpatialStructure",
             GlobalId=semantic_ifc_guid(f"relationship/storey/{floor_index}/contains/elements"),
-            RelatedElements=[slab, *walls],
+            RelatedElements=[slab, *walls, *columns],
             RelatingStructure=storey,
         )
 

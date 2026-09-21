@@ -39,6 +39,18 @@ def _require_object(config: dict[str, Any], field: str, *, label: str | None = N
     return value
 
 
+def interior_grid_positions(spacing: float, extent: float) -> list[tuple[int, float]]:
+    """Return interior grid indices and coordinates in deterministic order."""
+    positions: list[tuple[int, float]] = []
+    index = 0
+    coordinate = spacing
+    while coordinate < extent:
+        positions.append((index, coordinate))
+        index += 1
+        coordinate = (index + 1) * spacing
+    return positions
+
+
 def load_building_config(path: Path) -> dict[str, Any]:
     """Load and validate the current parametric building configuration."""
     with path.open(encoding="utf-8") as config_file:
@@ -57,9 +69,9 @@ def load_building_config(path: Path) -> dict[str, Any]:
     ceiling_height = _require_number(config, "ceiling_height_m", minimum=0)
     slab_thickness = _require_number(config, "slab_thickness_m", minimum=0)
     wall_thickness = _require_number(config, "wall_thickness_m", minimum=0)
-    _require_number(config, "column_size_m", minimum=0)
-    _require_number(config, "grid_spacing_x_m", minimum=0)
-    _require_number(config, "grid_spacing_y_m", minimum=0)
+    column_size = _require_number(config, "column_size_m", minimum=0)
+    grid_spacing_x = _require_number(config, "grid_spacing_x_m", minimum=0)
+    grid_spacing_y = _require_number(config, "grid_spacing_y_m", minimum=0)
 
     if ceiling_height >= floor_to_floor:
         raise ValueError("ceiling_height_m must be less than floor_to_floor_m.")
@@ -67,6 +79,33 @@ def load_building_config(path: Path) -> dict[str, Any]:
         raise ValueError("slab_thickness_m must be less than floor_to_floor_m.")
     if wall_thickness >= width or wall_thickness >= length:
         raise ValueError("wall_thickness_m must be less than both width_m and length_m.")
+    if grid_spacing_x >= width:
+        raise ValueError("grid_spacing_x_m must be less than width_m.")
+    if grid_spacing_y >= length:
+        raise ValueError("grid_spacing_y_m must be less than length_m.")
+    if column_size >= grid_spacing_x:
+        raise ValueError("column_size_m must be less than grid_spacing_x_m.")
+    if column_size >= grid_spacing_y:
+        raise ValueError("column_size_m must be less than grid_spacing_y_m.")
+
+    x_positions = interior_grid_positions(grid_spacing_x, width)
+    y_positions = interior_grid_positions(grid_spacing_y, length)
+    if not x_positions or not y_positions:
+        raise ValueError("Configured grid must produce at least one interior column position.")
+
+    half_column = column_size / 2
+    for axis, positions, extent in (
+        ("X", x_positions, width),
+        ("Y", y_positions, length),
+    ):
+        for _, coordinate in positions:
+            minimum = coordinate - half_column
+            maximum = coordinate + half_column
+            if minimum < wall_thickness or maximum > extent - wall_thickness:
+                raise ValueError(
+                    f"Configured column footprint at grid {axis}={coordinate} "
+                    "overlaps the perimeter wall volume."
+                )
 
     shaft = _require_object(config, "shaft")
     shaft_width = _require_number(shaft, "width_m", minimum=0, label="shaft.width_m")

@@ -42,6 +42,25 @@ class BuildingConfigTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "wall_thickness_m"):
                     self.load_with_changes({"wall_thickness_m": wall_thickness})
 
+    def test_grid_and_column_configuration_validates(self) -> None:
+        config = self.load_with_changes({})
+
+        self.assertEqual(config["column_size_m"], 0.4)
+        self.assertEqual(config["grid_spacing_x_m"], 5.0)
+        self.assertEqual(config["grid_spacing_y_m"], 5.0)
+
+    def test_grid_spacing_at_building_extent_fails(self) -> None:
+        for field, value in (("grid_spacing_x_m", 20.0), ("grid_spacing_y_m", 15.0)):
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(ValueError, field):
+                    self.load_with_changes({field: value})
+
+    def test_column_size_at_grid_spacing_fails(self) -> None:
+        for field in ("grid_spacing_x_m", "grid_spacing_y_m"):
+            with self.subTest(field=field):
+                with self.assertRaisesRegex(ValueError, "column_size_m"):
+                    self.load_with_changes({"column_size_m": 5.0})
+
     def test_oversized_wall_thickness_fails(self) -> None:
         with self.assertRaisesRegex(ValueError, "wall_thickness_m"):
             self.load_with_changes({"wall_thickness_m": 15.0})

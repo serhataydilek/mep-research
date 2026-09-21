@@ -66,6 +66,62 @@ class IfcModelTests(unittest.TestCase):
         )
         self.assertTrue(all(wall.Representation for wall in walls))
 
+    def test_current_configuration_creates_six_deterministic_columns(self) -> None:
+        columns = self.model.by_type("IfcColumn")
+
+        self.assertEqual(len(columns), 6)
+        self.assertEqual(
+            [column.Name for column in columns],
+            [
+                "Column 0-0-0",
+                "Column 0-0-1",
+                "Column 0-1-0",
+                "Column 0-1-1",
+                "Column 0-2-0",
+                "Column 0-2-1",
+            ],
+        )
+        self.assertTrue(all(column.Representation for column in columns))
+
+    def test_column_geometry_bounds_centers_and_wall_clearance(self) -> None:
+        expected_bounds = [
+            (4.8, 5.2, 4.8, 5.2, 0.2, 3.5),
+            (4.8, 5.2, 9.8, 10.2, 0.2, 3.5),
+            (9.8, 10.2, 4.8, 5.2, 0.2, 3.5),
+            (9.8, 10.2, 9.8, 10.2, 0.2, 3.5),
+            (14.8, 15.2, 4.8, 5.2, 0.2, 3.5),
+            (14.8, 15.2, 9.8, 10.2, 0.2, 3.5),
+        ]
+        wall_thickness = self.config["wall_thickness_m"]
+        for column, expected in zip(self.model.by_type("IfcColumn"), expected_bounds, strict=True):
+            with self.subTest(column=column.Name):
+                bounds = tessellated_bounds(self.model, column)
+                for actual, expected_value in zip(bounds, expected, strict=True):
+                    self.assertAlmostEqual(actual, expected_value, places=6)
+                self.assertAlmostEqual(bounds[1] - bounds[0], 0.4, places=6)
+                self.assertAlmostEqual(bounds[3] - bounds[2], 0.4, places=6)
+                self.assertAlmostEqual(bounds[5] - bounds[4], 3.3, places=6)
+                self.assertGreaterEqual(bounds[0], wall_thickness)
+                self.assertLessEqual(bounds[1], self.config["width_m"] - wall_thickness)
+                self.assertGreaterEqual(bounds[2], wall_thickness)
+                self.assertLessEqual(bounds[3], self.config["length_m"] - wall_thickness)
+
+    def test_columns_have_deterministic_ids_and_storey_containment(self) -> None:
+        second_model = create_ifc_model(self.config)
+        storey = self.model.by_type("IfcBuildingStorey")[0]
+        columns = self.model.by_type("IfcColumn")
+
+        self.assertEqual(
+            [column.GlobalId for column in columns],
+            [column.GlobalId for column in second_model.by_type("IfcColumn")],
+        )
+        for column in columns:
+            self.assertEqual(len(column.ContainedInStructure), 1)
+            self.assertEqual(column.ContainedInStructure[0].RelatingStructure, storey)
+
+        containment = storey.ContainsElements[0]
+        self.assertEqual(len(containment.RelatedElements), 11)
+
     def test_walls_have_deterministic_ids_and_storey_containment(self) -> None:
         second_model = create_ifc_model(self.config)
         storey = self.model.by_type("IfcBuildingStorey")[0]
@@ -115,6 +171,24 @@ class IfcModelTests(unittest.TestCase):
                 self.assertAlmostEqual(bounds[4], expected_bottom, places=6)
                 self.assertAlmostEqual(bounds[5], expected_top, places=6)
                 self.assertEqual(wall.ContainedInStructure[0].RelatingStructure, storey)
+
+    def test_multiple_floors_create_eighteen_columns_at_expected_elevations(self) -> None:
+        config = copy.deepcopy(self.config)
+        config["floors"] = 3
+        model = create_ifc_model(config)
+        columns = model.by_type("IfcColumn")
+
+        self.assertEqual(len(columns), 18)
+        for floor_index in range(3):
+            floor_columns = columns[floor_index * 6 : (floor_index + 1) * 6]
+            storey = model.by_type("IfcBuildingStorey")[floor_index]
+            expected_bottom = floor_index * config["floor_to_floor_m"] + config["slab_thickness_m"]
+            expected_top = (floor_index + 1) * config["floor_to_floor_m"]
+            for column in floor_columns:
+                bounds = tessellated_bounds(model, column)
+                self.assertAlmostEqual(bounds[4], expected_bottom, places=6)
+                self.assertAlmostEqual(bounds[5], expected_top, places=6)
+                self.assertEqual(column.ContainedInStructure[0].RelatingStructure, storey)
 
     def test_aggregation_links_project_to_storey(self) -> None:
         project = self.model.by_type("IfcProject")[0]
@@ -207,6 +281,7 @@ class IfcModelTests(unittest.TestCase):
         self.assertEqual(len(reopened.by_type("IfcBuildingStorey")), 1)
         self.assertEqual(len(reopened.by_type("IfcSlab")), 1)
         self.assertEqual(len(reopened.by_type("IfcWall")), 4)
+        self.assertEqual(len(reopened.by_type("IfcColumn")), 6)
         minimum_x, maximum_x, minimum_y, maximum_y, minimum_z, maximum_z = tessellated_bounds(
             reopened, reopened.by_type("IfcSlab")[0]
         )
