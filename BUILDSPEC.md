@@ -106,3 +106,18 @@ Phase 3B routes every horizontal connection independently through its Phase 3A s
 6. Nested-profile routes are invariant.
 7. Generated route output is byte-identical across runs.
 8. Earlier phase regressions remain green.
+
+## Phase 3C — B0 Inter-System Conflict Evaluation
+
+Phase 3C jointly evaluates immutable B0 paths after independent routing. Its primary metrics cover unordered inter-system route pairs; same-system centerline overlap is a separate diagnostic. Maximal collinear centerlines are swept into nominal service AABBs, with 0.05 m total pairwise clearance represented by 0.025 m inflation per route. Positive nominal overlap is a hard envelope conflict; inflated-only overlap is a clearance-only violation. These deterministic benchmark proxies are not exact fabrication clash detection and never modify routing.
+
+### Phase 3C gate
+
+1. All 12 B0 cases evaluate.
+2. Each unordered inter-system pair is tested once.
+3. Hard conflicts and clearance-only violations are distinguished.
+4. Same-system overlap is excluded from primary metrics.
+5. Nested-profile classifications are invariant.
+6. Output is byte-identical across runs.
+7. B0 paths remain unchanged.
+8. Earlier phase regressions remain green.
