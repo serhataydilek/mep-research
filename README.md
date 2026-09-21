@@ -1,20 +1,9 @@
-# Autonomous Constraint-Aware MEP Routing in BIM Models
+# Generative Constructability-Aware Coordination of Heterogeneous MEP Systems in IFC-Based Building Models
 
-This research project investigates whether a constraint-aware automatic routing system can generate HVAC routes with fewer clashes and lower routing cost than independent shortest-path routing.
+This is an IFC-native research prototype for studying heterogeneous MEP coordination. The research direction is toward generative design alternatives, constructability-aware validation, and reproducible benchmarking; these capabilities are planned, not yet implemented.
 
-The initial model is deliberately small: one parametric floor with perimeter walls, structural columns, a central service shaft, and multiple HVAC terminals. The eventual system will consider obstacle avoidance, IFC output, and later 3D visualization.
+The current implementation provides a deterministic IFC4 benchmark foundation: a parametric spatial hierarchy with floor-slab geometry. It does not yet implement MEP routing, coordination, optimization, or validation rules.
 
-Development is phased. Phase 1 establishes a deterministic IFC architecture model from `config/building.json`. Later phases will add routing and evaluation only after that foundation is validated.
+Development is phased. Phase 1 establishes the deterministic architectural IFC environment from `config/building.json`; later research phases will use it for coordination experiments and evaluation.
 
-## Research metrics
-
-- Terminal connection success rate
-- Total route length
-- Number of bends
-- Clash count
-- Routing runtime
-- Constraint violations
-
-## Current status
-
-Phase 1 is specified but not implemented. See [BUILDSPEC.md](BUILDSPEC.md) for its acceptance gate and [RESEARCH.md](RESEARCH.md) for the research framing.
+See [RESEARCH.md](RESEARCH.md) for the research question, planned baselines, and evaluation strategy. See [BUILDSPEC.md](BUILDSPEC.md) for the current Phase 1 gate.

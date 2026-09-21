@@ -6,6 +6,8 @@
 
 Generate a deterministic IFC architecture model from `config/building.json`.
 
+This model provides the benchmark environment for later routing experiments; it does not add those experiments to Phase 1.
+
 ### In scope
 
 - One configured storey
