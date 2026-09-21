@@ -56,6 +56,7 @@ def load_building_config(path: Path) -> dict[str, Any]:
     floor_to_floor = _require_number(config, "floor_to_floor_m", minimum=0)
     ceiling_height = _require_number(config, "ceiling_height_m", minimum=0)
     slab_thickness = _require_number(config, "slab_thickness_m", minimum=0)
+    wall_thickness = _require_number(config, "wall_thickness_m", minimum=0)
     _require_number(config, "column_size_m", minimum=0)
     _require_number(config, "grid_spacing_x_m", minimum=0)
     _require_number(config, "grid_spacing_y_m", minimum=0)
@@ -64,6 +65,8 @@ def load_building_config(path: Path) -> dict[str, Any]:
         raise ValueError("ceiling_height_m must be less than floor_to_floor_m.")
     if slab_thickness >= floor_to_floor:
         raise ValueError("slab_thickness_m must be less than floor_to_floor_m.")
+    if wall_thickness >= width or wall_thickness >= length:
+        raise ValueError("wall_thickness_m must be less than both width_m and length_m.")
 
     shaft = _require_object(config, "shaft")
     shaft_width = _require_number(shaft, "width_m", minimum=0, label="shaft.width_m")

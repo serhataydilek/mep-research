@@ -34,6 +34,17 @@ class BuildingConfigTests(unittest.TestCase):
         config = load_building_config(CONFIG_PATH)
 
         self.assertEqual(config["floors"], 1)
+        self.assertEqual(config["wall_thickness_m"], 0.2)
+
+    def test_zero_or_negative_wall_thickness_fails(self) -> None:
+        for wall_thickness in (0.0, -0.1):
+            with self.subTest(wall_thickness=wall_thickness):
+                with self.assertRaisesRegex(ValueError, "wall_thickness_m"):
+                    self.load_with_changes({"wall_thickness_m": wall_thickness})
+
+    def test_oversized_wall_thickness_fails(self) -> None:
+        with self.assertRaisesRegex(ValueError, "wall_thickness_m"):
+            self.load_with_changes({"wall_thickness_m": 15.0})
 
     def test_missing_required_key_fails(self) -> None:
         config = json.loads(CONFIG_PATH.read_text(encoding="utf-8"))

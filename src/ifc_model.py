@@ -1,4 +1,4 @@
-"""Creation of the deterministic IFC4 spatial skeleton for Phase 1B."""
+"""Creation of the deterministic IFC4 spatial model with perimeter walls."""
 
 from __future__ import annotations
 
@@ -59,9 +59,11 @@ def _create_contexts(
 def _create_local_placement(
     model: ifcopenshell.file,
     relative_to: ifcopenshell.entity_instance | None,
-    elevation: float = 0.0,
+    x: float = 0.0,
+    y: float = 0.0,
+    z: float = 0.0,
 ) -> ifcopenshell.entity_instance:
-    location = model.create_entity("IfcCartesianPoint", Coordinates=(0.0, 0.0, elevation))
+    location = model.create_entity("IfcCartesianPoint", Coordinates=(x, y, z))
     axis_placement = model.create_entity("IfcAxis2Placement3D", Location=location)
     return model.create_entity(
         "IfcLocalPlacement",
@@ -92,7 +94,7 @@ def _create_slab(
     width: float,
     length: float,
     thickness: float,
-) -> None:
+) -> ifcopenshell.entity_instance:
     representation = ifcopenshell.api.geometry.add_slab_representation(
         model,
         context=body_context,
@@ -110,12 +112,67 @@ def _create_slab(
         "IfcProductDefinitionShape",
         Representations=[representation],
     )
-    model.create_entity(
-        "IfcRelContainedInSpatialStructure",
-        GlobalId=semantic_ifc_guid(f"relationship/storey/{floor_index}/contains/slab/main"),
-        RelatedElements=[slab],
-        RelatingStructure=storey,
+    return slab
+
+
+def _create_perimeter_walls(
+    model: ifcopenshell.file,
+    body_context: ifcopenshell.entity_instance,
+    storey: ifcopenshell.entity_instance,
+    floor_index: int,
+    width: float,
+    length: float,
+    slab_thickness: float,
+    wall_thickness: float,
+    wall_height: float,
+) -> list[ifcopenshell.entity_instance]:
+    """Create the four inside-footprint wall volumes in stable compass order."""
+    wall_specs = (
+        ("south", "South", 0.0, 0.0, width, wall_thickness),
+        ("north", "North", 0.0, length - wall_thickness, width, wall_thickness),
+        (
+            "west",
+            "West",
+            0.0,
+            wall_thickness,
+            wall_thickness,
+            length - (2 * wall_thickness),
+        ),
+        (
+            "east",
+            "East",
+            width - wall_thickness,
+            wall_thickness,
+            wall_thickness,
+            length - (2 * wall_thickness),
+        ),
     )
+    walls = []
+    for direction, label, x, y, wall_width, wall_length in wall_specs:
+        representation = ifcopenshell.api.geometry.add_slab_representation(
+            model,
+            context=body_context,
+            depth=wall_height,
+            polyline=[
+                (0.0, 0.0),
+                (wall_width, 0.0),
+                (wall_width, wall_length),
+                (0.0, wall_length),
+            ],
+        )
+        wall = model.create_entity(
+            "IfcWall",
+            GlobalId=semantic_ifc_guid(f"storey/{floor_index}/wall/{direction}"),
+            Name=f"{label} Wall {floor_index}",
+            ObjectPlacement=_create_local_placement(
+                model, storey.ObjectPlacement, x, y, slab_thickness
+            ),
+        )
+        wall.Representation = model.create_entity(
+            "IfcProductDefinitionShape", Representations=[representation]
+        )
+        walls.append(wall)
+    return walls
 
 
 def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
@@ -125,6 +182,7 @@ def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
     width = config["width_m"]
     length = config["length_m"]
     slab_thickness = config["slab_thickness_m"]
+    wall_thickness = config["wall_thickness_m"]
 
     model = ifcopenshell.file(schema="IFC4")
     units = _create_units(model)
@@ -161,7 +219,7 @@ def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
             ObjectPlacement=_create_local_placement(
                 model,
                 building.ObjectPlacement,
-                floor_index * floor_to_floor,
+                z=floor_index * floor_to_floor,
             ),
         )
         _aggregate(
@@ -170,7 +228,7 @@ def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
             building,
             storey,
         )
-        _create_slab(
+        slab = _create_slab(
             model,
             body_context,
             storey,
@@ -178,6 +236,23 @@ def create_ifc_model(config: dict[str, Any]) -> ifcopenshell.file:
             width,
             length,
             slab_thickness,
+        )
+        walls = _create_perimeter_walls(
+            model,
+            body_context,
+            storey,
+            floor_index,
+            width,
+            length,
+            slab_thickness,
+            wall_thickness,
+            floor_to_floor - slab_thickness,
+        )
+        model.create_entity(
+            "IfcRelContainedInSpatialStructure",
+            GlobalId=semantic_ifc_guid(f"relationship/storey/{floor_index}/contains/elements"),
+            RelatedElements=[slab, *walls],
+            RelatingStructure=storey,
         )
 
     if ifcopenshell.util.unit.calculate_unit_scale(model) != 1.0:

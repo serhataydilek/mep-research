@@ -23,11 +23,11 @@ def load_config() -> dict[str, object]:
 
 
 def tessellated_bounds(
-    model: ifcopenshell.file, slab: ifcopenshell.entity_instance
+    model: ifcopenshell.file, element: ifcopenshell.entity_instance
 ) -> tuple[float, float, float, float, float, float]:
     settings = ifcopenshell.geom.settings()
     settings.set(settings.USE_WORLD_COORDS, True)
-    shape = ifcopenshell.geom.create_shape(settings, slab)
+    shape = ifcopenshell.geom.create_shape(settings, element)
     vertices = shape.geometry.verts
     coordinates = list(zip(vertices[::3], vertices[1::3], vertices[2::3], strict=True))
     xs, ys, zs = zip(*coordinates, strict=True)
@@ -55,6 +55,66 @@ class IfcModelTests(unittest.TestCase):
 
     def test_current_configuration_has_one_slab(self) -> None:
         self.assertEqual(len(self.model.by_type("IfcSlab")), 1)
+
+    def test_current_configuration_creates_four_named_perimeter_walls(self) -> None:
+        walls = self.model.by_type("IfcWall")
+
+        self.assertEqual(len(walls), 4)
+        self.assertEqual(
+            [wall.Name for wall in walls],
+            ["South Wall 0", "North Wall 0", "West Wall 0", "East Wall 0"],
+        )
+        self.assertTrue(all(wall.Representation for wall in walls))
+
+    def test_walls_have_deterministic_ids_and_storey_containment(self) -> None:
+        second_model = create_ifc_model(self.config)
+        storey = self.model.by_type("IfcBuildingStorey")[0]
+        walls = self.model.by_type("IfcWall")
+
+        self.assertEqual(
+            [wall.GlobalId for wall in walls],
+            [wall.GlobalId for wall in second_model.by_type("IfcWall")],
+        )
+        for wall in walls:
+            self.assertEqual(len(wall.ContainedInStructure), 1)
+            self.assertEqual(wall.ContainedInStructure[0].RelatingStructure, storey)
+
+    def test_wall_tessellated_bounds_form_the_configured_perimeter(self) -> None:
+        expected_bounds = {
+            "South Wall 0": (0.0, 20.0, 0.0, 0.2, 0.2, 3.5),
+            "North Wall 0": (0.0, 20.0, 14.8, 15.0, 0.2, 3.5),
+            "West Wall 0": (0.0, 0.2, 0.2, 14.8, 0.2, 3.5),
+            "East Wall 0": (19.8, 20.0, 0.2, 14.8, 0.2, 3.5),
+        }
+
+        for wall in self.model.by_type("IfcWall"):
+            with self.subTest(wall=wall.Name):
+                bounds = tessellated_bounds(self.model, wall)
+                self.assertIsNotNone(wall.Representation)
+                for actual, expected in zip(bounds, expected_bounds[wall.Name], strict=True):
+                    self.assertAlmostEqual(actual, expected, places=6)
+                self.assertLessEqual(bounds[0], self.config["width_m"])
+                self.assertLessEqual(bounds[1], self.config["width_m"])
+                self.assertLessEqual(bounds[2], self.config["length_m"])
+                self.assertLessEqual(bounds[3], self.config["length_m"])
+
+    def test_multiple_floors_create_twelve_walls_at_expected_elevations(self) -> None:
+        config = copy.deepcopy(self.config)
+        config["floors"] = 3
+        model = create_ifc_model(config)
+        walls = model.by_type("IfcWall")
+
+        self.assertEqual(len(walls), 12)
+        for floor_index in range(3):
+            floor_walls = walls[floor_index * 4 : (floor_index + 1) * 4]
+            expected_bottom = floor_index * config["floor_to_floor_m"] + config["slab_thickness_m"]
+            expected_top = (floor_index + 1) * config["floor_to_floor_m"]
+            storey = model.by_type("IfcBuildingStorey")[floor_index]
+            for wall in floor_walls:
+                bounds = tessellated_bounds(model, wall)
+                self.assertAlmostEqual(bounds[4], expected_bottom, places=6)
+                self.assertAlmostEqual(bounds[5], expected_top, places=6)
+                self.assertEqual(wall.ContainedInStructure[0].RelatingStructure, storey)
 
     def test_aggregation_links_project_to_storey(self) -> None:
         project = self.model.by_type("IfcProject")[0]
@@ -146,6 +206,7 @@ class IfcModelTests(unittest.TestCase):
         self.assertEqual(reopened.schema, "IFC4")
         self.assertEqual(len(reopened.by_type("IfcBuildingStorey")), 1)
         self.assertEqual(len(reopened.by_type("IfcSlab")), 1)
+        self.assertEqual(len(reopened.by_type("IfcWall")), 4)
         minimum_x, maximum_x, minimum_y, maximum_y, minimum_z, maximum_z = tessellated_bounds(
             reopened, reopened.by_type("IfcSlab")[0]
         )

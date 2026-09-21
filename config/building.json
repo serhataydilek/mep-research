@@ -5,6 +5,7 @@
   "floor_to_floor_m": 3.5,
   "ceiling_height_m": 2.7,
   "slab_thickness_m": 0.2,
+  "wall_thickness_m": 0.2,
   "column_size_m": 0.4,
   "grid_spacing_x_m": 5.0,
   "grid_spacing_y_m": 5.0,
