@@ -63,6 +63,21 @@ Phase 2B separates three independent demand profiles from the four geometry scen
 6. Connection-direction semantics are correct.
 7. Prior phase regressions remain green.
 
+## Phase 3A — IFC-Derived Voxel Occupancy
+
+Phase 3A derives fixed obstacle and shaft-reservation bounds from tessellated IFC geometry. The 0.1 m centerline grid rasterizes IFC AABBs, which is exact for the current orthogonal benchmark but not arbitrary rotated or curved IFC. Service-specific envelope margins and vertical clearance define occupancy; room-side demand endpoints snap deterministically to free cells. No pathfinding is implemented.
+
+### Phase 3A gate
+
+1. All four scenario IFCs voxelize successfully.
+2. Twenty service-specific grids build deterministically.
+3. Fixed obstacles come from tessellated IFC geometry.
+4. Shaft volume is reserved.
+5. Service margins affect occupancy.
+6. Horizontal endpoints map to free cells within tolerance.
+7. Summary output is reproducible.
+8. Earlier phase regressions remain green.
+
 ## Phase 2C — Routing Feasibility Hardening
 
 Phase 2C applies nominal service-envelope plus clearance margins to routing centerlines and rejects plenum-infeasible cases before routing. Source anchors remain inside the shaft; deterministic room-side egress anchors define the horizontal routing boundary. A fixed breakout record links each source to its egress as benchmark metadata only, not an IFC opening or optimized route. Architecture remains unchanged and no pathfinding is implemented.
