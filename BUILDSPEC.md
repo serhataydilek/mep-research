@@ -168,3 +168,12 @@ Phase 5A defines C0, the benchmark-only Core Heterogeneous Constructability Cons
 ## Phase 5B — Gravity-Aware Drainage Routing
 
 Phase 5B adds a reusable drainage-only primitive using terminal-to-egress flow, no uphill neighbour, and the same C0 1% aggregate stair-step slope check. It preserves snapped XY anchors, permits controlled vertical candidates only within the existing two-voxel tolerance, and accepts arbitrary occupancy grids. Synthetic demand anchors permit this elevation flexibility; external IFC endpoints will need explicit metadata. This is not multi-system coordination.
+
+### Phase 5B gate
+
+1. All 48 current benchmark drainage requests are attempted.
+2. Every successful route is C0-gravity compliant with no uphill step.
+3. Endpoint XY and tolerance constraints are preserved.
+4. Base occupancy is respected and nested standalone demand routes are invariant.
+5. Gravity output and B0/B1/Phase 3C/Phase 4B/Phase 5A regressions are byte-identical.
+6. The complete suite is green.
