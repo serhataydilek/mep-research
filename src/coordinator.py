@@ -1,8 +1,9 @@
-"""Phase 6C1 P-CORE hybrid seed and endpoint-flexible routing primitives.
+"""P-CORE seed plus Phase 6C2A's single authoritative repair round.
 
-This module creates no repair rounds or iterative coordination. Vertical
-endpoint flexibility is for the current synthetic benchmark only; real IFC
-connection points need explicit flexibility metadata.
+The round globally reevaluates one complete trial and accepts it only for a
+strict global conflict-objective improvement; otherwise it returns the full
+pre-round case unchanged.  Iterative coordination is intentionally deferred
+to Phase 6C2B.  Vertical endpoint flexibility is benchmark-only.
 """
 from __future__ import annotations
 import argparse, json
@@ -64,15 +65,45 @@ def _c0_state(case,grids,constraints,definitions):
     return {'routing_complete':row['all_required_connections_routed'],'hard_conflict_free':not row['inter_system_hard_conflict_count'],'clearance_compliant':not row['inter_system_clearance_violation_count'],'drainage_gravity_compliant':row['all_drainage_routes_gravity_compliant'],'benchmark_hard_feasible_C0':row['benchmark_hard_feasible_C0'],'failure_reasons':row['failure_reasons']}
 def _metrics(routes): return (sum(r['grid_route_length_m'] for r in routes),sum(r['bend_count'] for r in routes),sum(r['vertical_travel_m'] for r in routes))
 
+def _conflict_objective(conflicts):
+    """Return the ordered, authoritative global conflict objective."""
+    return {'hard_conflicting_route_pair_count':conflicts['hard_conflicting_route_pair_count'],
+            'clearance_violating_route_pair_count':conflicts['clearance_violating_route_pair_count']}
+
+def _objective_key(objective):
+    return (objective['hard_conflicting_route_pair_count'],objective['clearance_violating_route_pair_count'])
+
+def _round_metrics(case, c0):
+    length,bends,vertical=_metrics(case['routes'])
+    return {'route_completion':c0['routing_complete'],'total_routed_length_m':length,
+            'total_bend_count':bends,'total_vertical_travel_m':vertical}
+
+def _base_grid_snapshot(grids): return {key:bytes(grid.cells) for key,grid in grids.items()}
+
 def attempt_coordination_round(current_case, case_request_map, base_grids, definitions, constraints, round_index):
     """Attempt exactly one globally accepted-or-rolled-back P-CORE repair round."""
-    original={'case_id':current_case['case_id'],'scenario_id':current_case['scenario_id'],'demand_profile_id':current_case['demand_profile_id'],'connection_count':current_case['connection_count'],'successful_route_count':current_case['successful_route_count'],'failed_route_count':current_case['failed_route_count'],'connection_success_rate':current_case['connection_success_rate'],'routes':[ensure_coordination_metadata(r) for r in current_case['routes']]}
+    base_before=_base_grid_snapshot(base_grids)
+    original=deepcopy(current_case)
     before=evaluate_route_result_conflicts(_case_result(original),base_grids,definitions,'P-CORE','current','summary',{})
     before_case=before['cases'][0]; diagnosis=diagnose_route_conflicts(_case_result(original),before)['cases'][0]
     candidates=sorted(diagnosis['selected_repair_candidates'],key=lambda r:(r['component_id'],r['selection_rank_in_component']))
-    state={'round_index':round_index,'hard_before':before_case['hard_conflicting_route_pair_count'],'clearance_before':before_case['clearance_violating_route_pair_count'],'candidate_count':len(candidates),'attempts':[],'c0_before':_c0_state(original,base_grids,constraints,definitions)}
-    if not state['hard_before'] and not state['clearance_before']: state.update({'trial_accepted':False,'round_status':'NO_CONFLICTS'}); return original,state
-    if not candidates: state.update({'trial_accepted':False,'round_status':'NO_REPAIR_CANDIDATES'}); return original,state
+    c0_before=_c0_state(original,base_grids,constraints,definitions)
+    objective_before=_conflict_objective(before_case)
+    state={'round_index':round_index,'round_attempted':True,'candidate_routes_selected':bool(candidates),
+           'trial_repair_produced':False,'trial_accepted':False,'round_rolled_back':False,
+           'round_status':None,'final_round_reason':None,'conflict_objective_before':objective_before,
+           'conflict_objective_after_trial':None,'final_conflict_objective':objective_before,
+           'selected_repair_candidate_count':len(candidates),'successful_rerouted_candidate_count':0,
+           'repair_attempt_count':0,'successful_repair_count':0,'failed_repair_count':0,'changed_path_count':0,
+           'attempts':[],'c0_before':c0_before,**{key+'_before':value for key,value in _round_metrics(original,c0_before).items()}}
+    if not any(_objective_key(objective_before)):
+        state.update({'round_status':'NO_CONFLICTS','final_round_reason':'NO_CONFLICTS'})
+        if base_before!=_base_grid_snapshot(base_grids): raise RuntimeError('P-CORE round must not mutate base grids')
+        return original,state
+    if not candidates:
+        state.update({'round_status':'NO_REPAIR_CANDIDATES','final_round_reason':'NO_REPAIR_CANDIDATES'})
+        if base_before!=_base_grid_snapshot(base_grids): raise RuntimeError('P-CORE round must not mutate base grids')
+        return original,state
     selected={(r['system'],r['connection_id']) for r in candidates}; trial={ (r['system'],r['connection_id']):ensure_coordination_metadata(r) for r in original['routes']}; frozen=[r for k,r in trial.items() if k not in selected]
     for candidate in candidates:
         key=(candidate['system'],candidate['connection_id']); old=trial[key]; _,start,end=case_request_map[(original['case_id'],*key)]; grid=clone_grid(base_grids[(original['scenario_id'],old['system'])]); block_prior_routes(grid,[r for r in frozen if r['system']!=old['system']],definitions[old['system']],definitions)
@@ -86,11 +117,50 @@ def attempt_coordination_round(current_case, case_request_map, base_grids, defin
         else:
             if old['system']=='drainage': _,_,_,_,_,_,s,e,res,gravity,metrics=chosen; new=standard_route_record(old,s,e,res,metrics,reference_start=old.get('reference_start'),reference_end=old.get('reference_end'),gravity=gravity,initial_source=old['initial_source']); new=ensure_coordination_metadata(new)
             else: _,_,_,_,_,_,s,e,res,metrics=chosen; new=standard_route_record(old,s,e,res,metrics,initial_source=old['initial_source']); new=ensure_coordination_metadata(new)
-            new['coordination_repair_attempt_count']=old.get('coordination_repair_attempt_count',0)+1; new['coordination_successful_repair_count']=old.get('coordination_successful_repair_count',0)+1; new['last_repair_round']=round_index; changed=new['path_cells']!=old['path_cells']; new['coordination_path_change_count']=old.get('coordination_path_change_count',0)+changed; success=True; reason=None
+            new['coordination_repair_attempt_count']=old.get('coordination_repair_attempt_count',0)+1; new['coordination_successful_repair_count']=old.get('coordination_successful_repair_count',0)+1; new['last_repair_round']=round_index; new['last_repair_failure_reason']=None; changed=new['path_cells']!=old['path_cells']; new['coordination_path_change_count']=old.get('coordination_path_change_count',0)+changed; success=True; reason=None
         trial[key]=new; frozen.append(new); state['attempts'].append({'system':key[0],'connection_id':key[1],'success':success,'failure_reason':reason,'path_changed':changed})
-    trial_case={**original,'routes':[trial[(r['system'],r['connection_id'])] for r in original['routes']]}; after=evaluate_route_result_conflicts(_case_result(trial_case),base_grids,definitions,'P-CORE','trial','summary',{})['cases'][0]; state.update({'hard_after_trial':after['hard_conflicting_route_pair_count'],'clearance_after_trial':after['clearance_violating_route_pair_count'],'repair_attempt_count':len(candidates),'successful_repair_count':sum(x['success'] for x in state['attempts']),'failed_repair_count':sum(not x['success'] for x in state['attempts']),'changed_path_count':sum(x['path_changed'] for x in state['attempts']),'c0_after_trial':_c0_state(trial_case,base_grids,constraints,definitions)})
-    state['trial_accepted']=(state['hard_after_trial'],state['clearance_after_trial']) < (state['hard_before'],state['clearance_before']); state['round_status']='ACCEPTED' if state['trial_accepted'] else 'NO_GLOBAL_CONFLICT_IMPROVEMENT'
-    return (trial_case if state['trial_accepted'] else original),state
+    trial_case={**original,'routes':[trial[(r['system'],r['connection_id'])] for r in original['routes']]}
+    after=evaluate_route_result_conflicts(_case_result(trial_case),base_grids,definitions,'P-CORE','trial','summary',{})['cases'][0]
+    c0_after_trial=_c0_state(trial_case,base_grids,constraints,definitions); objective_after_trial=_conflict_objective(after)
+    state.update({'trial_repair_produced':True,'conflict_objective_after_trial':objective_after_trial,
+                  'repair_attempt_count':len(candidates),'successful_repair_count':sum(x['success'] for x in state['attempts']),
+                  'successful_rerouted_candidate_count':sum(x['success'] for x in state['attempts']),
+                  'failed_repair_count':sum(not x['success'] for x in state['attempts']),
+                  'changed_path_count':sum(x['path_changed'] for x in state['attempts']),'c0_after_trial':c0_after_trial,
+                  **{key+'_after_trial':value for key,value in _round_metrics(trial_case,c0_after_trial).items()}})
+    state['trial_accepted']=_objective_key(objective_after_trial) < _objective_key(objective_before)
+    final_case=trial_case if state['trial_accepted'] else original
+    c0_final=c0_after_trial if state['trial_accepted'] else c0_before
+    state.update({'round_rolled_back':not state['trial_accepted'],
+                  'round_status':'ACCEPTED' if state['trial_accepted'] else 'ROLLED_BACK',
+                  'final_round_reason':'ACCEPTED_STRICT_GLOBAL_CONFLICT_IMPROVEMENT' if state['trial_accepted'] else 'ROLLED_BACK_NO_STRICT_GLOBAL_CONFLICT_IMPROVEMENT',
+                  'final_conflict_objective':objective_after_trial if state['trial_accepted'] else objective_before,
+                  'c0_final':c0_final,**{key+'_after':value for key,value in _round_metrics(final_case,c0_final).items()}})
+    if base_before!=_base_grid_snapshot(base_grids): raise RuntimeError('P-CORE round must not mutate base grids')
+    return final_case,state
+
+def run_pcore_single_round_benchmark(scenarios:Path,demands:Path,systems:Path,constraints:Path,coordinator_config:Path):
+    """Run exactly one P-CORE 6C2A round for each deterministic benchmark case."""
+    config=load_coordinator_config(coordinator_config); grids=build_occupancy_grids(scenarios,systems)
+    base_before=_base_grid_snapshot(grids); definitions=load_service_definitions(systems); c0_constraints=load_constructability_config(constraints)
+    seed=build_pcore_initial_layout(scenarios,demands,systems,constraints,grids=grids); anchors=benchmark_anchor_map(scenarios,demands,systems)
+    cases=[]; states=[]
+    for case in seed['cases']:
+        final_case,state=attempt_coordination_round(case,anchors,grids,definitions,c0_constraints,1)
+        cases.append(final_case); states.append(state)
+    if base_before!=_base_grid_snapshot(grids): raise RuntimeError('P-CORE benchmark must not mutate base grids')
+    def total(key, suffix=''):
+        return sum(state.get(key+suffix,0) or 0 for state in states)
+    summary={'cases_evaluated':len(cases),'completed_routes':sum(case['successful_route_count'] for case in cases),
+             'initial_global_conflict_objective':{'hard_conflicting_route_pair_count':sum(s['conflict_objective_before']['hard_conflicting_route_pair_count'] for s in states),'clearance_violating_route_pair_count':sum(s['conflict_objective_before']['clearance_violating_route_pair_count'] for s in states)},
+             'trial_global_conflict_objective':{'hard_conflicting_route_pair_count':sum((s['conflict_objective_after_trial'] or s['conflict_objective_before'])['hard_conflicting_route_pair_count'] for s in states),'clearance_violating_route_pair_count':sum((s['conflict_objective_after_trial'] or s['conflict_objective_before'])['clearance_violating_route_pair_count'] for s in states)},
+             'final_global_conflict_objective':{'hard_conflicting_route_pair_count':sum(s['final_conflict_objective']['hard_conflicting_route_pair_count'] for s in states),'clearance_violating_route_pair_count':sum(s['final_conflict_objective']['clearance_violating_route_pair_count'] for s in states)},
+             'accepted_rounds':sum(s['trial_accepted'] for s in states),'rolled_back_rounds':sum(s['round_rolled_back'] for s in states),
+             'selected_repair_candidates':total('selected_repair_candidate_count'),'successful_reroutes':total('successful_rerouted_candidate_count'),
+             'route_length_delta_m':sum(s['total_routed_length_m_after']-s['total_routed_length_m_before'] for s in states),
+             'bend_count_delta':sum(s['total_bend_count_after']-s['total_bend_count_before'] for s in states),
+             'vertical_travel_delta_m':sum(s['total_vertical_travel_m_after']-s['total_vertical_travel_m_before'] for s in states)}
+    return {'method':{'id':'P-CORE-6C2A','name':'P-CORE Single-Round Repair'},'coordinator_config':config,'cases':cases,'round_results':states,'global_summary':summary}
 
 def build_pcore_initial_layout(scenarios:Path,demands:Path,systems:Path,constraints:Path,*,grids=None):
     grids=grids if grids is not None else build_occupancy_grids(scenarios,systems)
