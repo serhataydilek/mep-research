@@ -201,3 +201,7 @@ P-CORE-SEED retains B0 geometry for non-drainage connections and replaces draina
 ## Phase 6C2A — Single Repair Round and Global Rollback
 
 P-CORE 6C2A is a single-round repair primitive. It diagnoses current geometry, removes current candidates from frozen geometry, performs discipline-specific one-pass repairs, and authoritatively reevaluates the complete trial. A trial is accepted only for strict global conflict-objective improvement; otherwise the complete pre-round routing state is rolled back. The result records candidate selection, trial production, acceptance or rollback reason, objectives, completion, and route metrics before, after trial, and after the final decision. Iterative multi-round optimization, convergence, and stopping policy are intentionally deferred to Phase 6C2B.
+
+## Phase 6C2B — Deterministic Multi-Round P-CORE Coordination
+
+P-CORE 6C2B is a thin controller over the 6C2A atomic round. Each round starts from the latest accepted complete geometry. Its authoritative global objective must strictly decrease at every accepted transition; a rejected trial is fully rolled back and ends the run. The accepted objective history excludes rejected trials. The configured deterministic cap is six rounds (`coordinator.json`); runs also stop at zero conflicts, no selected candidates, no successful reroutes, or no strict global improvement. Base grids and experiment inputs remain immutable. Phase 6C3 comparison and analysis remain deferred.

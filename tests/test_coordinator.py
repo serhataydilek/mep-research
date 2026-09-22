@@ -1,9 +1,10 @@
 from pathlib import Path
 import unittest
+from copy import deepcopy
 from types import SimpleNamespace
 from unittest.mock import patch
 import src.coordinator as coordinator
-from src.coordinator import attempt_coordination_round, build_pcore_initial_layout, load_coordinator_config, route_non_drainage_with_vertical_candidates, run_pcore_seed_benchmark
+from src.coordinator import attempt_coordination_round, build_pcore_initial_layout, coordinate_pcore_multi_round, load_coordinator_config, route_non_drainage_with_vertical_candidates, run_pcore_seed_benchmark
 from src.demand import generate_benchmark_cases
 from src.routing import AStarResult, route_metrics
 from src.voxel import build_occupancy_grids
@@ -70,3 +71,57 @@ class CoordinatorTests(unittest.TestCase):
   second,state_two=attempt_coordination_round(seed['cases'][0],anchors,grids,definitions,c0_constraints,1)
   self.assertEqual(before,{key:bytes(grid.cells) for key,grid in grids.items()})
   self.assertEqual((state_one['selected_repair_candidate_count'],state_one['round_status'],state_one['final_conflict_objective'],first['routes']),(state_two['selected_repair_candidate_count'],state_two['round_status'],state_two['final_conflict_objective'],second['routes']))
+
+ def _multi_stub(self, states, *, initial=(3,3), max_rounds=6):
+  case={'case_id':'c1','scenario_id':'s1','demand_profile_id':'d1','connection_count':1,'successful_route_count':1,'failed_route_count':0,'connection_success_rate':1.0,'routes':[{'system':'hvac','connection_id':'r1','path_found':True,'path_cells':[[0,0,0]],'grid_route_length_m':1.0,'bend_count':0,'vertical_travel_m':0.0}]}
+  grid=SimpleNamespace(cells=bytearray(b'base')); seen=[]; iterator=iter(states)
+  def evaluate(*_args,**_kwargs): return {'cases':[{'hard_conflicting_route_pair_count':initial[0],'clearance_violating_route_pair_count':initial[1]}]}
+  c0={'routing_complete':True,'hard_conflict_free':False,'clearance_compliant':False,'drainage_gravity_compliant':True,'benchmark_hard_feasible_C0':False,'failure_reasons':[]}
+  def attempt(current,*_args):
+   seen.append(deepcopy(current)); entry=next(iterator); final=deepcopy(current); final['routes'][0]['path_cells']=[[entry.get('geometry',len(seen)),0,0]]
+   return final,entry
+  with patch.object(coordinator,'evaluate_route_result_conflicts',side_effect=evaluate),patch.object(coordinator,'_c0_state',return_value=c0),patch.object(coordinator,'attempt_coordination_round',side_effect=attempt):
+   final,result=coordinate_pcore_multi_round(case,{}, {('s1','hvac'):grid},{}, {},max_rounds)
+  return case,final,result,seen,grid
+
+ def _round_state(self, objective, *, accepted=True, candidates=True, successful=1, rolled_back=False):
+  return {'trial_accepted':accepted,'round_rolled_back':rolled_back,'candidate_routes_selected':candidates,'successful_rerouted_candidate_count':successful,'final_conflict_objective':{'hard_conflicting_route_pair_count':objective[0],'clearance_violating_route_pair_count':objective[1]},'selected_repair_candidate_count':int(candidates),'selected_candidate_identities':[],'conflict_objective_before':None,'conflict_objective_after_trial':None,'round_status':'ACCEPTED' if accepted else 'ROLLED_BACK','final_round_reason':'TEST'}
+
+ def test_multi_round_commits_multiple_strict_improvements_and_history(self):
+  first=self._round_state((2,2))
+  first['geometry']=1; second=self._round_state((1,1)); second['geometry']=2; rejected=self._round_state((1,1),accepted=False,rolled_back=True); rejected['geometry']=3
+  _case,final,result,seen,grid=self._multi_stub([first,second,rejected])
+  summary=result['summary']; self.assertEqual(3,summary['rounds_attempted']); self.assertEqual(2,summary['rounds_accepted']); self.assertEqual('NO_STRICT_GLOBAL_IMPROVEMENT',summary['final_stop_reason'])
+  self.assertEqual([{'hard_conflicting_route_pair_count':3,'clearance_violating_route_pair_count':3},{'hard_conflicting_route_pair_count':2,'clearance_violating_route_pair_count':2},{'hard_conflicting_route_pair_count':1,'clearance_violating_route_pair_count':1}],summary['objective_history'])
+  self.assertEqual([[2,0,0]],final['routes'][0]['path_cells']); self.assertEqual([[1,0,0]],seen[1]['routes'][0]['path_cells']); self.assertEqual(bytearray(b'base'),grid.cells)
+
+ def test_multi_round_equal_objective_rolls_back_and_stops(self):
+  rejected=self._round_state((3,3),accepted=False,rolled_back=True)
+  case,final,result,seen,_grid=self._multi_stub([rejected])
+  self.assertEqual('NO_STRICT_GLOBAL_IMPROVEMENT',result['summary']['final_stop_reason']); self.assertEqual(case,final); self.assertEqual(1,len(seen)); self.assertEqual(1,result['summary']['rounds_rolled_back'])
+
+ def test_multi_round_stops_for_no_candidates_or_successful_reroutes(self):
+  no_candidates=self._round_state((3,3),accepted=False,candidates=False,successful=0,rolled_back=False)
+  _case,_final,result,_seen,_grid=self._multi_stub([no_candidates]); self.assertEqual('NO_SELECTED_CANDIDATES',result['summary']['final_stop_reason'])
+  no_reroutes=self._round_state((3,3),accepted=False,successful=0,rolled_back=True)
+  _case,_final,result,_seen,_grid=self._multi_stub([no_reroutes]); self.assertEqual('NO_SUCCESSFUL_REROUTES',result['summary']['final_stop_reason'])
+
+ def test_multi_round_honors_cap_and_zero_conflict_termination(self):
+  first=self._round_state((2,2)); first['geometry']=1; second=self._round_state((1,1)); second['geometry']=2
+  _case,_final,result,seen,_grid=self._multi_stub([first,second],max_rounds=2)
+  self.assertEqual('MAX_REPAIR_ROUNDS_REACHED',result['summary']['final_stop_reason']); self.assertEqual(2,len(seen))
+  _case,_final,result,seen,_grid=self._multi_stub([],initial=(0,0))
+  self.assertEqual('ZERO_AUTHORITATIVE_CONFLICTS',result['summary']['final_stop_reason']); self.assertEqual([],seen)
+
+ def test_multi_round_stub_history_is_deterministic(self):
+  states=[]
+  for objective,geometry in [((2,2),1),((1,1),2),((1,1),3)]:
+   row=self._round_state(objective,accepted=geometry<3,rolled_back=geometry==3); row['geometry']=geometry; states.append(row)
+  _case,first,first_result,_seen,_grid=self._multi_stub(states)
+  _case,second,second_result,_seen,_grid=self._multi_stub(states)
+  self.assertEqual((first,first_result['summary'],first_result['rounds']),(second,second_result['summary'],second_result['rounds']))
+
+ def test_multi_round_real_case_preserves_drainage_and_completion(self):
+  grids=build_occupancy_grids(SCENARIOS,SYSTEMS); before={key:bytes(grid.cells) for key,grid in grids.items()}; seed=build_pcore_initial_layout(SCENARIOS,DEMANDS,SYSTEMS,CONSTRAINTS,grids=grids)
+  final,result=coordinate_pcore_multi_round(seed['cases'][0],coordinator.benchmark_anchor_map(SCENARIOS,DEMANDS,SYSTEMS),grids,coordinator.load_service_definitions(SYSTEMS),coordinator.load_constructability_config(CONSTRAINTS),2)
+  self.assertTrue(result['c0_final']['routing_complete']); self.assertTrue(result['c0_final']['drainage_gravity_compliant']); self.assertEqual(before,{key:bytes(grid.cells) for key,grid in grids.items()}); self.assertEqual(seed['cases'][0]['connection_count'],len(final['routes']))

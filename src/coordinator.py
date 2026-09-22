@@ -1,9 +1,10 @@
-"""P-CORE seed plus Phase 6C2A's single authoritative repair round.
+"""P-CORE seed plus deterministic Phase 6C2A/6C2B repair coordination.
 
 The round globally reevaluates one complete trial and accepts it only for a
 strict global conflict-objective improvement; otherwise it returns the full
-pre-round case unchanged.  Iterative coordination is intentionally deferred
-to Phase 6C2B.  Vertical endpoint flexibility is benchmark-only.
+pre-round case unchanged.  Phase 6C2B repeatedly applies that same atomic
+operation to accepted geometry only.  Vertical endpoint flexibility is
+benchmark-only.
 """
 from __future__ import annotations
 import argparse, json
@@ -94,6 +95,7 @@ def attempt_coordination_round(current_case, case_request_map, base_grids, defin
            'round_status':None,'final_round_reason':None,'conflict_objective_before':objective_before,
            'conflict_objective_after_trial':None,'final_conflict_objective':objective_before,
            'selected_repair_candidate_count':len(candidates),'successful_rerouted_candidate_count':0,
+           'selected_candidate_identities':[{'system':r['system'],'connection_id':r['connection_id']} for r in candidates],
            'repair_attempt_count':0,'successful_repair_count':0,'failed_repair_count':0,'changed_path_count':0,
            'attempts':[],'c0_before':c0_before,**{key+'_before':value for key,value in _round_metrics(original,c0_before).items()}}
     if not any(_objective_key(objective_before)):
@@ -161,6 +163,53 @@ def run_pcore_single_round_benchmark(scenarios:Path,demands:Path,systems:Path,co
              'bend_count_delta':sum(s['total_bend_count_after']-s['total_bend_count_before'] for s in states),
              'vertical_travel_delta_m':sum(s['total_vertical_travel_m_after']-s['total_vertical_travel_m_before'] for s in states)}
     return {'method':{'id':'P-CORE-6C2A','name':'P-CORE Single-Round Repair'},'coordinator_config':config,'cases':cases,'round_results':states,'global_summary':summary}
+
+def coordinate_pcore_multi_round(current_case, case_request_map, base_grids, definitions, constraints, max_rounds):
+    """Apply 6C2A to accepted geometry until a deterministic stop condition."""
+    if not isinstance(max_rounds,int) or isinstance(max_rounds,bool) or max_rounds<1: raise ValueError('max_rounds must be positive')
+    base_before=_base_grid_snapshot(base_grids); accepted_case=deepcopy(current_case)
+    initial_conflicts=evaluate_route_result_conflicts(_case_result(accepted_case),base_grids,definitions,'P-CORE','initial','summary',{})['cases'][0]
+    c0_initial=_c0_state(accepted_case,base_grids,constraints,definitions); initial_objective=_conflict_objective(initial_conflicts)
+    initial_metrics=_round_metrics(accepted_case,c0_initial); objective_history=[initial_objective]; rounds=[]; stop_reason=None
+    if not any(_objective_key(initial_objective)):
+        stop_reason='ZERO_AUTHORITATIVE_CONFLICTS'
+    else:
+        for round_index in range(1,max_rounds+1):
+            final_case,round_state=attempt_coordination_round(accepted_case,case_request_map,base_grids,definitions,constraints,round_index)
+            rounds.append(round_state)
+            if round_state['trial_accepted']:
+                if not _objective_key(round_state['final_conflict_objective']) < _objective_key(objective_history[-1]): raise RuntimeError('P-CORE accepted objective must strictly decrease')
+                accepted_case=final_case; objective_history.append(round_state['final_conflict_objective'])
+                if not any(_objective_key(round_state['final_conflict_objective'])):
+                    stop_reason='ZERO_AUTHORITATIVE_CONFLICTS'; break
+                continue
+            if not round_state['candidate_routes_selected']:
+                stop_reason='NO_SELECTED_CANDIDATES'
+            elif not round_state['successful_rerouted_candidate_count']:
+                stop_reason='NO_SUCCESSFUL_REROUTES'
+            else:
+                stop_reason='NO_STRICT_GLOBAL_IMPROVEMENT'
+            break
+        if stop_reason is None: stop_reason='MAX_REPAIR_ROUNDS_REACHED'
+    c0_final=_c0_state(accepted_case,base_grids,constraints,definitions); final_metrics=_round_metrics(accepted_case,c0_final)
+    if base_before!=_base_grid_snapshot(base_grids): raise RuntimeError('P-CORE multi-round coordination must not mutate base grids')
+    summary={'requested_max_rounds':max_rounds,'rounds_attempted':len(rounds),'rounds_accepted':sum(row['trial_accepted'] for row in rounds),'rounds_rolled_back':sum(row['round_rolled_back'] for row in rounds),'initial_global_conflict_objective':initial_objective,'final_global_conflict_objective':objective_history[-1],'objective_history':objective_history,'initial_route_completion':initial_metrics['route_completion'],'final_route_completion':final_metrics['route_completion'],'initial_total_routed_length_m':initial_metrics['total_routed_length_m'],'final_total_routed_length_m':final_metrics['total_routed_length_m'],'initial_total_bend_count':initial_metrics['total_bend_count'],'final_total_bend_count':final_metrics['total_bend_count'],'initial_total_vertical_travel_m':initial_metrics['total_vertical_travel_m'],'final_total_vertical_travel_m':final_metrics['total_vertical_travel_m'],'final_stop_reason':stop_reason}
+    return accepted_case,{'method':{'id':'P-CORE-6C2B','name':'P-CORE Deterministic Multi-Round Coordination'},'rounds':rounds,'summary':summary,'c0_initial':c0_initial,'c0_final':c0_final}
+
+def run_pcore_multi_round_benchmark(scenarios:Path,demands:Path,systems:Path,constraints:Path,coordinator_config:Path,*,max_rounds=None):
+    """Run 6C2B over the existing deterministic scenario-demand cross-product."""
+    config=load_coordinator_config(coordinator_config); max_rounds=config['max_repair_rounds'] if max_rounds is None else max_rounds
+    grids=build_occupancy_grids(scenarios,systems); base_before=_base_grid_snapshot(grids); definitions=load_service_definitions(systems); c0_constraints=load_constructability_config(constraints)
+    seed=build_pcore_initial_layout(scenarios,demands,systems,constraints,grids=grids); anchors=benchmark_anchor_map(scenarios,demands,systems)
+    cases=[]; results=[]
+    for case in seed['cases']:
+        final_case,result=coordinate_pcore_multi_round(case,anchors,grids,definitions,c0_constraints,max_rounds)
+        cases.append(final_case); results.append(result)
+    if base_before!=_base_grid_snapshot(grids): raise RuntimeError('P-CORE multi-round benchmark must not mutate base grids')
+    def objective_total(key): return {'hard_conflicting_route_pair_count':sum(result['summary'][key]['hard_conflicting_route_pair_count'] for result in results),'clearance_violating_route_pair_count':sum(result['summary'][key]['clearance_violating_route_pair_count'] for result in results)}
+    summaries=[result['summary'] for result in results]
+    summary={'cases_evaluated':len(cases),'completed_routes':sum(case['successful_route_count'] for case in cases),'requested_max_rounds':max_rounds,'initial_global_conflict_objective':objective_total('initial_global_conflict_objective'),'final_global_conflict_objective':objective_total('final_global_conflict_objective'),'accepted_rounds':sum(row['rounds_accepted'] for row in summaries),'rolled_back_rounds':sum(row['rounds_rolled_back'] for row in summaries),'average_attempted_rounds_per_case':sum(row['rounds_attempted'] for row in summaries)/len(summaries) if summaries else 0.0,'maximum_attempted_rounds':max((row['rounds_attempted'] for row in summaries),default=0),'stop_reason_counts':{reason:sum(row['final_stop_reason']==reason for row in summaries) for reason in sorted({row['final_stop_reason'] for row in summaries})},'selected_repair_candidates':sum(round_state['selected_repair_candidate_count'] for result in results for round_state in result['rounds']),'successful_reroutes':sum(round_state['successful_rerouted_candidate_count'] for result in results for round_state in result['rounds']),'route_length_delta_m':sum(row['final_total_routed_length_m']-row['initial_total_routed_length_m'] for row in summaries),'bend_count_delta':sum(row['final_total_bend_count']-row['initial_total_bend_count'] for row in summaries),'vertical_travel_delta_m':sum(row['final_total_vertical_travel_m']-row['initial_total_vertical_travel_m'] for row in summaries)}
+    return {'method':{'id':'P-CORE-6C2B','name':'P-CORE Deterministic Multi-Round Coordination'},'coordinator_config':config,'cases':cases,'coordination_results':results,'global_summary':summary}
 
 def build_pcore_initial_layout(scenarios:Path,demands:Path,systems:Path,constraints:Path,*,grids=None):
     grids=grids if grids is not None else build_occupancy_grids(scenarios,systems)
