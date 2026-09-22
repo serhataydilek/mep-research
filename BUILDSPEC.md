@@ -193,3 +193,7 @@ Phase 6A builds a diagnostic graph from immutable routed connections and the sha
 ## Phase 6B — B2 Conflict-Aware Single-Pass Selective Repair
 
 B2 starts from B0 and uses the Phase 6A edge-cover candidates once. Non-candidates are frozen; all candidates are initially absent, then reinserted in the recorded component and selection order using ordinary A* and fixed B0 endpoints. Different-system frozen geometry uses the existing B1 reservation semantics. Failed attempts retain their original B0 geometry. B2 neither uses gravity routing nor discipline/constructability priority, and it does not iterate. Final geometry is evaluated with the shared evaluator; C0 is post-hoc reporting only.
+
+## Phase 6C1 — P-CORE Hybrid Seed and Routing Primitives
+
+P-CORE-SEED retains B0 geometry for non-drainage connections and replaces drainage with the existing Phase 5B gravity-aware routes. It standardizes those routes for the shared evaluator and C0 verifier, and provides a deterministic vertical-only endpoint-pair A* primitive for later coordination. This phase evaluates only the initial seed; it performs no repair rounds, diagnosis loop, or rollback.
