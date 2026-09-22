@@ -197,3 +197,7 @@ B2 starts from B0 and uses the Phase 6A edge-cover candidates once. Non-candidat
 ## Phase 6C1 — P-CORE Hybrid Seed and Routing Primitives
 
 P-CORE-SEED retains B0 geometry for non-drainage connections and replaces drainage with the existing Phase 5B gravity-aware routes. It standardizes those routes for the shared evaluator and C0 verifier, and provides a deterministic vertical-only endpoint-pair A* primitive for later coordination. This phase evaluates only the initial seed; it performs no repair rounds, diagnosis loop, or rollback.
+
+## Phase 6C2A — Single Repair Round and Global Rollback
+
+The reusable P-CORE round primitive diagnoses current geometry, removes current candidates from frozen geometry, performs discipline-specific one-pass repairs, evaluates the complete trial, and accepts it only for strict global conflict improvement. Otherwise the full pre-round case, including metadata, is returned unchanged. No iteration is performed here.
