@@ -177,3 +177,15 @@ Phase 5B adds a reusable drainage-only primitive using terminal-to-egress flow, 
 4. Base occupancy is respected and nested standalone demand routes are invariant.
 5. Gravity output and B0/B1/Phase 3C/Phase 4B/Phase 5A regressions are byte-identical.
 6. The complete suite is green.
+
+## Phase 6A — Conflict Diagnosis and Repair Candidate Selection
+
+Phase 6A builds a diagnostic graph from immutable routed connections and the shared Phase 3C inter-system evaluator. Nodes are successful routed connections; edges are hard-envelope or clearance-only violations. It reports route conflict burdens, deterministic connected local conflict components, and a deterministic per-component greedy candidate edge cover. The cover is not an exact minimum vertex cover: candidates only ensure every current violation edge is incident to a candidate. No routes, occupancy, or engineering discipline priorities are changed. `SYSTEM_ORDER` is only the final deterministic tie-break, not a repair priority.
+
+### Phase 6A gate
+
+1. Existing conflict geometry remains the sole geometry truth source.
+2. Components, burdens, and candidate selection are deterministic.
+3. The selected candidates cover every current violation edge.
+4. Candidate selection does not modify routes or occupancy.
+5. No constructability or discipline priority is introduced.
