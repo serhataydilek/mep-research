@@ -189,3 +189,7 @@ Phase 6A builds a diagnostic graph from immutable routed connections and the sha
 3. The selected candidates cover every current violation edge.
 4. Candidate selection does not modify routes or occupancy.
 5. No constructability or discipline priority is introduced.
+
+## Phase 6B — B2 Conflict-Aware Single-Pass Selective Repair
+
+B2 starts from B0 and uses the Phase 6A edge-cover candidates once. Non-candidates are frozen; all candidates are initially absent, then reinserted in the recorded component and selection order using ordinary A* and fixed B0 endpoints. Different-system frozen geometry uses the existing B1 reservation semantics. Failed attempts retain their original B0 geometry. B2 neither uses gravity routing nor discipline/constructability priority, and it does not iterate. Final geometry is evaluated with the shared evaluator; C0 is post-hoc reporting only.

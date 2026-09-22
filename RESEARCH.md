@@ -50,7 +50,7 @@ The following future comparison is intended for experimental evaluation:
 | --- | --- |
 | B0 | Independent routing: systems routed independently. |
 | B1 | Fixed-priority sequential routing: systems routed in a predefined physical-priority order. |
-| B2 | Conflict-aware coordination baseline: routing decisions account for conflicts between systems. |
+| B2 | Implemented conflict-aware single-pass selective-repair baseline using Phase 6A candidates and original-route fallback. |
 | P | Proposed generative constructability-aware coordination: heterogeneous discipline constraints, multiple candidate layouts, verification, diagnosis, and selective repair/rerouting. |
 
 These are implemented deterministic baselines for B0 and B1; C0 now operationalizes a controlled benchmark hard-feasibility definition. None of these results claim real-world code compliance or proposed-method superiority.
