@@ -17,6 +17,6 @@ class CoordinatorTests(unittest.TestCase):
   self.assertEqual(before,{k:bytes(v.cells) for k,v in grids.items()})
   for route in [r for c in seed['cases'] for r in c['routes']]: self.assertEqual('GRAVITY_AWARE_DRAINAGE' if route['system']=='drainage' else 'B0',route['initial_source'])
  def test_non_drainage_candidate_router(self):
-  grids=build_occupancy_grids(SCENARIOS,SYSTEMS); case=next(generate_benchmark_cases(SCENARIOS,DEMANDS,SYSTEMS)); request=next(r for r in case['connection_requests'] if r['system']=='hvac'); anchors={a['anchor_id']:a for a in [*case['egress_anchors'],*case['terminal_anchors']]}
+  grids=build_occupancy_grids(SCENARIOS,SYSTEMS); case=generate_benchmark_cases(SCENARIOS,DEMANDS,SYSTEMS)[0]; request=next(r for r in case['connection_requests'] if r['system']=='hvac'); anchors={a['anchor_id']:a for a in [*case['egress_anchors'],*case['terminal_anchors']]}
   selected,reason=route_non_drainage_with_vertical_candidates(grids[(case['scenario_id'],'hvac')],anchors[request['start_anchor']],anchors[request['end_anchor']])
   self.assertIsNone(reason); self.assertIsNotNone(selected)
