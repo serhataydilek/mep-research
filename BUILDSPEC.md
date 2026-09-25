@@ -205,3 +205,7 @@ P-CORE 6C2A is a single-round repair primitive. It diagnoses current geometry, r
 ## Phase 6C2B — Deterministic Multi-Round P-CORE Coordination
 
 P-CORE 6C2B is a thin controller over the 6C2A atomic round. Each round starts from the latest accepted complete geometry. Its authoritative global objective must strictly decrease at every accepted transition; a rejected trial is fully rolled back and ends the run. The accepted objective history excludes rejected trials. The configured deterministic cap is six rounds (`coordinator.json`); runs also stop at zero conflicts, no selected candidates, no successful reroutes, or no strict global improvement. Base grids and experiment inputs remain immutable. Phase 6C3 comparison and analysis remain deferred.
+
+## Phase 6C3A — Deterministic Multi-Method Comparison Harness
+
+Phase 6C3A measures existing B0, B1, B2, P-CORE-SEED, and P-CORE-6C2B results without changing their routing algorithms or inputs. It reports failure-aware routing, shared authoritative conflict metrics, successful-route geometry, and post-hoc C0 constructability counts for the fixed 12-case benchmark. Geometry and conflict measurements are also reported on the per-case intersection of connections successful in all five methods, so unlike successful populations are never silently compared. Serialization is sorted and deterministic; immutable base occupancy and scenario, demand, and configuration inputs are checked. The harness calculates no winner, ranking, weighted score, or composite objective.
