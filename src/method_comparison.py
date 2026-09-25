@@ -146,7 +146,9 @@ def _pcore_diagnostics(result: dict[str, Any]) -> dict[str, Any]:
     }
 
 
-def compare_methods(scenarios: Path, demands: Path, systems: Path, constraints: Path, coordinator: Path) -> dict[str, Any]:
+def compare_methods(
+    scenarios: Path, demands: Path, systems: Path, constraints: Path, coordinator: Path, *, include_analysis_source: bool = False,
+) -> dict[str, Any]:
     """Run all existing methods and evaluate them with common deterministic rules."""
     input_paths = _input_paths(scenarios, demands, systems, constraints, coordinator)
     inputs_before = _input_snapshot(input_paths)
@@ -185,7 +187,7 @@ def compare_methods(scenarios: Path, demands: Path, systems: Path, constraints: 
         name: verify_route_result(_with_expected_requests(results[name], expected), grids, c0_constraints, definitions)
         for name in METHOD_ORDER
     }
-    return {
+    comparison = {
         "comparison": {
             "phase": "6C3A",
             "method_order": list(METHOD_ORDER),
@@ -199,6 +201,12 @@ def compare_methods(scenarios: Path, demands: Path, systems: Path, constraints: 
         "pcore_coordination_diagnostics": _pcore_diagnostics(results["P-CORE-6C2B"]),
         "integrity_checks": {"base_occupancy_grids_unchanged": True, "scenario_demand_and_config_inputs_unchanged": True},
     }
+    if include_analysis_source:
+        comparison["_analysis_source"] = {
+            "benchmark_cases": benchmark_cases, "results": results, "conflicts": conflicts,
+            "grids": grids, "definitions": definitions,
+        }
+    return comparison
 
 
 def write_method_comparison(scenarios: Path, demands: Path, systems: Path, constraints: Path, coordinator: Path, output: Path) -> dict[str, Any]:

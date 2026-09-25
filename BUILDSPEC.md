@@ -209,3 +209,7 @@ P-CORE 6C2B is a thin controller over the 6C2A atomic round. Each round starts f
 ## Phase 6C3A — Deterministic Multi-Method Comparison Harness
 
 Phase 6C3A measures existing B0, B1, B2, P-CORE-SEED, and P-CORE-6C2B results without changing their routing algorithms or inputs. It reports failure-aware routing, shared authoritative conflict metrics, successful-route geometry, and post-hoc C0 constructability counts for the fixed 12-case benchmark. Geometry and conflict measurements are also reported on the per-case intersection of connections successful in all five methods, so unlike successful populations are never silently compared. Serialization is sorted and deterministic; immutable base occupancy and scenario, demand, and configuration inputs are checked. The harness calculates no winner, ranking, weighted score, or composite objective.
+
+## Phase 6C3B — Stratified Research Analysis
+
+Phase 6C3B derives deterministic evidence from the 6C3A comparison without rerouting or changing benchmark semantics. It stratifies raw routing, conflict, and successful-route geometry by scenario, demand profile, and system; preserves coverage and pair-evaluation denominators; and records P-CORE seed-to-final case decomposition. The all-method common-success population is also stratified, and stable case evidence remains available for all 12 cases. It calculates no ranking, composite score, recommendation, or Pareto/multi-objective interpretation; that interpretation is deferred to the next phase.
