@@ -5,5 +5,7 @@ out/*
 !out/.gitkeep
 experiments/results/*
 !experiments/results/.gitkeep
+validation/results/*
+!validation/results/.gitkeep
 .env
 .DS_Store
