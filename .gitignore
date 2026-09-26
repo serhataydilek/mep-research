@@ -7,5 +7,6 @@ experiments/results/*
 !experiments/results/.gitkeep
 validation/results/*
 !validation/results/.gitkeep
+validation/ifc_samples/external/
 .env
 .DS_Store

@@ -86,6 +86,18 @@ class IfcValidationTests(unittest.TestCase):
         self.assertEqual(report["storeys"][0]["entity_counts"]["IfcSpace"], 1)
         self.assertEqual(report["pipeline_stages"]["storey_mapping"]["status"], "PASS")
 
+    def test_explicit_local_placement_rotation_is_reported(self) -> None:
+        model = ifcopenshell.open(str(self.path))
+        placement = model.by_type("IfcWall")[0].ObjectPlacement.RelativePlacement
+        placement.RefDirection = model.createIfcDirection((0.0, 1.0, 0.0))
+        rotated_path = self.directory / "rotated.ifc"
+        model.write(str(rotated_path))
+
+        spatial = inspect_ifc(rotated_path)["spatial_summary"]
+
+        self.assertTrue(spatial["explicit_local_rotations_detected"])
+        self.assertGreaterEqual(spatial["explicitly_rotated_local_placement_count"], 1)
+
     def test_entity_without_representation_is_reported_without_crashing(self) -> None:
         model = ifcopenshell.open(str(self.path))
         model.by_type("IfcColumn")[0].Representation = None
@@ -131,6 +143,7 @@ class IfcValidationTests(unittest.TestCase):
         sample = report["samples"][0]
 
         self.assertEqual(sample["metadata"]["sample_kind"], "CONTROL_GENERATED_IFC")
+        self.assertEqual(sample["metadata"]["sample_id"], "control_generated_ifc")
         self.assertTrue(sample["voxelization_summary"]["processing_success"])
         self.assertGreater(sample["voxelization_summary"]["reserved_shaft_voxel_count"], 0)
         self.assertTrue(any("not external IFC evidence" in item for item in sample["limitations_and_warnings"]))
@@ -154,6 +167,8 @@ class IfcValidationTests(unittest.TestCase):
         self.assertEqual(first_json.read_bytes(), second_json.read_bytes())
         self.assertEqual(first_md.read_bytes(), second_md.read_bytes())
         self.assertIn("# Real IFC Sanity Validation", markdown_report(report))
+        self.assertIn("## Compatibility Matrix", markdown_report(report))
+        self.assertIn("| Sample | Schema | Parse | Units |", markdown_report(report))
 
     def test_validation_does_not_mutate_benchmark_inputs(self) -> None:
         before = {path: digest(path) for path in IMMUTABLE_INPUTS}

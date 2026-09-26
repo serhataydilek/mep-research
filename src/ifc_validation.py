@@ -186,9 +186,36 @@ def _storey_for(entity: Any) -> Any | None:
     return None
 
 
+def _direction_differs(direction: Any, expected: tuple[float, ...]) -> bool:
+    ratios = tuple(float(value) for value in getattr(direction, "DirectionRatios", ()) or ())
+    if len(ratios) != len(expected):
+        return False
+    magnitude = sum(value * value for value in ratios) ** 0.5
+    if magnitude == 0:
+        return False
+    normalized = tuple(value / magnitude for value in ratios)
+    return any(abs(value - target) > 1e-9 for value, target in zip(normalized, expected))
+
+
+def _placement_has_explicit_rotation(placement: Any) -> bool:
+    relative = getattr(placement, "RelativePlacement", None)
+    if relative is None:
+        return False
+    axis = getattr(relative, "Axis", None)
+    if axis is not None and _direction_differs(axis, (0.0, 0.0, 1.0)):
+        return True
+    ref_direction = getattr(relative, "RefDirection", None)
+    if ref_direction is None:
+        return False
+    dimensions = len(tuple(ref_direction.DirectionRatios or ()))
+    expected = (1.0, 0.0) if dimensions == 2 else (1.0, 0.0, 0.0)
+    return _direction_differs(ref_direction, expected)
+
+
 def _spatial(model: ifcopenshell.file, bounds_by_id: dict[int, tuple[float, ...]], options: ValidationOptions) -> tuple[dict[str, Any], list[dict[str, Any]]]:
     local_placements = _by_type(model, "IfcLocalPlacement")
     nested = sum(getattr(item, "PlacementRelTo", None) is not None for item in local_placements)
+    rotated = sum(_placement_has_explicit_rotation(item) for item in local_placements)
     storeys = sorted(
         _by_type(model, "IfcBuildingStorey"),
         key=lambda item: ((float(item.Elevation) if item.Elevation is not None else float("inf")), item.id()),
@@ -236,6 +263,9 @@ def _spatial(model: ifcopenshell.file, bounds_by_id: dict[int, tuple[float, ...]
         "local_placements_present": bool(local_placements),
         "local_placement_count": len(local_placements),
         "nested_local_placement_count": nested,
+        "explicitly_rotated_local_placement_count": rotated,
+        "explicit_local_rotations_detected": rotated > 0,
+        "rotation_detection_basis": "non-default Axis or RefDirection on IfcLocalPlacement.RelativePlacement",
         "large_coordinate_threshold_m": options.large_coordinate_m,
         "large_coordinate_offsets_observed": large,
         "georeferencing_entities": {
@@ -447,7 +477,15 @@ def inspect_ifc(path: Path, *, sample_id: str | None = None, sample_kind: str = 
 
 def build_validation_report(paths: Iterable[Path], *, control_paths: Iterable[Path] = (), options: ValidationOptions | None = None) -> dict[str, Any]:
     controls = {Path(path).resolve() for path in control_paths}
-    samples = [inspect_ifc(Path(path), sample_kind="CONTROL_GENERATED_IFC" if Path(path).resolve() in controls else "EXTERNAL_IFC", options=options) for path in paths]
+    samples = []
+    for path in paths:
+        is_control = Path(path).resolve() in controls
+        samples.append(inspect_ifc(
+            Path(path),
+            sample_id="control_generated_ifc" if is_control else None,
+            sample_kind="CONTROL_GENERATED_IFC" if is_control else "EXTERNAL_IFC",
+            options=options,
+        ))
     return {"report_type": "REAL_IFC_SANITY_VALIDATION", "format_version": 1,
             "research_checkpoint": "5b8130d59486f4849af6856a62dff1c3276ead69",
             "benchmark_statement": "External compatibility findings do not alter the completed Phase 8 benchmark or its metrics.",
@@ -467,6 +505,30 @@ def markdown_report(report: dict[str, Any]) -> str:
     for sample in samples:
         meta = sample["metadata"]
         lines.extend([f"### {meta['sample_id']}", "", f"- Kind: `{meta['sample_kind']}`", f"- File: `{meta['original_filename']}`", f"- Schema: `{sample.get('schema') or 'unavailable'}`", ""])
+    matrix_columns = (
+        ("Parse", "file_parsing"),
+        ("Units", "unit_interpretation"),
+        ("Hierarchy", "spatial_hierarchy"),
+        ("Architectural geometry", "architectural_geometry_extraction"),
+        ("Obstacle extraction", "obstacle_extraction"),
+        ("Storey mapping", "storey_mapping"),
+        ("Voxelization", "voxelization"),
+        ("MEP inspection", "MEP_entity_inspection"),
+        ("Router readiness", "ready_for_current_research_router_input"),
+    )
+    lines.extend(["## Compatibility Matrix", ""])
+    headers = ["Sample", "Schema", *(heading for heading, _ in matrix_columns)]
+    lines.append("| " + " | ".join(headers) + " |")
+    lines.append("|" + "|".join("---" for _ in headers) + "|")
+    for sample in samples:
+        stages = sample.get("pipeline_stages", {})
+        values = [
+            f"`{sample['metadata']['sample_id']}`",
+            sample.get("schema") or "unavailable",
+            *(stages.get(stage_name, {}).get("status", "NOT_APPLICABLE") for _, stage_name in matrix_columns),
+        ]
+        lines.append("| " + " | ".join(values) + " |")
+    lines.append("")
     sections = (
         ("Schema and Units", lambda s: f"{s.get('schema') or 'unavailable'}; {s.get('units', {}).get('length_unit') or 'unit unavailable'}; metre factor {s.get('units', {}).get('conversion_factor_to_meters', 'unavailable')}"),
         ("Spatial Structure", lambda s: json.dumps(s.get("ifc_hierarchy", {}), sort_keys=True)),

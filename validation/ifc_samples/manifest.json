@@ -1,0 +1,44 @@
+{
+  "download_date": "2026-09-26",
+  "samples": [
+    {
+      "exact_source_url": "https://github.com/buildingsmart-community/Community-Sample-Test-Files/blob/7ddf57a201f88a0c213d5322b02ed15e94a60a40/IFC%202.3.0.1%20%28IFC%202x3%29/Esplanades/1807_EP_AR_v18.ifc",
+      "file_size_bytes": 12109172,
+      "ifc_schema": "IFC2X3",
+      "local_filename": "esplanades_ifc2x3.ifc",
+      "sample_id": "esplanades_ifc2x3",
+      "sha256": "b97db10a2cb679a6543ccf4e34cfa8e77753f14e67f51b403e6cd9a819e3748f",
+      "source_repository": "buildingsmart-community/Community-Sample-Test-Files",
+      "stated_license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "upstream_commit_sha": "7ddf57a201f88a0c213d5322b02ed15e94a60a40",
+      "upstream_project_file_name": "Esplanades / 1807_EP_AR_v18.ifc",
+      "validation_purpose": "Project-scale, multi-storey IFC2x3 architectural model with georeferenced coordinates"
+    },
+    {
+      "exact_source_url": "https://github.com/buildingSMART/Certification-datasets/blob/80d976a9b193a26a8e928c3e79bff67af1de68a8/IFC%204.0.2.1%20%28IFC%204%20ADD2%20TC1%29/Simple-Scene/Building-Architecture.ifc",
+      "file_size_bytes": 142325,
+      "ifc_schema": "IFC4",
+      "local_filename": "certification_building_architecture_ifc4.ifc",
+      "sample_id": "certification_building_architecture_ifc4",
+      "sha256": "8790a1e193e82b8e7e7f337ec2633cd40f2120590317a1443503a25b079e2e80",
+      "source_repository": "buildingSMART/Certification-datasets",
+      "stated_license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "upstream_commit_sha": "80d976a9b193a26a8e928c3e79bff67af1de68a8",
+      "upstream_project_file_name": "Simple-Scene / Building-Architecture.ifc",
+      "validation_purpose": "IFC4 certification-oriented building model with spatial and architectural structure"
+    },
+    {
+      "exact_source_url": "https://github.com/buildingsmart-community/Community-Sample-Test-Files/blob/7ddf57a201f88a0c213d5322b02ed15e94a60a40/IFC%202.3.0.1%20%28IFC%202x3%29/Medical-Dental%20Clinic/Clinic_HVAC.ifc",
+      "file_size_bytes": 26914597,
+      "ifc_schema": "IFC2X3",
+      "local_filename": "medical_dental_clinic_hvac_ifc2x3.ifc",
+      "sample_id": "medical_dental_clinic_hvac_ifc2x3",
+      "sha256": "39c88a79f48fbe56da86afb0fb3ebd188f8930df3df7dbfbd9ecaa535aaeab9b",
+      "source_repository": "buildingsmart-community/Community-Sample-Test-Files",
+      "stated_license": "Creative Commons Attribution 4.0 International (CC BY 4.0)",
+      "upstream_commit_sha": "7ddf57a201f88a0c213d5322b02ed15e94a60a40",
+      "upstream_project_file_name": "Medical-Dental Clinic / Clinic_HVAC.ifc",
+      "validation_purpose": "Multi-storey IFC2x3 HVAC distribution model with flow segments and fittings"
+    }
+  ]
+}

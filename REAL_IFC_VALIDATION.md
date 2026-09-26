@@ -24,13 +24,27 @@ python -m src.ifc_validation --ifc out/ifc/architecture.ifc C:\path\external.ifc
 
 Results are deterministic for the same paths, files, options, IfcOpenShell version, and geometry kernel. Validation results are ignored by Git; the sample manifest is tracked.
 
+## External validation run
+
+On 2026-09-26 the harness was run independently and as a combined matrix against three public files recorded at immutable upstream commits in `validation/ifc_samples/manifest.json`. The IFC payloads remain ignored and are not part of the repository.
+
+| Sample | Schema | Architectural geometry | MEP inspection | Voxelization | Current router ready |
+|---|---|---|---|---|---|
+| Esplanades architectural project | IFC2X3 | PARTIAL: 2,609/2,611 entities usable; two missing representations | NOT_APPLICABLE | FAIL: 51,140,320 cells exceeds the 25,000,000-cell safety limit | No |
+| Certification Building-Architecture | IFC4 | PARTIAL: 12/13 entities usable; one missing representation | NOT_APPLICABLE | PASS: 124,320 cells, 9,336 occupied | No |
+| Medical-Dental Clinic HVAC | IFC2X3 | PASS: 263/263 inspected architectural entities (spaces) usable | PASS: 3,704/3,704 distribution entities have usable geometry | FAIL: no wall/column obstacle geometry in the discipline model | No |
+
+The external files confirm parsing, unit interpretation, hierarchy inspection, geometry extraction, storey mapping, placement inspection, MEP inventory, and guarded voxel reasoning across IFC2X3 and IFC4. Esplanades has seven storeys, millimetre project units, large world-coordinate offsets, and 1,846 explicitly rotated local placements. The IFC4 certification model contains explicit map-conversion/CRS data and 10 rotated local placements. The HVAC model has four storeys, 1,548 `IfcFlowSegment` entities, 1,590 `IfcFlowFitting` entities, and 1,550 rotated local placements; IFC2X3 represents these through generic flow classes rather than IFC4 pipe/duct subclasses.
+
+These are validation-harness compatibility results. They do not mean that the research router can consume the models directly. None supplies compatible routing endpoints, Esplanades is unsafe for dense 0.1 m voxel allocation under the configured limit, and the HVAC discipline file contains no current-policy wall/column obstacles.
+
 ## Stages
 
 The report covers parsing, schema, units, hierarchy, inheritance-aware entity inventory, world-coordinate geometry, placements and storeys, compatibility with current wall/column obstacle semantics, guarded validation-only voxelization, existing MEP inspection, and explicit router-readiness conditions. Stage statuses are `PASS`, `PARTIAL`, `FAIL`, or `NOT_APPLICABLE`.
 
 ## Limitations
 
-- No external IFC is bundled. External compatibility is not validated until independently sourced files are supplied and recorded in the sample manifest.
+- No external IFC is bundled. Reproducing the external results requires downloading the files recorded in the sample manifest.
 - Validation voxelization uses current-policy wall/column AABBs and a reported grid-origin transform. It does not replace benchmark voxel semantics.
 - Rotated and curved elements can be over-approximated by AABBs.
 - Existing distribution elements are inspected but cannot be consumed directly as routing demands.
