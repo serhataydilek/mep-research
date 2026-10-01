@@ -14,6 +14,7 @@
 | Independent validator | Accepted | Router cannot self-certify. |
 | Viewer before validity | Rejected | Visualization follows validated geometry. |
 | Single clearance source | Accepted | Removes current duplicated-constant risk. |
+| Normalize endpoint and connection demand before production routing | Accepted | Phase 9A adds immutable world-coordinate models and a read-only benchmark adapter while preserving research-v1.0 inputs and results. |
 
 ## Risks
 

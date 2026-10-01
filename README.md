@@ -2,7 +2,13 @@
 
 A deterministic controlled research prototype for studying multi-system MEP routing in IFC/BIM-derived 3D space, and the documented foundation for a future hard-feasible routing engine.
 
-> **Status:** Research v1.0 is complete. The production zero-conflict architecture is planned. Phase 9 implementation is **not** complete. This repository is neither production BIM coordination software, fabrication-ready output, nor code-compliance software.
+> **Status:** Research v1.0 is complete. Phase 9A supplies immutable, provenanced endpoint and connection models plus a read-only benchmark adapter; production routing is **not** complete. This repository is neither production BIM coordination software, fabrication-ready output, nor code-compliance software.
+
+## Phase 9A status
+
+`src.endpoints` defines typed immutable world-coordinate endpoints, connector profiles, endpoint flow semantics, and authoritative connection requests. Endpoint provenance distinguishes `BENCHMARK_SYNTHETIC`, `IFC_DISTRIBUTION_PORT`, `EXPORT_CONNECTOR`, `MANUAL`, and `INFERRED`; unknown orientation and flow remain explicit rather than fabricated. The benchmark adapter converts existing source, egress, and terminal anchors without changing their generated identities, coordinates, or serialized research inputs.
+
+Phase 9A does not extract IFC ports, change the legacy benchmark router, plan topology, perform orientation-aware routing, or replace the research validator. Those remain later gated phases.
 
 ## Current research baseline
 
