@@ -21,6 +21,7 @@
 | Benchmark topology adapter uses one dedicated branch edge per required connection | Accepted | Preserves legacy required-connection counts/IDs; avoids unverified shared-trunk implications; breakouts remain non-routed metadata. |
 | Diagnose proposed topology-demand coverage before strict association | Accepted | A read-only report exposes missing, unknown, and duplicate authoritative IDs without repairing a candidate or mistaking metadata for demand. |
 | Future topology and router milestones require explicit safety gates | Accepted | Demand completeness, legal same-system sharing, clearance policy, spatial semantics, independent validation, truthful statuses, early debugging visibility, and IFC round-trip/scalability evidence remain mandatory before production claims. |
+| Initial topology planning is deterministic and abstract | Accepted | Direct fallback and same-system shared-main candidates preserve authoritative demand but do not claim spatial, fitting, clearance, or clash feasibility. |
 
 ## Risks
 
