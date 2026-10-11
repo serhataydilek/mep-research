@@ -17,6 +17,8 @@
 | Normalize endpoint and connection demand before production routing | Accepted | Phase 9A adds immutable world-coordinate models and a read-only benchmark adapter while preserving research-v1.0 inputs and results. |
 | Separate topology data model from topology planning | Accepted | Phase 9B first delivers immutable MAIN/BRANCH/HEADER/RISER graphs with explicit share ownership; planning, RoutingProblem wiring, and geometry-level clash checks remain later gated work. |
 | Unauthorized coincident topology segments are rejected without ownership | Accepted | Two primary edges on the same undirected node pair for one system are duplicate segment declarations; legal sharing requires `owner_edge_id` to a primary same-system owner. |
+| Associate topology via separate demand layer, not by mutating RoutingProblem | Accepted | `TopologicalRoutingDemand` keeps Phase 9A connection identities authoritative and adds ordered edge-walk assignments without coupling route results or inventing geometry. |
+| Benchmark topology adapter uses one dedicated branch edge per required connection | Accepted | Preserves legacy required-connection counts/IDs; avoids unverified shared-trunk implications; breakouts remain non-routed metadata. |
 
 ## Risks
 
