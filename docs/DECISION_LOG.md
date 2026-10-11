@@ -22,6 +22,12 @@
 | Diagnose proposed topology-demand coverage before strict association | Accepted | A read-only report exposes missing, unknown, and duplicate authoritative IDs without repairing a candidate or mistaking metadata for demand. |
 | Future topology and router milestones require explicit safety gates | Accepted | Demand completeness, legal same-system sharing, clearance policy, spatial semantics, independent validation, truthful statuses, early debugging visibility, and IFC round-trip/scalability evidence remain mandatory before production claims. |
 | Initial topology planning is deterministic and abstract | Accepted | Direct fallback and same-system shared-main candidates preserve authoritative demand but do not claim spatial, fitting, clearance, or clash feasibility. |
+| Spatial evidence precedes spatial selection | Accepted | Phase 9C.0 records only geometry derivable from the existing IFC and voxel pipeline; a selector based on invented corridors, junction positions or costs is rejected. |
+| Reuse existing IFC tessellation and occupancy grids for evidence | Accepted | Identity-preserving AABBs feed `src.voxel.build_occupancy_grid` unchanged; grids are byte-identical to legacy output and referenced by digest. |
+| Unsupported or unknown geometry is never free space | Accepted | Failed tessellation, non-metre units and unmodelled elements in the occupancy domain yield explicit diagnostics and a non-available status. |
+| AABB evidence is approximate, labelled per element | Accepted | Volume comparison labels each AABB exact or over-approximate; rotated placements are flagged; no exact collision certification is claimed. |
+| Existing IFC openings are not MEP penetrations | Accepted | Openings are recorded with host and fillings; approval is structurally impossible in the evidence model. |
+| Candidate assessment is evidence-only | Accepted | Statuses describe evidence availability; feasibility and collision-freedom flags are fixed false; virtual junctions remain unresolved requirements. |
 
 ## Risks
 
@@ -37,3 +43,7 @@
 | Large-model memory | High | Medium | sparse/tiled space | project-scale memory measurement |
 | Exact geometry performance | Medium | Medium | broad/narrow phases | profiling with validation parity |
 | IFC round-trip fidelity | Medium | Medium | schema/relationship validation | import-export-inspect fixtures |
+| Duplicated clearance sources (`clash.py` constant vs config `routing.clearance_m`) | High | Medium | single clearance policy consumed by occupancy, routing and validation | fixture with non-default clearance across all consumers |
+| Name-based shaft identification | Medium | High | semantic shaft classification from real IFC data | real-model shaft audit |
+| Plenum-only, config-bounded occupancy domain | High | Medium | IFC-derived vertical zones and multi-storey occupancy | multi-storey and ceiling-element fixtures |
+| Snap convention mistaken for connector validity | Medium | Medium | treat snapping as benchmark convenience; validate connectors separately | connector-port fixtures |
