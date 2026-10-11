@@ -15,6 +15,20 @@ from types import MappingProxyType
 from typing import Any, Mapping
 
 
+def _freeze_metadata_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return MappingProxyType({key: _freeze_metadata_value(item) for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_metadata_value(item) for item in value)
+    if isinstance(value, set):
+        return frozenset(_freeze_metadata_value(item) for item in value)
+    return value
+
+
+def _freeze_metadata(metadata: Mapping[str, Any]) -> Mapping[str, Any]:
+    return MappingProxyType({key: _freeze_metadata_value(value) for key, value in metadata.items()})
+
+
 class System(str, Enum):
     """Current service identities; extend deliberately as product scope grows."""
 
@@ -128,7 +142,7 @@ class Endpoint:
             raise ValueError("Endpoint confidence must be a finite value from 0 through 1 when supplied.")
         if not isinstance(self.metadata, Mapping):
             raise ValueError("Endpoint metadata must be a mapping.")
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata))
 
 
 @dataclass(frozen=True, slots=True)
@@ -156,7 +170,7 @@ class ConnectionRequest:
             raise ValueError("Connection provenance must be an EndpointProvenance value.")
         if not isinstance(self.metadata, Mapping):
             raise ValueError("Connection metadata must be a mapping.")
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata))
 
 
 @dataclass(frozen=True, slots=True)
@@ -189,7 +203,7 @@ class RoutingProblem:
                     raise ValueError(f"Connection {connection.connection_id} must use endpoints from its system.")
         if not isinstance(self.metadata, Mapping):
             raise ValueError("RoutingProblem metadata must be a mapping.")
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata))
 
 
 def _benchmark_dimensions(definition: Mapping[str, Any]) -> tuple[ConnectorShape, ConnectorDimensions]:

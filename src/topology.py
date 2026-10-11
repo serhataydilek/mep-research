@@ -18,6 +18,32 @@ from typing import Any, Mapping
 from .endpoints import ConnectorDimensions, ConnectorShape, System
 
 
+def _freeze_metadata_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return MappingProxyType({key: _freeze_metadata_value(item) for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_metadata_value(item) for item in value)
+    if isinstance(value, set):
+        return frozenset(_freeze_metadata_value(item) for item in value)
+    return value
+
+
+def _freeze_metadata(metadata: Mapping[str, Any]) -> Mapping[str, Any]:
+    return MappingProxyType({key: _freeze_metadata_value(value) for key, value in metadata.items()})
+
+
+def _canonical_metadata_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {key: _canonical_metadata_value(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list, frozenset, set)):
+        return [_canonical_metadata_value(item) for item in value]
+    return value
+
+
+def _canonical_metadata(metadata: Mapping[str, Any]) -> dict[str, Any]:
+    return {key: _canonical_metadata_value(value) for key, value in metadata.items()}
+
+
 class TopologyNodeKind(str, Enum):
     """Logical roles for topology vertices in the demand graph."""
 
@@ -95,7 +121,7 @@ class TopologyNode:
             raise ValueError("Topology node endpoint_id must be a non-empty string when supplied.")
         if not isinstance(self.metadata, Mapping):
             raise ValueError("Topology node metadata must be a mapping.")
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata))
 
 
 @dataclass(frozen=True, slots=True)
@@ -138,7 +164,7 @@ class TopologyEdge:
             raise ValueError("Topology edge profile must be an EdgeProfile or None.")
         if not isinstance(self.metadata, Mapping):
             raise ValueError("Topology edge metadata must be a mapping.")
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata))
 
     @property
     def is_primary(self) -> bool:
@@ -218,13 +244,13 @@ class TopologyGraph:
             primary_by_pair[key] = edge.edge_id
         if not isinstance(self.metadata, Mapping):
             raise ValueError("TopologyGraph metadata must be a mapping.")
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata))
 
     def to_canonical_dict(self) -> dict[str, Any]:
         """Return a deterministic nested mapping suitable for JSON serialization."""
         return {
             "edges": [_edge_to_dict(edge) for edge in self.edges],
-            "metadata": dict(self.metadata),
+            "metadata": _canonical_metadata(self.metadata),
             "nodes": [_node_to_dict(node) for node in self.nodes],
         }
 
@@ -245,7 +271,7 @@ def _node_to_dict(node: TopologyNode) -> dict[str, Any]:
     return {
         "endpoint_id": node.endpoint_id,
         "kind": node.kind.value,
-        "metadata": dict(node.metadata),
+        "metadata": _canonical_metadata(node.metadata),
         "node_id": node.node_id,
         "system": node.system.value,
     }
@@ -272,7 +298,7 @@ def _edge_to_dict(edge: TopologyEdge) -> dict[str, Any]:
     return {
         "edge_id": edge.edge_id,
         "end_node_id": edge.end_node_id,
-        "metadata": dict(edge.metadata),
+        "metadata": _canonical_metadata(edge.metadata),
         "owner_edge_id": edge.owner_edge_id,
         "profile": _profile_to_dict(edge.profile),
         "role": edge.role.value,

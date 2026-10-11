@@ -19,6 +19,8 @@
 | Unauthorized coincident topology segments are rejected without ownership | Accepted | Two primary edges on the same undirected node pair for one system are duplicate segment declarations; legal sharing requires `owner_edge_id` to a primary same-system owner. |
 | Associate topology via separate demand layer, not by mutating RoutingProblem | Accepted | `TopologicalRoutingDemand` keeps Phase 9A connection identities authoritative and adds ordered edge-walk assignments without coupling route results or inventing geometry. |
 | Benchmark topology adapter uses one dedicated branch edge per required connection | Accepted | Preserves legacy required-connection counts/IDs; avoids unverified shared-trunk implications; breakouts remain non-routed metadata. |
+| Diagnose proposed topology-demand coverage before strict association | Accepted | A read-only report exposes missing, unknown, and duplicate authoritative IDs without repairing a candidate or mistaking metadata for demand. |
+| Future topology and router milestones require explicit safety gates | Accepted | Demand completeness, legal same-system sharing, clearance policy, spatial semantics, independent validation, truthful statuses, early debugging visibility, and IFC round-trip/scalability evidence remain mandatory before production claims. |
 
 ## Risks
 

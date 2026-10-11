@@ -223,6 +223,19 @@ class TopologyTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "Circular"):
             EdgeProfile(connector_shape=ConnectorShape.CIRCULAR, dimensions=ConnectorDimensions(width=0.1, height=0.1))
 
+    def test_nested_metadata_is_immutable_and_serializable(self) -> None:
+        graph = build_topology_graph(
+            [node("node/a", metadata={"nested": {"labels": ["main"]}}), node("node/b")],
+            [edge("edge/a", "node/a", "node/b")],
+            metadata={"nested": {"roles": ["main", "branch"]}},
+        )
+        with self.assertRaises(TypeError):
+            graph.metadata["nested"]["roles"] = ()  # type: ignore[index]
+        self.assertEqual(
+            graph.to_canonical_dict()["metadata"],
+            {"nested": {"roles": ["main", "branch"]}},
+        )
+
     def test_riser_and_header_roles_are_supported(self) -> None:
         graph = build_topology_graph(
             [

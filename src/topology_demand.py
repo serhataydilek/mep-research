@@ -32,6 +32,32 @@ from .topology import (
 )
 
 
+def _freeze_metadata_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return MappingProxyType({key: _freeze_metadata_value(item) for key, item in value.items()})
+    if isinstance(value, (list, tuple)):
+        return tuple(_freeze_metadata_value(item) for item in value)
+    if isinstance(value, set):
+        return frozenset(_freeze_metadata_value(item) for item in value)
+    return value
+
+
+def _freeze_metadata(metadata: Mapping[str, Any]) -> Mapping[str, Any]:
+    return MappingProxyType({key: _freeze_metadata_value(value) for key, value in metadata.items()})
+
+
+def _canonical_metadata_value(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {key: _canonical_metadata_value(item) for key, item in value.items()}
+    if isinstance(value, (tuple, list, frozenset, set)):
+        return [_canonical_metadata_value(item) for item in value]
+    return value
+
+
+def _canonical_metadata(metadata: Mapping[str, Any]) -> dict[str, Any]:
+    return {key: _canonical_metadata_value(value) for key, value in metadata.items()}
+
+
 @dataclass(frozen=True, slots=True)
 class ConnectionTopologyAssignment:
     """Maps one required connection identity to an ordered topology edge walk."""
@@ -53,7 +79,64 @@ class ConnectionTopologyAssignment:
             )
         if not isinstance(self.metadata, Mapping):
             raise ValueError("Connection topology assignment metadata must be a mapping.")
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata))
+
+
+@dataclass(frozen=True, slots=True)
+class TopologyDemandCoverage:
+    """Read-only ID coverage report for proposed topology assignments.
+
+    This report intentionally validates only the association IDs.  It can be
+    used before strict topology association to explain incomplete proposals;
+    it neither repairs assignments nor establishes endpoint connectivity.
+    """
+
+    required_connection_ids: tuple[str, ...]
+    assigned_connection_ids: tuple[str, ...]
+    missing_required_connection_ids: tuple[str, ...]
+    unknown_connection_ids: tuple[str, ...]
+    duplicate_assignment_ids: tuple[str, ...]
+
+    @property
+    def coverage_status(self) -> str:
+        """Return COMPLETE only for exact, one-to-one authoritative coverage."""
+        if (
+            not self.missing_required_connection_ids
+            and not self.unknown_connection_ids
+            and not self.duplicate_assignment_ids
+        ):
+            return "COMPLETE"
+        return "INCOMPLETE"
+
+
+def inspect_topology_demand_coverage(
+    problem: RoutingProblem,
+    assignments: list[ConnectionTopologyAssignment] | tuple[ConnectionTopologyAssignment, ...],
+) -> TopologyDemandCoverage:
+    """Report authoritative connection-ID coverage without strict association validation.
+
+    ``RoutingProblem.connections`` is the sole source of required IDs.  In
+    particular, endpoint metadata such as benchmark source-to-egress breakouts
+    is not interpreted as a routing obligation.
+    """
+    if not isinstance(problem, RoutingProblem):
+        raise ValueError("Topology demand coverage requires a RoutingProblem.")
+    if not isinstance(assignments, (list, tuple)) or not all(
+        isinstance(assignment, ConnectionTopologyAssignment) for assignment in assignments
+    ):
+        raise ValueError("Topology demand coverage assignments must be ConnectionTopologyAssignment values.")
+    required_ids = tuple(connection.connection_id for connection in problem.connections)
+    assigned_ids = tuple(assignment.connection_id for assignment in assignments)
+    assigned_set = set(assigned_ids)
+    required_set = set(required_ids)
+    duplicate_ids = tuple(sorted({item for item in assigned_ids if assigned_ids.count(item) > 1}))
+    return TopologyDemandCoverage(
+        required_connection_ids=required_ids,
+        assigned_connection_ids=assigned_ids,
+        missing_required_connection_ids=tuple(sorted(required_set - assigned_set)),
+        unknown_connection_ids=tuple(sorted(assigned_set - required_set)),
+        duplicate_assignment_ids=duplicate_ids,
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -87,16 +170,18 @@ class TopologicalRoutingDemand:
             raise ValueError("TopologicalRoutingDemand assignment connection IDs must be unique.")
         if assignment_ids != tuple(sorted(assignment_ids)):
             raise ValueError("TopologicalRoutingDemand assignments must have deterministic ID ordering.")
-        required_ids = tuple(connection.connection_id for connection in self.problem.connections)
-        assignment_set = set(assignment_ids)
-        required_set = set(required_ids)
-        missing = sorted(required_set - assignment_set)
-        unknown = sorted(assignment_set - required_set)
-        if missing:
-            raise ValueError(f"TopologicalRoutingDemand is missing assignments for connections: {missing}")
-        if unknown:
-            raise ValueError(f"TopologicalRoutingDemand has unknown connection assignments: {unknown}")
-        if len(assignment_ids) != len(required_ids):
+        coverage = inspect_topology_demand_coverage(self.problem, self.assignments)
+        if coverage.missing_required_connection_ids:
+            raise ValueError(
+                "TopologicalRoutingDemand is missing assignments for connections: "
+                f"{list(coverage.missing_required_connection_ids)}"
+            )
+        if coverage.unknown_connection_ids:
+            raise ValueError(
+                "TopologicalRoutingDemand has unknown connection assignments: "
+                f"{list(coverage.unknown_connection_ids)}"
+            )
+        if coverage.duplicate_assignment_ids:
             raise ValueError("TopologicalRoutingDemand must assign exactly the required connections.")
 
         endpoint_nodes = _endpoint_node_index(self.topology)
@@ -107,7 +192,7 @@ class TopologicalRoutingDemand:
             _validate_assignment(connection, assignment, edge_by_id, endpoint_nodes)
         if not isinstance(self.metadata, Mapping):
             raise ValueError("TopologicalRoutingDemand metadata must be a mapping.")
-        object.__setattr__(self, "metadata", MappingProxyType(dict(self.metadata)))
+        object.__setattr__(self, "metadata", _freeze_metadata(self.metadata))
 
     def to_canonical_dict(self) -> dict[str, Any]:
         """Return a deterministic nested mapping suitable for JSON serialization."""
@@ -116,15 +201,15 @@ class TopologicalRoutingDemand:
                 {
                     "connection_id": assignment.connection_id,
                     "edge_ids": list(assignment.edge_ids),
-                    "metadata": dict(assignment.metadata),
+                    "metadata": _canonical_metadata(assignment.metadata),
                 }
                 for assignment in self.assignments
             ],
-            "metadata": dict(self.metadata),
+            "metadata": _canonical_metadata(self.metadata),
             "problem": {
                 "connection_ids": [connection.connection_id for connection in self.problem.connections],
                 "endpoint_ids": [endpoint.endpoint_id for endpoint in self.problem.endpoints],
-                "metadata": dict(self.problem.metadata),
+                "metadata": _canonical_metadata(self.problem.metadata),
             },
             "topology": self.topology.to_canonical_dict(),
         }

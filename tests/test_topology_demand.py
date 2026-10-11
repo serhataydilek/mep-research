@@ -31,6 +31,7 @@ from src.topology_demand import (
     TopologicalRoutingDemand,
     associate_routing_problem_with_topology,
     benchmark_case_to_topological_demand,
+    inspect_topology_demand_coverage,
     star_topology_for_routing_problem,
 )
 
@@ -73,6 +74,40 @@ def water_problem() -> RoutingProblem:
     return RoutingProblem(
         tuple(sorted(endpoints, key=lambda item: item.endpoint_id)),
         connections,
+    )
+
+
+def water_branching_problem() -> RoutingProblem:
+    endpoints = (
+        endpoint("endpoint/egress", flow=FlowDirection.SOURCE),
+        endpoint("endpoint/terminal-a", flow=FlowDirection.SINK),
+        endpoint("endpoint/terminal-b", flow=FlowDirection.SINK),
+    )
+    connections = (
+        ConnectionRequest(
+            "connection/a", System.WATER, "endpoint/egress", "endpoint/terminal-a", EndpointProvenance.MANUAL
+        ),
+        ConnectionRequest(
+            "connection/b", System.WATER, "endpoint/egress", "endpoint/terminal-b", EndpointProvenance.MANUAL
+        ),
+    )
+    return RoutingProblem(tuple(sorted(endpoints, key=lambda item: item.endpoint_id)), connections)
+
+
+def water_main_two_branch_topology():
+    return build_topology_graph(
+        [
+            TopologyNode("node/egress", System.WATER, TopologyNodeKind.SOURCE, "endpoint/egress"),
+            TopologyNode("node/junction", System.WATER, TopologyNodeKind.JUNCTION),
+            TopologyNode("node/terminal-a", System.WATER, TopologyNodeKind.SINK, "endpoint/terminal-a"),
+            TopologyNode("node/terminal-b", System.WATER, TopologyNodeKind.SINK, "endpoint/terminal-b"),
+        ],
+        [
+            TopologyEdge("edge/branch-a", System.WATER, TopologyEdgeRole.BRANCH, "node/junction", "node/terminal-a"),
+            TopologyEdge("edge/branch-b", System.WATER, TopologyEdgeRole.BRANCH, "node/junction", "node/terminal-b"),
+            TopologyEdge("edge/main", System.WATER, TopologyEdgeRole.MAIN, "node/egress", "node/junction"),
+        ],
+        metadata={"fixture": "one_main_two_branches"},
     )
 
 
@@ -125,6 +160,40 @@ class TopologyDemandTests(unittest.TestCase):
         )
         self.assertEqual(demand.assignments[0].edge_ids, ("edge/main", "edge/branch"))
         self.assertEqual(demand.problem.connections[0].connection_id, "connection/a")
+
+    def test_non_star_main_trunk_with_two_branches_has_two_contiguous_walks(self) -> None:
+        problem = water_branching_problem()
+        topology = water_main_two_branch_topology()
+        demand = associate_routing_problem_with_topology(
+            problem,
+            topology,
+            [
+                ConnectionTopologyAssignment("connection/a", ("edge/main", "edge/branch-a")),
+                ConnectionTopologyAssignment("connection/b", ("edge/main", "edge/branch-b")),
+            ],
+        )
+        self.assertEqual(demand.topology.metadata["fixture"], "one_main_two_branches")
+        self.assertEqual(
+            [assignment.edge_ids for assignment in demand.assignments],
+            [("edge/main", "edge/branch-a"), ("edge/main", "edge/branch-b")],
+        )
+
+    def test_two_required_connections_can_share_an_explicitly_owned_trunk_edge(self) -> None:
+        problem = water_branching_problem()
+        topology = water_main_two_branch_topology()
+        demand = associate_routing_problem_with_topology(
+            problem,
+            topology,
+            [
+                ConnectionTopologyAssignment("connection/a", ("edge/main", "edge/branch-a")),
+                ConnectionTopologyAssignment("connection/b", ("edge/main", "edge/branch-b")),
+            ],
+        )
+        trunk_assignments = [
+            assignment.connection_id for assignment in demand.assignments if "edge/main" in assignment.edge_ids
+        ]
+        self.assertEqual(trunk_assignments, ["connection/a", "connection/b"])
+        self.assertTrue(next(edge for edge in topology.edges if edge.edge_id == "edge/main").is_primary)
 
     def test_missing_connection_assignment_is_rejected(self) -> None:
         problem = water_problem()
@@ -269,6 +338,57 @@ class TopologyDemandTests(unittest.TestCase):
         self.assertTrue(all(edge.role is TopologyEdgeRole.BRANCH for edge in demand.topology.edges))
         self.assertTrue(all(len(assignment.edge_ids) == 1 for assignment in demand.assignments))
         self.assertTrue(all(edge.owner_edge_id is None for edge in demand.topology.edges))
+
+    def test_read_only_coverage_reports_missing_unknown_and_duplicate_ids_before_association(self) -> None:
+        problem = water_branching_problem()
+        coverage = inspect_topology_demand_coverage(
+            problem,
+            [
+                ConnectionTopologyAssignment("connection/a", ("proposed/a",)),
+                ConnectionTopologyAssignment("connection/a", ("proposed/a-duplicate",)),
+                ConnectionTopologyAssignment("connection/unknown", ("proposed/unknown",)),
+            ],
+        )
+        self.assertEqual(coverage.required_connection_ids, ("connection/a", "connection/b"))
+        self.assertEqual(coverage.assigned_connection_ids, ("connection/a", "connection/a", "connection/unknown"))
+        self.assertEqual(coverage.missing_required_connection_ids, ("connection/b",))
+        self.assertEqual(coverage.unknown_connection_ids, ("connection/unknown",))
+        self.assertEqual(coverage.duplicate_assignment_ids, ("connection/a",))
+        self.assertEqual(coverage.coverage_status, "INCOMPLETE")
+
+    def test_read_only_coverage_uses_connections_not_source_to_egress_metadata(self) -> None:
+        problem = RoutingProblem(
+            water_branching_problem().endpoints,
+            water_branching_problem().connections,
+            metadata={"source_to_egress_breakout_count": 99},
+        )
+        coverage = inspect_topology_demand_coverage(
+            problem,
+            [
+                ConnectionTopologyAssignment("connection/a", ("proposed/a",)),
+                ConnectionTopologyAssignment("connection/b", ("proposed/b",)),
+            ],
+        )
+        self.assertEqual(coverage.coverage_status, "COMPLETE")
+        self.assertEqual(coverage.required_connection_ids, ("connection/a", "connection/b"))
+
+    def test_nested_assignment_metadata_is_immutable_and_serializable(self) -> None:
+        assignment = ConnectionTopologyAssignment(
+            "connection/a", ("edge/main", "edge/branch"), metadata={"nested": {"tags": ["main"]}}
+        )
+        with self.assertRaises(TypeError):
+            assignment.metadata["nested"]["tags"] = ()  # type: ignore[index]
+        problem = water_problem()
+        demand = associate_routing_problem_with_topology(
+            problem,
+            water_main_branch_topology(),
+            [assignment],
+            metadata={"nested": {"status": ["proposed"]}},
+        )
+        self.assertEqual(
+            demand.to_canonical_dict()["metadata"],
+            {"nested": {"status": ["proposed"]}},
+        )
 
 
 if __name__ == "__main__":
