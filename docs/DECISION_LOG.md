@@ -15,6 +15,8 @@
 | Viewer before validity | Rejected | Visualization follows validated geometry. |
 | Single clearance source | Accepted | Removes current duplicated-constant risk. |
 | Normalize endpoint and connection demand before production routing | Accepted | Phase 9A adds immutable world-coordinate models and a read-only benchmark adapter while preserving research-v1.0 inputs and results. |
+| Separate topology data model from topology planning | Accepted | Phase 9B first delivers immutable MAIN/BRANCH/HEADER/RISER graphs with explicit share ownership; planning, RoutingProblem wiring, and geometry-level clash checks remain later gated work. |
+| Unauthorized coincident topology segments are rejected without ownership | Accepted | Two primary edges on the same undirected node pair for one system are duplicate segment declarations; legal sharing requires `owner_edge_id` to a primary same-system owner. |
 
 ## Risks
 

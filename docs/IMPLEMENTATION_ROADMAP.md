@@ -5,7 +5,7 @@ Each phase is gated; none promises a calendar date. Existing v1.0 code remains t
 | Phase | Goal and scope | Non-goal | Acceptance gate / artifact | Key risk |
 |---|---|---|---|---|
 | 9A | Immutable demand model and provenanced ports. **Implemented:** typed endpoint/connection models and read-only synthetic benchmark adapter. | General routing and IFC extraction. | Focused endpoint fixtures; no inferred endpoint silently authoritative. | Sparse IFC metadata. |
-| 9B | Topology graph for mains, branches, headers and legal sharing. | Global geometry optimization. | Branch/shared-overlap synthetic cases. | Topology explosion. |
+| 9B | Topology graph for mains, branches, headers and legal sharing. **Partial:** immutable `TopologyNode` / `TopologyEdge` / `TopologyGraph` data model with explicit share ownership and synthetic fixtures. Topology *planning* and routing integration remain open. | Global geometry optimization; geometry-level clash certification from topology alone. | Branch/shared-overlap synthetic cases for the data model. | Topology explosion. |
 | 9C | Semantic spatial classification plus opening/penetration records. | Structural approval automation. | Existing-opening and forbidden-wall cases. | Geometry policy variance. |
 | 9D | Zero-clash constrained low-level router. | Global multi-route optimization. | Every returned route passes local hard checks. | Over-conservative state space. |
 | 9E | PBS-inspired global coordination. | Claim of optimality. | Conflict cases end valid or structured unresolved. | Search-state explosion. |
@@ -22,3 +22,7 @@ Dependencies are sequential where a later phase consumes authoritative artifacts
 ## Phase 9A implementation boundary
 
 The delivered model stores finite world coordinates, optional normalized orientation, flow state, shape-consistent dimensions, provenance, source identifiers, confidence, and immutable metadata. `ConnectionRequest` is independent of candidate route output, and `RoutingProblem` validates endpoint references and system consistency. Existing benchmark anchors and connection dictionaries remain the immutable regression input; an adapter produces normalized models without altering their generated values. IFC port extraction, routing integration, topology, and production-validator changes remain intentionally unimplemented.
+
+## Phase 9B implementation boundary
+
+**Partial (data model only).** `src/topology.py` defines immutable `TopologyNode`, `TopologyEdge`, and `TopologyGraph` with MAIN/BRANCH/HEADER/RISER roles, optional endpoint references, optional capacity/profile metadata, deterministic canonical serialization, and explicit same-system shared-segment ownership via `owner_edge_id`. Unauthorized duplicate primary segments and cross-system sharing are rejected at model construction. This is not topology planning, not `RoutingProblem` wiring, and not geometry-level clash detection: owned shares authorize future legal overlap semantics; they do not prove that independently generated routes collide or coincide in space. Remaining 9B work includes topology candidate generation from endpoints, routing/validator integration, and richer branch/header planning fixtures.
