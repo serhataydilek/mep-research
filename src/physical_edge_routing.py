@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 import heapq, json
-from typing import Any
+from typing import Any, Mapping
 from .clearance_policy import ClearancePolicy
 from .junction_placement import JunctionPlacementProposal
 from .routing import manhattan_heuristic
@@ -23,7 +23,8 @@ class PhysicalEdgeRoute:
     def to_canonical_json(self)->str:
         return json.dumps({"edge_id":self.edge_id,"expanded_node_count":self.expanded_node_count,"grid_cells":[list(x) for x in self.grid_cells],"grid_cells_sha256":self.grid_cells_sha256,"grid_path_length_m":self.grid_path_length_m,"policy_digest_sha256":self.policy_digest_sha256,"policy_id":self.policy_id,"reason":self.reason,"start_node_id":self.start_node_id,"status":self.status.value,"system":self.system,"world_centerline_m":[list(x) for x in self.world_centerline_m],"end_node_id":self.end_node_id,"unresolved_physical_requirements":["FITTING_GEOMETRY_UNEVALUATED","EXACT_COLLISION_CERTIFICATION_UNAVAILABLE"]},sort_keys=True,separators=(",",":"))
 
-def route_physical_edge(candidate: TopologyCandidate, evidence: SpatialEvidence, policy: ClearancePolicy, edge_id: str, *, endpoint_frame_id: str, junction_proposals: tuple[JunctionPlacementProposal,...]=(), max_expansions:int=50000)->PhysicalEdgeRoute:
+def route_physical_edge(candidate: TopologyCandidate, evidence: SpatialEvidence, policy: ClearancePolicy, edge_id: str, *, endpoint_frame_id: str, junction_proposals: tuple[JunctionPlacementProposal,...]=(), max_expansions:int=50000, endpoint_cells: Mapping[str,tuple[int,int,int]] | None=None)->PhysicalEdgeRoute:
+    """``endpoint_cells`` optionally replaces an endpoint's containing cell (e.g. an evidence snap cell); it must still be FREE."""
     edge=next((x for x in candidate.demand.topology.edges if x.edge_id==edge_id),None)
     if edge is None: return PhysicalEdgeRoute(PhysicalEdgeRouteStatus.INVALID_INPUT,edge_id,"","","",(),(),None,0,policy.policy_id,policy.digest_sha256,"","UNKNOWN_EDGE")
     grid=evidence.grid_for(edge.system.value)
@@ -35,6 +36,7 @@ def route_physical_edge(candidate: TopologyCandidate, evidence: SpatialEvidence,
     def resolve(node_id):
         node=nodes[node_id]
         if node.endpoint_id:
+            if endpoint_cells and node.endpoint_id in endpoint_cells: return tuple(endpoint_cells[node.endpoint_id])
             ep=endpoints[node.endpoint_id]; return grid.spec.world_to_containing_cell(ep.position.x,ep.position.y,ep.position.z)
         proposal=selected.get(node_id)
         return proposal.grid_index if proposal and proposal.system==edge.system.value and proposal.evidence.cells_sha256==grid.cells_sha256 else None

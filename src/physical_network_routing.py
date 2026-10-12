@@ -2,7 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 import json
-from typing import Any
+from typing import Any, Mapping
 from .clearance_policy import ClearancePolicy
 from .junction_placement import CandidateJunctionPlacement, JunctionPlacementProposal
 from .physical_edge_routing import PhysicalEdgeRoute, PhysicalEdgeRouteStatus, route_physical_edge
@@ -19,12 +19,12 @@ class PhysicalNetworkRoute:
     def to_canonical_json(self)->str:
         return json.dumps({'scenario_id':self.scenario_id,'candidate_id':self.candidate_id,'junction_node_id':self.junction_node_id,'selected_junction_world_m':list(self.selected_proposal.world_position_m),'main':json.loads(self.main.to_canonical_json()),'branches':[json.loads(x.to_canonical_json()) for x in self.branches],'connection_paths':{k:[list(x) for x in v] for k,v in self.connection_paths},'complete':self.complete,'collision_free_claimed':False,'unresolved_physical_requirements':['FITTING_GEOMETRY_UNEVALUATED','CONNECTOR_ENGAGEMENT_UNEVALUATED','EXACT_COLLISION_CERTIFICATION_UNAVAILABLE']},sort_keys=True,separators=(',',':'))
 
-def route_shared_main_group(candidate:TopologyCandidate,evidence:SpatialEvidence,policy:ClearancePolicy,placement:CandidateJunctionPlacement,*,junction_node_id:str,proposal_rank:int=0,endpoint_frame_id:str='',max_expansions:int=50000)->PhysicalNetworkRoute:
+def route_shared_main_group(candidate:TopologyCandidate,evidence:SpatialEvidence,policy:ClearancePolicy,placement:CandidateJunctionPlacement,*,junction_node_id:str,proposal_rank:int=0,endpoint_frame_id:str='',max_expansions:int=50000,endpoint_cells:Mapping[str,tuple[int,int,int]]|None=None)->PhysicalNetworkRoute:
     junction=next((x for x in placement.junctions if x.junction_node_id==junction_node_id),None)
     if junction is None or proposal_rank>=len(junction.proposals): raise ValueError('Selected junction proposal is unavailable.')
     proposal=junction.proposals[proposal_rank]
-    main=route_physical_edge(candidate,evidence,policy,junction.main_edge_id,endpoint_frame_id=endpoint_frame_id,junction_proposals=(proposal,),max_expansions=max_expansions)
-    branches=tuple(route_physical_edge(candidate,evidence,policy,eid,endpoint_frame_id=endpoint_frame_id,junction_proposals=(proposal,),max_expansions=max_expansions) for eid in junction.branch_edge_ids)
+    main=route_physical_edge(candidate,evidence,policy,junction.main_edge_id,endpoint_frame_id=endpoint_frame_id,junction_proposals=(proposal,),max_expansions=max_expansions,endpoint_cells=endpoint_cells)
+    branches=tuple(route_physical_edge(candidate,evidence,policy,eid,endpoint_frame_id=endpoint_frame_id,junction_proposals=(proposal,),max_expansions=max_expansions,endpoint_cells=endpoint_cells) for eid in junction.branch_edge_ids)
     by_edge={x.edge_id:x for x in (main,*branches)}; paths=[]
     for assignment in candidate.demand.assignments:
         if junction.main_edge_id not in assignment.edge_ids: continue

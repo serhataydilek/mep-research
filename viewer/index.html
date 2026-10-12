@@ -2,29 +2,112 @@
 <meta charset="utf-8">
 <title>MEP Grid Routing Debug Viewer</title>
 <style>
-  html,body{height:100%;margin:0;font:13px system-ui,sans-serif;background:#101317;color:#eef2f7}canvas{display:block;width:100%;height:100%}#ui{position:fixed;top:12px;left:12px;z-index:2;max-width:390px;padding:12px;background:#18212bdd;border:1px solid #4d6276;border-radius:6px}#status{margin-top:7px;line-height:1.45}.error{color:#ff9b9b}.ok{color:#a8e6b0}.legend{margin-top:8px}.swatch{display:inline-block;width:10px;height:10px;margin-right:4px}.orange{background:#ff7a00}.blue{background:#1685ff}.marker{background:#f5f06c}#selection{margin-top:8px;color:#d6e3ee}label{display:block;margin-top:5px}
+  html,body{height:100%;margin:0;font:13px system-ui,sans-serif;background:#101317;color:#eef2f7}canvas{display:block;width:100%;height:100%}
+  #ui{position:fixed;top:12px;left:12px;bottom:12px;z-index:2;width:430px;overflow:auto;padding:12px;background:#18212bee;border:1px solid #4d6276;border-radius:6px;box-sizing:border-box}
+  #status{margin-top:7px;line-height:1.45}.error{color:#ff9b9b}.ok{color:#a8e6b0}.legend{margin-top:8px}.swatch{display:inline-block;width:10px;height:10px;margin-right:4px;vertical-align:middle}
+  .marker{background:#f5f06c}.conflict{background:#39ff14}.junction{background:#ff4fd8}.snap{background:#7df9ff}
+  #warning{margin-top:6px;padding:6px;border:1px solid #d9a23b;background:#3a2c10;color:#ffd98a;border-radius:4px}
+  #selection{margin-top:8px;padding:6px;background:#0f161dcc;border-radius:4px;color:#d6e3ee;white-space:pre-wrap;font:12px ui-monospace,monospace}
+  label{display:block;margin-top:4px}h4{margin:10px 0 4px}table{border-collapse:collapse;width:100%;font-size:12px}td{padding:2px 4px;border-top:1px solid #2c3a48;vertical-align:top}td.reason{word-break:break-all}
+  tr.pick{cursor:pointer}tr.pick:hover{background:#26364a}.ROUTED{color:#a8e6b0}.FAILED,.UNRESOLVED,.UNSUPPORTED{color:#ff9b9b;font-weight:600}select{width:100%}
 </style>
-<div id="ui"><b>MEP grid-routing schematic</b><br>Grid routing only — physical geometry and zero-clash validation pending.
-  <label><input id="obstacles" type="checkbox" checked> Obstacle AABBs</label><div id="systems"></div>
-  <div class="legend"><span class="swatch orange"></span>MAIN&nbsp;&nbsp;<span class="swatch blue"></span>BRANCH&nbsp;&nbsp;<span class="swatch marker"></span>endpoint / junction</div>
-  <div id="status">Loading viewer module…</div><div id="selection">Click a route to inspect its identity and status.</div>
+<div id="ui"><b>MEP grid-routing schematic</b>
+  <label>Fixture <select id="fixture">
+    <option value="viewer_fixture.json">s01 single SHARED_MAIN group (regression)</option>
+    <option value="multi_system_fixture.json">s01 multi-system — containing-cell endpoints (authoritative)</option>
+    <option value="multi_system_snap_fixture.json">s01 multi-system — evidence-snapped endpoints (variant)</option>
+  </select></label>
+  <div id="warning">Grid routing only — physical geometry and zero-clash validation pending.</div>
+  <div id="summary"></div>
+  <label><input id="obstacles" type="checkbox" checked> Obstacle AABBs</label>
+  <label><input id="conflicts" type="checkbox" checked> Highlight grid-detected conflicts</label>
+  <div id="systems"></div>
+  <div class="legend">MAIN = solid line · BRANCH = dashed line · faded = excluded from diagnostics · <span class="swatch marker"></span>endpoint <span class="swatch junction"></span>junction (wireframe = incomplete network) <span class="swatch snap"></span>snap cell <span class="swatch conflict"></span>conflict</div>
+  <div id="status">Loading viewer module…</div>
+  <div id="selection">Click a route, connection or conflict to inspect its actual exported metadata.</div>
+  <div id="explorer"></div>
 </div>
 <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"}}</script>
 <script type="module">
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-const status=document.querySelector('#status'),selection=document.querySelector('#selection'),scene=new THREE.Scene();scene.background=new THREE.Color(0x101317);
+const $=s=>document.querySelector(s),status=$('#status'),selection=$('#selection'),scene=new THREE.Scene();scene.background=new THREE.Color(0x101317);
 const camera=new THREE.PerspectiveCamera(55,1,.01,100000);camera.up.set(0,0,1);const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));document.body.append(renderer.domElement);
-const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.enablePan=true;const obstacles=new THREE.Group(),routes=new THREE.Group(),markers=new THREE.Group();scene.add(obstacles,routes,markers);
+const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.enablePan=true;
+const obstacles=new THREE.Group(),routes=new THREE.Group(),markers=new THREE.Group(),conflictGroup=new THREE.Group();scene.add(obstacles,routes,markers,conflictGroup);
+const SYSTEM_COLORS={hvac:0xff9f1c,drainage:0xb08968,water:0x00b4d8,fire:0xd62828,electrical:0x9b5de5},FALLBACK=0xcccccc,CONFLICT=0x39ff14,HILITE=0xffffff;
 const pickables=[],raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2(),vector=p=>new THREE.Vector3(p[0],p[1],p[2]);raycaster.params.Line.threshold=.16;
+const lineByEdge=new Map();let fixture=null,highlighted=[];
+const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const xyz=p=>`(${p.map(v=>v.toFixed(3)).join(', ')})`;
 function fail(error){console.error(error);status.className='error';status.textContent=`Viewer error: ${error.message||error}`}
-function validate(d){if(!d||d.schema_version!==1||d.units!=='m'||!Array.isArray(d.obstacles)||!d.network||!d.network.main||!Array.isArray(d.network.branches))throw new Error('Invalid viewer fixture schema (expected schema_version 1 with obstacle and network geometry).')}
-function routePoints(edge){if(!Array.isArray(edge.world_centerline_m)||edge.world_centerline_m.length<2)throw new Error(`Route ${edge.edge_id||'<unknown>'} has missing geometry.`);return edge.world_centerline_m.map(vector)}
 function fit(bounds){if(bounds.isEmpty())throw new Error('Fixture contains no renderable geometry.');const center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3()),radius=Math.max(size.length()/2,.5),distance=radius/Math.sin(THREE.MathUtils.degToRad(camera.fov/2));camera.near=Math.max(.01,distance/1000);camera.far=distance*100;camera.position.copy(center).add(new THREE.Vector3(distance*.8,-distance*.8,distance*.55));camera.updateProjectionMatrix();controls.target.copy(center);controls.maxDistance=distance*20;controls.update()}
-function addRoute(edge,kind,bounds){const points=routePoints(edge);points.forEach(p=>bounds.expandByPoint(p));const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:kind==='MAIN'?0xff7a00:0x1685ff}));line.userData={edge,kind};routes.add(line);pickables.push(line);return line}
-function addMarker(point,color,bounds){const mesh=new THREE.Mesh(new THREE.SphereGeometry(.14,16,12),new THREE.MeshBasicMaterial({color}));mesh.position.copy(vector(point));markers.add(mesh);bounds.expandByPoint(mesh.position)}
-function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false)}const xyz=p=>`(${p.map(v=>v.toFixed(3)).join(', ')})`;function showSelection(route){const e=route.userData.edge,w=e.world_centerline_m;selection.textContent=`${route.userData.kind}: ${e.edge_id} · ${e.system} · ${e.status} · grid length ${e.grid_path_length_m==null?'n/a':e.grid_path_length_m.toFixed(2)+' m'} · ${w.length} cells · start ${xyz(w[0])} → end ${xyz(w[w.length-1])} m`}
-renderer.domElement.addEventListener('click',event=>{const r=renderer.domElement.getBoundingClientRect();pointer.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(pickables,false)[0];if(hit)showSelection(hit.object)});addEventListener('resize',resize);resize();
-try{status.textContent='Loading fixture…';const response=await fetch('./viewer_fixture.json');if(!response.ok)throw new Error(`Fixture request failed (${response.status} ${response.statusText}).`);const data=await response.json();validate(data);const bounds=new THREE.Box3();for(const o of data.obstacles){const b=o.bounds;if(!b)throw new Error(`Obstacle ${o.global_id||'<unknown>'} has missing bounds.`);const size=new THREE.Vector3(b.max_x_m-b.min_x_m,b.max_y_m-b.min_y_m,b.max_z_m-b.min_z_m),center=new THREE.Vector3((b.min_x_m+b.max_x_m)/2,(b.min_y_m+b.max_y_m)/2,(b.min_z_m+b.max_z_m)/2);if(size.x<0||size.y<0||size.z<0)throw new Error(`Obstacle ${o.global_id||'<unknown>'} has invalid bounds.`);const mesh=new THREE.Mesh(new THREE.BoxGeometry(size.x,size.y,size.z),new THREE.MeshBasicMaterial({color:0x9cadbc,transparent:true,opacity:.18,depthWrite:false}));mesh.position.copy(center);obstacles.add(mesh);bounds.expandByObject(mesh)}const main=addRoute(data.network.main,'MAIN',bounds),branches=data.network.branches.map(edge=>addRoute(edge,'BRANCH',bounds));for(const endpoint of data.endpoints||[])addMarker(endpoint.world_m,0xf5f06c,bounds);if(data.junction&&Array.isArray(data.junction.world_m))addMarker(data.junction.world_m,0xff4fd8,bounds);fit(bounds);document.querySelector('#obstacles').onchange=e=>obstacles.visible=e.target.checked;const systems=[...new Set([main,...branches].map(x=>x.userData.edge.system))].sort(),systemBox=document.querySelector('#systems');systemBox.innerHTML=systems.map(system=>`<span><input type="checkbox" checked data-system="${system}"> ${system}</span>`).join(' ');systemBox.querySelectorAll('input').forEach(input=>input.onchange=()=>routes.children.forEach(line=>{if(line.userData.edge.system===input.dataset.system)line.visible=input.checked}));status.className='ok';status.textContent=`Fixture loaded successfully · ${1+branches.length} physical edges · 1 MAIN / ${branches.length} BRANCH · ${data.obstacles.length} obstacle boxes · ${data.scenario_id} · ${data.coordinate_frame}`;}catch(error){fail(error)}
+// Schema 1 (single SHARED_MAIN group) is normalized into the schema 2 shape; nothing is added that the fixture lacks.
+function normalize(d){
+  if(d&&d.schema_version===1){
+    if(d.units!=='m'||!Array.isArray(d.obstacles)||!d.network||!d.network.main||!Array.isArray(d.network.branches))throw new Error('Invalid viewer fixture schema (expected schema_version 1 with obstacle and network geometry).');
+    const edges=[[d.network.main,'MAIN'],...d.network.branches.map(b=>[b,'BRANCH'])].map(([e,role])=>({...e,physical_edge_id:e.edge_id,role,world_polyline_m:e.world_centerline_m,grid_cell_count:e.world_centerline_m.length,connection_ids:[]}));
+    return {...d,systems:[...new Set(edges.map(e=>e.system))],edges,connections:[],conflicts:[],junctions:d.junction?[{node_key:d.junction.node_id,system:d.network.main.system,world_m:d.junction.world_m}]:[],summary:null,certification_warning:d.disclaimer};
+  }
+  if(!d||d.schema_version!==2||d.kind!=='MULTI_SYSTEM'||d.units!=='m'||!Array.isArray(d.edges)||!Array.isArray(d.connections)||!Array.isArray(d.conflicts))throw new Error('Invalid viewer fixture schema (expected schema_version 1 or 2).');
+  if(d.geometric_clash_certified!==false)throw new Error('Fixture claims geometric clash certification; refusing to display it as a debug result.');
+  return d;
+}
+function addRoute(edge,bounds){
+  if(edge.status!=='ROUTED')return;const pts=edge.world_polyline_m;if(!Array.isArray(pts)||pts.length<2)throw new Error(`Route ${edge.physical_edge_id||'<unknown>'} has missing geometry.`);
+  const points=pts.map(vector);points.forEach(p=>bounds.expandByPoint(p));const color=SYSTEM_COLORS[edge.system]??FALLBACK;
+  const faded=edge.diagnostics_evaluated===false?{transparent:true,opacity:.3}:{};
+  const material=edge.role==='MAIN'?new THREE.LineBasicMaterial({color,...faded}):new THREE.LineDashedMaterial({color,dashSize:.25,gapSize:.12,...faded});
+  const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),material);if(edge.role!=='MAIN')line.computeLineDistances();
+  line.userData={edge,color};routes.add(line);pickables.push(line);lineByEdge.set(edge.physical_edge_id,line);
+}
+function addSphere(point,color,radius,group,bounds){const mesh=new THREE.Mesh(new THREE.SphereGeometry(radius,16,12),new THREE.MeshBasicMaterial({color}));mesh.position.copy(vector(point));group.add(mesh);if(bounds)bounds.expandByPoint(mesh.position);return mesh}
+function boxFrom(b){return {size:new THREE.Vector3(b.max_x_m-b.min_x_m,b.max_y_m-b.min_y_m,b.max_z_m-b.min_z_m),center:new THREE.Vector3((b.min_x_m+b.max_x_m)/2,(b.min_y_m+b.max_y_m)/2,(b.min_z_m+b.max_z_m)/2)}}
+function addConflict(c,index){
+  const group=new THREE.Group();group.userData={conflict:c,index};
+  for(const p of c.shared_cells_world_m||[]){const m=new THREE.Mesh(new THREE.BoxGeometry(.1,.1,.1),new THREE.MeshBasicMaterial({color:CONFLICT}));m.position.copy(vector(p));group.add(m)}
+  for(const r of c.hard_overlap_regions_shown||[]){const {size,center}=boxFrom(r);const w=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(Math.max(size.x,.01),Math.max(size.y,.01),Math.max(size.z,.01))),new THREE.LineBasicMaterial({color:CONFLICT}));w.position.copy(center);group.add(w)}
+  conflictGroup.add(group);return group;
+}
+function clearHighlight(){for(const l of highlighted)l.material.color.setHex(l.userData.color);highlighted=[]}
+function highlight(ids){clearHighlight();for(const id of ids){const l=lineByEdge.get(id);if(l){l.material.color.setHex(HILITE);highlighted.push(l)}}}
+function edgeText(e){const w=e.world_polyline_m||[];return [`${e.role} ${e.physical_edge_id}`,`system ${e.system} · status ${e.status}${e.reason?' · reason '+e.reason:''}`,`candidate ${e.candidate_id??'n/a'} · connections ${(e.connection_ids||[]).join(', ')||'n/a'}`,`grid length ${e.grid_path_length_m==null?'n/a':e.grid_path_length_m.toFixed(2)+' m'} · ${e.grid_cell_count??'n/a'} cells · ${e.expanded_node_count??'n/a'} expansions`,w.length?`start ${xyz(w[0])} → end ${xyz(w[w.length-1])} m`:'no routed geometry',`policy ${e.policy_id??'n/a'}`,e.diagnostics_evaluated===false?'EXCLUDED from conflict diagnostics: its network/connections are not fully routed (drawn faded).':''].filter(Boolean).join('\n')}
+function showEdge(e){highlight([e.physical_edge_id]);selection.textContent=edgeText(e)}
+function showConnection(c){highlight(c.physical_edge_ids);selection.textContent=[`CONNECTION ${c.connection_id}`,`system ${c.system} · status ${c.status} · strategy ${c.strategy}`,`group ${c.group_id} · candidate ${c.candidate_id}`,`edges ${c.physical_edge_ids.join(', ')}`,`grid cells ${c.grid_cell_count}`,c.reason?`reason ${c.reason}`:'',c.unvalidated_requirements.length?`unvalidated ${c.unvalidated_requirements.join(', ')}`:''].filter(Boolean).join('\n')}
+function showConflict(c){highlight(c.physical_edge_ids);selection.textContent=[`${c.kind} conflict · ${c.severity}`,`edges ${c.physical_edge_ids.join(' × ')}`,`shared grid cells ${c.shared_cell_count}`,c.hard_segment_pair_count==null?`clearance rule ${c.clearance_rule_status}`:`hard envelope segment pairs ${c.hard_segment_pair_count} · clearance segment pairs ${c.clearance_segment_pair_count}`,`overlap regions drawn ${c.hard_overlap_regions_shown.length} of ${c.hard_overlap_regions_total}`,'Grid-level proxy only — not a certified geometric clash.'].join('\n')}
+function renderExplorer(d){
+  const rows=d.connections.map((c,i)=>`<tr class="pick" data-c="${i}"><td>${esc(c.connection_id)}</td><td class="${esc(c.status)}">${esc(c.status)}</td><td>${esc(c.strategy)}</td><td class="reason">${esc(c.reason||'')}</td></tr>`).join('');
+  const shortId=id=>{const parts=String(id).split('#');return parts.length>1?`${parts[0].replace(/^candidate\//,'')}:${parts.slice(1).join('#')}`:id};
+  const conflicts=d.conflicts.map((c,i)=>`<tr class="pick" data-k="${i}"><td>${esc(c.kind)}</td><td class="reason" title="${esc(c.physical_edge_ids.join(' × '))}">${esc(c.physical_edge_ids.map(shortId).join(' × '))}</td><td>${c.shared_cell_count}</td><td>${c.hard_segment_pair_count??'—'}</td></tr>`).join('');
+  const edges=d.edges.filter(e=>e.status!=='ROUTED').map(e=>`<tr><td class="reason">${esc(e.physical_edge_id)}</td><td class="UNRESOLVED">${esc(e.status)}</td><td colspan="2" class="reason">${esc(e.reason||'')}</td></tr>`).join('');
+  const unresolved=[...new Set((d.unresolved_collision_semantics||[]).map(x=>x.code))].map(esc).join('<br>');
+  $('#explorer').innerHTML=(d.connections.length?`<h4>Connections (${d.connections.length} required)</h4><table><tr><td>id</td><td>status</td><td>strategy</td><td>reason</td></tr>${rows}</table>`:'')+(edges?`<h4>Unrouted physical edges</h4><table>${edges}</table>`:'')+(d.diagnostics_summary?`<h4>Grid-level conflicts (${d.conflicts.length})</h4><table><tr><td>kind</td><td>edges</td><td>shared cells</td><td>hard seg. pairs</td></tr>${conflicts}</table><h4>Unresolved semantics</h4>${unresolved}`:'');
+  $('#explorer').querySelectorAll('tr[data-c]').forEach(r=>r.onclick=()=>showConnection(d.connections[+r.dataset.c]));
+  $('#explorer').querySelectorAll('tr[data-k]').forEach(r=>r.onclick=()=>showConflict(d.conflicts[+r.dataset.k]));
+}
+function renderSummary(d){
+  const s=d.summary;if(!s){$('#summary').innerHTML='';return}
+  const v=d.diagnostics_summary||{};
+  $('#summary').innerHTML=`<h4>Summary · ${esc(d.endpoint_cell_mode)}</h4>Required <b>${s.required_connection_count}</b> · routed <b class="ROUTED">${s.routed_connection_count}</b> · failed <b class="FAILED">${s.failed_connection_count}</b> · unresolved <b class="UNRESOLVED">${s.unresolved_connection_count}</b> · unsupported <b class="UNSUPPORTED">${s.unsupported_connection_count}</b><br>Grid verdict: <b>${esc(v.grid_level_verdict)}</b> · inter-system pairs ${v.inter_system_conflicting_pair_count} (shared-cell ${v.inter_system_shared_cell_pair_count}) · same-system unresolved overlaps ${v.same_system_unexplained_overlap_pair_count}`;
+}
+function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false)}
+renderer.domElement.addEventListener('click',event=>{const r=renderer.domElement.getBoundingClientRect();pointer.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(pickables.filter(l=>l.visible),false)[0];if(hit)showEdge(hit.object.userData.edge)});addEventListener('resize',resize);resize();
+const params=new URLSearchParams(location.search),fixtureName=params.get('fixture')||'viewer_fixture.json';$('#fixture').value=fixtureName;$('#fixture').onchange=e=>{params.set('fixture',e.target.value);location.search=params.toString()};
+try{
+  if(!/^[\w.-]+\.json$/.test(fixtureName))throw new Error('Fixture name must be a local JSON file name.');
+  status.textContent='Loading fixture…';const response=await fetch(`./${fixtureName}`);if(!response.ok)throw new Error(`Fixture request failed (${response.status} ${response.statusText}).`);
+  const d=normalize(await response.json());fixture=d;const bounds=new THREE.Box3();
+  for(const o of d.obstacles){const b=o.bounds;if(!b)throw new Error(`Obstacle ${o.global_id||'<unknown>'} has missing bounds.`);const {size,center}=boxFrom(b);if(size.x<0||size.y<0||size.z<0)throw new Error(`Obstacle ${o.global_id||'<unknown>'} has invalid bounds.`);const mesh=new THREE.Mesh(new THREE.BoxGeometry(size.x,size.y,size.z),new THREE.MeshBasicMaterial({color:0x9cadbc,transparent:true,opacity:.14,depthWrite:false}));mesh.position.copy(center);obstacles.add(mesh);bounds.expandByObject(mesh)}
+  for(const e of d.edges)addRoute(e,bounds);
+  for(const ep of d.endpoints||[]){addSphere(ep.world_m,0xf5f06c,.12,markers,bounds);if(ep.snap){addSphere(ep.snap.snap_world_m,0x7df9ff,.07,markers,bounds);markers.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([vector(ep.world_m),vector(ep.snap.snap_world_m)]),new THREE.LineBasicMaterial({color:0x7df9ff})))}}
+  for(const j of d.junctions||[]){const m=addSphere(j.world_m,0xff4fd8,.13,markers,bounds);if(j.network_complete===false)m.material.wireframe=true}
+  d.conflicts.forEach(addConflict);fit(bounds);
+  $('#obstacles').onchange=e=>obstacles.visible=e.target.checked;$('#conflicts').onchange=e=>conflictGroup.visible=e.target.checked;
+  const systems=[...d.systems];$('#systems').innerHTML=systems.map(s=>{const routed=d.edges.filter(e=>e.system===s&&e.status==='ROUTED').length,total=d.edges.filter(e=>e.system===s).length;return `<label><input type="checkbox" checked data-system="${esc(s)}"> <span class="swatch" style="background:#${(SYSTEM_COLORS[s]??FALLBACK).toString(16).padStart(6,'0')}"></span>${esc(s)} — ${routed}/${total} edges routed</label>`}).join('');
+  $('#systems').querySelectorAll('input').forEach(input=>input.onchange=()=>routes.children.forEach(line=>{if(line.userData.edge.system===input.dataset.system)line.visible=input.checked}));
+  $('#warning').textContent=d.certification_warning||d.disclaimer;renderSummary(d);renderExplorer(d);
+  const routedEdges=d.edges.filter(e=>e.status==='ROUTED'),mains=routedEdges.filter(e=>e.role==='MAIN').length;
+  status.className='ok';status.textContent=`Fixture loaded successfully · ${routedEdges.length} routed physical edges of ${d.edges.length} · ${mains} MAIN / ${routedEdges.length-mains} BRANCH · ${d.conflicts.length} conflict records · ${d.obstacles.length} obstacle boxes · ${d.scenario_id} · ${d.coordinate_frame}`;
+}catch(error){fail(error)}
 function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();
 </script>

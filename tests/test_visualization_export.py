@@ -31,11 +31,11 @@ class VisualizationExportTests(PhysicalEdgeRoutingTests):
   with self.assertRaisesRegex(ValueError,'requires one main'): validate_viewer_fixture({'schema_version':1,'units':'m','obstacles':[],'network':{}})
   with self.assertRaisesRegex(ValueError,'invalid or empty geometry'): fixture_bounds({'schema_version':1,'units':'m','obstacles':[],'endpoints':[{'world_m':[0,0]}],'network':{'main':{'edge_id':'m','world_centerline_m':[[0,0,0],[1,0,0]]},'branches':[]}})
  def test_viewer_has_visible_error_and_resize_paths(self):
-  text=(Path(__file__).resolve().parents[1]/'viewer'/'index.html').read_text()
+  text=(Path(__file__).resolve().parents[1]/'viewer'/'index.html').read_text(encoding='utf-8')
   for required in ('response.ok','catch(error)','function fit(bounds)','addEventListener(\'resize\'',"requestAnimationFrame(animate)",'camera.up.set(0,0,1)'):
    self.assertIn(required,text)
  def test_viewer_reads_only_exported_route_fields(self):
-  text=(Path(__file__).resolve().parents[1]/'viewer'/'index.html').read_text();route=self._fixture()['network']['main']
+  text=(Path(__file__).resolve().parents[1]/'viewer'/'index.html').read_text(encoding='utf-8');route=self._fixture()['network']['main']
   self.assertNotIn('length_m??',text)
   for field in ('grid_path_length_m','world_centerline_m','edge_id','system','status'):
    self.assertIn(field,route);self.assertIn(field,text)
