@@ -97,8 +97,9 @@ class SyntheticSpatialEvidenceTests(unittest.TestCase):
         self.assertEqual([grid.system for grid in evidence.grids], ["hvac", "drainage", "water", "fire", "electrical"])
         self.assertEqual(len(evidence.shafts), 1)
         self.assertEqual(evidence.shafts[0].global_id, semantic_ifc_guid("storey/0/shaft/main/space"))
-        self.assertTrue(all(element.aabb_fidelity is AabbFidelity.EXACT for element in evidence.elements
+        self.assertTrue(all(element.aabb_fidelity is AabbFidelity.VOLUME_MATCH_UNCERTAIN for element in evidence.elements
                             if element.classification is not ElementClassification.SLAB))
+        self.assertIn(("AABB_FIDELITY_LIMITATION", semantic_ifc_guid("storey/0/column/0/0")), codes(evidence.diagnostics))
         self.assertIn("EXACT_COLLISION_CERTIFICATION", evidence.unsupported_capabilities)
 
     def test_obstacle_references_preserve_ifc_identity_and_match_existing_voxel_engine(self):
@@ -208,7 +209,7 @@ class SyntheticSpatialEvidenceTests(unittest.TestCase):
         self.assertFalse(element.placement_rotation_free)
         self.assertIs(element.aabb_fidelity, AabbFidelity.OVER_APPROXIMATION)
         self.assertGreater(element.world_bounds.max_y - element.world_bounds.min_y, 0.4 + 1e-6)
-        self.assertTrue({("ROTATED_PLACEMENT", column.GlobalId), ("AABB_OVER_APPROXIMATION", column.GlobalId)} <= codes(evidence.diagnostics))
+        self.assertTrue({("ROTATED_PLACEMENT", column.GlobalId), ("AABB_FIDELITY_LIMITATION", column.GlobalId)} <= codes(evidence.diagnostics))
         self.assertIs(evidence.status, SpatialEvidenceStatus.EVIDENCE_AVAILABLE)
 
     def test_non_metre_units_are_not_silently_accepted(self):

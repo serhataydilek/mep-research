@@ -121,9 +121,10 @@ class OccupancyRole(str, Enum):
 
 
 class AabbFidelity(str, Enum):
-    """Whether the world AABB equals the tessellated solid (by volume)."""
+    """How closely the world AABB is known to describe a tessellated solid."""
 
     EXACT = "EXACT"
+    VOLUME_MATCH_UNCERTAIN = "VOLUME_MATCH_UNCERTAIN"
     OVER_APPROXIMATION = "OVER_APPROXIMATION"
 
 
@@ -584,9 +585,13 @@ def _tessellate(
     if box_volume <= GEOMETRY_TOLERANCE_M ** 3:
         diagnostics.add("DEGENERATE_GEOMETRY", DiagnosticSeverity.UNSUPPORTED, "Element tessellation has no positive volume.", subject)
         return None
-    exact = abs(box_volume - volume) <= 1e-6 * box_volume
+    volume_match = abs(box_volume - volume) <= 1e-6 * box_volume
     rotation_free = bool(np.allclose(matrix[:3, :3], np.eye(3), atol=1e-9))
-    return world_bounds, AabbFidelity.EXACT if exact else AabbFidelity.OVER_APPROXIMATION, rotation_free
+    # A tessellation volume match alone does not prove a watertight, consistently
+    # oriented mesh, so it cannot certify that the AABB equals the physical solid.
+    # Keep exactness unavailable until a mesh-validity check is introduced.
+    fidelity = AabbFidelity.VOLUME_MATCH_UNCERTAIN if volume_match else AabbFidelity.OVER_APPROXIMATION
+    return world_bounds, fidelity, rotation_free
 
 
 def extract_spatial_evidence(
@@ -660,10 +665,10 @@ def extract_spatial_evidence(
         elements.append(ElementEvidence(
             entity.GlobalId, entity.is_a(), entity.Name, classification, role, bounds, fidelity, rotation_free, in_domain,
         ))
-        if role is not OccupancyRole.NOT_IN_OCCUPANCY_POLICY and fidelity is AabbFidelity.OVER_APPROXIMATION:
+        if role is not OccupancyRole.NOT_IN_OCCUPANCY_POLICY and fidelity is not AabbFidelity.EXACT:
             diagnostics.add(
-                "AABB_OVER_APPROXIMATION", DiagnosticSeverity.LIMITATION,
-                "Occupancy uses this element's AABB, which blocks more space than its tessellated solid.",
+                "AABB_FIDELITY_LIMITATION", DiagnosticSeverity.LIMITATION,
+                "Occupancy uses this element's AABB; volume matching has not certified mesh validity or exact solid equivalence.",
                 entity.GlobalId,
             )
         if not rotation_free:

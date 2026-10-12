@@ -28,6 +28,13 @@
 | AABB evidence is approximate, labelled per element | Accepted | Volume comparison labels each AABB exact or over-approximate; rotated placements are flagged; no exact collision certification is claimed. |
 | Existing IFC openings are not MEP penetrations | Accepted | Openings are recorded with host and fillings; approval is structurally impossible in the evidence model. |
 | Candidate assessment is evidence-only | Accepted | Statuses describe evidence availability; feasibility and collision-freedom flags are fixed false; virtual junctions remain unresolved requirements. |
+| Junction proposals are FREE cells of the junction system's own grid | Accepted | Phase 9C.1 reuses Phase 3A semantics and FREE-only router behaviour; no other system's grid is substituted and no second voxel engine is built. |
+| `RESERVED_SHAFT` is not a usable junction cell | Accepted | Its only documented meaning is "shaft volume is reserved" and legacy routers never traverse it; it is excluded without being declared forbidden. |
+| Bounded L1-shell search from an endpoint median seed | Accepted | Deterministic, explicitly bounded by candidate and exploration limits; the ordering is exploration order, not a route or fitting cost. |
+| Empty bounded search is unresolved, never infeasible | Accepted | Statuses are `PROPOSALS_GENERATED` or `UNRESOLVED`; global infeasibility cannot be claimed from a bounded neighbourhood. |
+| Authoritative endpoints are never snapped for placement | Accepted | Containing cells are read as-is; non-FREE endpoint cells are flagged, not moved. |
+| Coincident proposals across junctions are flagged, not merged | Accepted | Independent groups, including different systems, never share a junction; joint selection needs clearance evaluation. |
+| Single versioned clearance policy (`BENCHMARK_V1` first) | Proposed | Phase 9C.2 contract separates envelope, obstacle, inter-system, same-system and legal-shared rules; `BENCHMARK_V1` must reproduce current outputs byte-for-byte before any consumer migrates. |
 
 ## Risks
 
@@ -43,7 +50,10 @@
 | Large-model memory | High | Medium | sparse/tiled space | project-scale memory measurement |
 | Exact geometry performance | Medium | Medium | broad/narrow phases | profiling with validation parity |
 | IFC round-trip fidelity | Medium | Medium | schema/relationship validation | import-export-inspect fixtures |
-| Duplicated clearance sources (`clash.py` constant vs config `routing.clearance_m`) | High | Medium | single clearance policy consumed by occupancy, routing and validation | fixture with non-default clearance across all consumers |
+| Duplicated clearance sources (`clash.py` and `sequential.py` constants vs config `routing.clearance_m`) | High | Medium | single clearance policy consumed by occupancy, routing and validation | fixture with non-default clearance across all consumers |
 | Name-based shaft identification | Medium | High | semantic shaft classification from real IFC data | real-model shaft audit |
 | Plenum-only, config-bounded occupancy domain | High | Medium | IFC-derived vertical zones and multi-storey occupancy | multi-storey and ceiling-element fixtures |
 | Snap convention mistaken for connector validity | Medium | Medium | treat snapping as benchmark convenience; validate connectors separately | connector-port fixtures |
+| Junction proposal mistaken for a physical junction | High | Medium | structural false flags, validation ledger, unresolved requirements on every proposal | 9D routed geometry and 9H validation per selected proposal |
+| Straight-run FREE cell too permissive for a fitting | Medium | High | fitting-envelope requirement recorded per proposal | fitting-geometry fixtures (9G) |
+| Same-system independent-run clearance undefined | Medium | High | explicit `UNDEFINED` in clearance policy, treated as unresolved | same-system parallel-run fixtures |
