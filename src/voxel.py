@@ -13,7 +13,8 @@ import ifcopenshell
 import ifcopenshell.geom
 
 from .benchmark import calculate_metrics
-from .demand import generate_benchmark_cases, load_service_definitions, service_routing_margins
+from .clearance_policy import ClearancePolicy, benchmark_v1_policy, legacy_obstacle_margin_m
+from .demand import generate_benchmark_cases, load_service_definitions
 from .ifc_model import create_ifc_model
 
 
@@ -171,6 +172,8 @@ def build_occupancy_grid(
     definition: dict[str, Any],
     obstacles: list[tuple[str, tuple[float, float, float, float, float, float]]] | None = None,
     shaft_bounds: tuple[float, float, float, float, float, float] | None = None,
+    *,
+    clearance_policy: ClearancePolicy | None = None,
 ) -> OccupancyGrid:
     spec = grid_spec_from_config(config)
     if obstacles is None or shaft_bounds is None:
@@ -180,15 +183,14 @@ def build_occupancy_grid(
         "shaft_wall": sum(kind == "shaft_wall" for kind, _ in obstacles),
         "structural_column": sum(kind == "structural_column" for kind, _ in obstacles),
     })
-    margins = service_routing_margins(definition, float(config["routing"]["clearance_m"]))
-    vertical_margin = margins["required_vertical_margin_m"]
+    policy = clearance_policy or benchmark_v1_policy(config, {system: definition})
+    planar_margin, vertical_margin = legacy_obstacle_margin_m(policy, system, "STRUCTURAL_COLUMN")
     for k in range(spec.nz):
         _, _, z = spec.cell_center(0, 0, k)
         if z - vertical_margin < spec.origin_z - 0.000000001 or z + vertical_margin > spec.origin_z + spec.nz * spec.voxel_size_m + 0.000000001:
             for j in range(spec.ny):
                 start = spec.linear_index(0, j, k)
                 grid.cells[start : start + spec.nx] = bytes([BLOCKED_VERTICAL_BOUNDARY]) * spec.nx
-    planar_margin = margins["required_planar_margin_m"]
     for _, bounds in obstacles:
         inflated = (
             bounds[0] - planar_margin, bounds[1] + planar_margin,
@@ -277,9 +279,10 @@ def build_occupancy_grids(
     }
     for scenario, config in scenario_configs:
         obstacles, shaft_bounds = geometry_by_scenario[scenario["scenario_id"]]
+        policy = benchmark_v1_policy(config, systems)
         for system in SYSTEM_ORDER:
             grids[(scenario["scenario_id"], system)] = build_occupancy_grid(
-                scenario["scenario_id"], config, system, systems[system], obstacles, shaft_bounds
+                scenario["scenario_id"], config, system, systems[system], obstacles, shaft_bounds, clearance_policy=policy
             )
     return grids
 

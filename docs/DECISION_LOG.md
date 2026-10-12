@@ -35,6 +35,8 @@
 | Authoritative endpoints are never snapped for placement | Accepted | Containing cells are read as-is; non-FREE endpoint cells are flagged, not moved. |
 | Coincident proposals across junctions are flagged, not merged | Accepted | Independent groups, including different systems, never share a junction; joint selection needs clearance evaluation. |
 | Single versioned clearance policy (`BENCHMARK_V1` first) | Accepted | Phase 9C.2's immutable read-only contract separates envelope, obstacle, inter-system, same-system and legal-shared rules. It characterizes existing values but does not yet replace a legacy consumer. |
+| Policy migration is parity-gated per consumer | Accepted | 9C.3 routes existing voxel, B1 and clash calculations through compatible policy adapters only after preserving their differing legacy sources and outputs. |
+| Edge-routing readiness is not route feasibility | Accepted | Readiness only establishes that authoritative demand, frame, grid, policy and required virtual-junction coordinates are available for a bounded attempt. |
 
 ## Risks
 

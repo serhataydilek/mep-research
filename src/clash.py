@@ -14,6 +14,7 @@ from math import floor
 from pathlib import Path
 from typing import Any
 
+from .clearance_policy import ClearancePolicy, benchmark_v1_policy
 from .demand import SYSTEM_ORDER, load_service_definitions
 from .route_geometry import Segment, compress_path_cells, nominal_half_extents, swept_segment_aabb
 from .routing import run_b0_benchmark
@@ -22,8 +23,6 @@ from .voxel import GridSpec, build_occupancy_grids
 
 
 EPSILON = 1e-9
-CLEARANCE_M = 0.05
-HALF_CLEARANCE_M = CLEARANCE_M / 2
 SYSTEM_RANK = {system: index for index, system in enumerate(SYSTEM_ORDER)}
 SYSTEM_PAIR_ORDER = tuple(
     f"{first}|{second}" for index, first in enumerate(SYSTEM_ORDER) for second in SYSTEM_ORDER[index + 1 :]
@@ -66,18 +65,21 @@ def _evaluate_route_pair(
     route_b: dict[str, Any],
     spec: GridSpec,
     definitions: dict[str, dict[str, Any]],
+    clearance_policy: ClearancePolicy | None = None,
 ) -> dict[str, Any]:
     segments_a = compress_path_cells(route_a["path_cells"], spec)
     segments_b = compress_path_cells(route_b["path_cells"], spec)
     planar_a, vertical_a = nominal_half_extents(definitions[route_a["system"]])
     planar_b, vertical_b = nominal_half_extents(definitions[route_b["system"]])
+    policy = clearance_policy or benchmark_v1_policy({"routing": {"clearance_m": 0.05}}, definitions)
+    half_clearance = policy.inter_system_clearance(route_a["system"], route_b["system"]).value_m / 2
     hard_aabbs_a = [swept_segment_aabb(segment, planar_a, vertical_a) for segment in segments_a]
     hard_aabbs_b = [swept_segment_aabb(segment, planar_b, vertical_b) for segment in segments_b]
     clearance_aabbs_a = [
-        swept_segment_aabb(segment, planar_a, vertical_a, HALF_CLEARANCE_M) for segment in segments_a
+        swept_segment_aabb(segment, planar_a, vertical_a, half_clearance) for segment in segments_a
     ]
     clearance_aabbs_b = [
-        swept_segment_aabb(segment, planar_b, vertical_b, HALF_CLEARANCE_M) for segment in segments_b
+        swept_segment_aabb(segment, planar_b, vertical_b, half_clearance) for segment in segments_b
     ]
     broad_phase: dict[tuple[int, int, int], list[int]] = {}
     for index, aabb in enumerate(clearance_aabbs_b):
@@ -134,6 +136,7 @@ def evaluate_route_result_conflicts(
     routing_result: dict[str, Any], grids: dict[tuple[str, str], Any],
     definitions: dict[str, dict[str, Any]], evaluation_id: str, evaluation_name: str,
     summary_key: str, summary_value: dict[str, Any], *, include_requested_counts: bool = False,
+    clearance_policy: ClearancePolicy | None = None,
 ) -> dict[str, Any]:
     """Evaluate compatible successful-route geometry with the single Phase 3C rule set."""
     evaluated_cases = []
@@ -155,7 +158,7 @@ def evaluate_route_result_conflicts(
                 same_system_shared_centerline_cell_count += shared
                 same_system_overlapping_pair_count += shared > 0
                 continue
-            record = _evaluate_route_pair(case["case_id"], route_a, route_b, spec, definitions)
+            record = _evaluate_route_pair(case["case_id"], route_a, route_b, spec, definitions, clearance_policy)
             inter_records.append(record)
             if record["hard_envelope_conflict"]:
                 route_burdens[(route_a["system"], route_a["connection_id"])]["hard"].add((route_b["system"], route_b["connection_id"]))

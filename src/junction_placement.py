@@ -169,6 +169,7 @@ class GridEvidenceReference:
     clearance_m: float
     required_planar_margin_m: float
     required_vertical_margin_m: float
+    clearance_policy_digest_sha256: str | None = None
 
     def __post_init__(self) -> None:
         for name in ("evidence_frame_id", "source_model_id", "scenario_id", "system", "cells_sha256"):
@@ -177,6 +178,7 @@ class GridEvidenceReference:
     def to_canonical_dict(self) -> dict[str, Any]:
         return {
             "cells_sha256": self.cells_sha256,
+            "clearance_policy_digest_sha256": self.clearance_policy_digest_sha256,
             "clearance_m": _round(self.clearance_m),
             "evidence_frame_id": self.evidence_frame_id,
             "required_planar_margin_m": _round(self.required_planar_margin_m),
@@ -694,7 +696,7 @@ def _place_junction(
     reference = GridEvidenceReference(
         evidence.coordinate_reference.frame_id, evidence.provenance.source_model_id, grid.scenario_id, grid.system,
         grid.cells_sha256, grid.spec.voxel_size_m, grid.clearance_m, grid.required_planar_margin_m,
-        grid.required_vertical_margin_m,
+        grid.required_vertical_margin_m, grid.clearance_policy_digest_sha256,
     )
     proposals, termination, explored, skipped, excluded_count = _search(
         candidate.candidate_id, group, grid, region, excluded, reference, limits, diagnostics,

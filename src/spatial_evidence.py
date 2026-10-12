@@ -24,7 +24,8 @@ import ifcopenshell.util.placement
 import ifcopenshell.util.unit
 import numpy as np
 
-from .demand import SYSTEM_ORDER, service_routing_margins
+from .clearance_policy import benchmark_v1_policy, legacy_obstacle_margin_m
+from .demand import SYSTEM_ORDER
 from .endpoints import EndpointProvenance
 from .ifc_model import create_ifc_model
 from .topology import TopologyEdgeRole
@@ -375,6 +376,7 @@ class OccupancyGridReference:
     shaft_bounds: Bounds3
     cells_sha256: str
     cells: bytes = field(repr=False)
+    clearance_policy_digest_sha256: str | None = None
 
     def __post_init__(self) -> None:
         _require_text(self.scenario_id, "Grid scenario_id")
@@ -387,6 +389,8 @@ class OccupancyGridReference:
             raise ValueError("Grid reference cells do not match their recorded digest.")
         if sum(self.state_counts().values()) != self.spec.total_cell_count:
             raise ValueError("Grid reference cells contain states outside the Phase 3A cell vocabulary.")
+        if self.clearance_policy_digest_sha256 is not None and (len(self.clearance_policy_digest_sha256) != 64 or any(char not in "0123456789abcdef" for char in self.clearance_policy_digest_sha256)):
+            raise ValueError("Grid reference clearance policy digest must be a SHA-256 hex digest when supplied.")
 
     @property
     def domain_bounds(self) -> Bounds3:
@@ -405,6 +409,7 @@ class OccupancyGridReference:
         spec = self.spec
         return {
             "cells_sha256": self.cells_sha256,
+            "clearance_policy_digest_sha256": self.clearance_policy_digest_sha256,
             "clearance_m": _round(self.clearance_m),
             "grid_dimensions": {"nx": spec.nx, "ny": spec.ny, "nz": spec.nz},
             "grid_origin_m": [_round(spec.origin_x), _round(spec.origin_y), _round(spec.origin_z)],
@@ -743,18 +748,19 @@ def extract_spatial_evidence(
     elif grid_spec is not None and len(reserved) == 1 and obstacle_elements:
         obstacles = [(_VOXEL_OBSTACLE_KIND[item.classification], item.world_bounds.as_tuple()) for item in obstacle_elements]
         shaft_bounds = reserved[0].world_bounds
+        policy = benchmark_v1_policy(config, systems)
         clearance = float(config["routing"]["clearance_m"])
         for system in SYSTEM_ORDER:
             if system not in systems:
                 diagnostics.add("SYSTEM_DEFINITION_MISSING", DiagnosticSeverity.INSUFFICIENT, f"No service definition for {system}.", system)
                 continue
-            grid = build_occupancy_grid(scenario_id, dict(config), system, dict(systems[system]), obstacles, shaft_bounds.as_tuple())
-            margins = service_routing_margins(dict(systems[system]), clearance)
+            grid = build_occupancy_grid(scenario_id, dict(config), system, dict(systems[system]), obstacles, shaft_bounds.as_tuple(), clearance_policy=policy)
+            planar_margin, vertical_margin = legacy_obstacle_margin_m(policy, system, "STRUCTURAL_COLUMN")
             cells = bytes(grid.cells)
             grids.append(OccupancyGridReference(
                 scenario_id, system, grid.spec, clearance,
-                margins["required_planar_margin_m"], margins["required_vertical_margin_m"],
-                shaft_bounds, hashlib.sha256(cells).hexdigest(), cells,
+                planar_margin, vertical_margin,
+                shaft_bounds, hashlib.sha256(cells).hexdigest(), cells, policy.digest_sha256,
             ))
 
     provenance = SpatialEvidenceProvenance(

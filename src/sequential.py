@@ -15,8 +15,9 @@ import json
 from pathlib import Path
 from typing import Any
 
+from .clearance_policy import ClearancePolicy, benchmark_v1_policy, legacy_reservation_margin_m
 from .demand import generate_benchmark_cases, load_service_definitions
-from .route_geometry import compress_path_cells, nominal_half_extents, swept_segment_aabb
+from .route_geometry import compress_path_cells, swept_segment_aabb
 from .routing import astar_3d, route_metrics
 from .voxel import (
     BLOCKED_PRIOR_ROUTE,
@@ -29,7 +30,6 @@ from .voxel import (
 
 
 B1_SYSTEM_PRIORITY = ("hvac", "drainage", "water", "fire", "electrical")
-CLEARANCE_M = 0.05
 
 
 def clone_grid(grid: OccupancyGrid) -> OccupancyGrid:
@@ -45,6 +45,9 @@ def block_prior_routes(
     prior_routes: list[dict[str, Any]],
     target_definition: dict[str, Any],
     definitions: dict[str, dict[str, Any]],
+    clearance_policy: ClearancePolicy | None = None,
+    *,
+    target_system: str | None = None,
 ) -> int:
     """Mark FREE cells excluded by successful higher-priority routes only.
 
@@ -52,14 +55,15 @@ def block_prior_routes(
     0.05 m pairwise gap is added to the prior nominal envelope.  This is the
     pair-specific reservation, with no additional voxel inflation.
     """
-    target_planar, target_vertical = nominal_half_extents(target_definition)
+    target = target_system or next((name for name, definition in definitions.items() if definition == target_definition), None)
+    if target is None:
+        raise ValueError("Target definition is not present in the supplied service definitions.")
+    policy = clearance_policy or benchmark_v1_policy({"routing": {"clearance_m": 0.05}}, definitions)
     for route in prior_routes:
-        prior_planar, prior_vertical = nominal_half_extents(definitions[route["system"]])
+        planar_margin, vertical_margin = legacy_reservation_margin_m(policy, route["system"], target)
         for segment in compress_path_cells(route["path_cells"], derived_grid.spec):
             exclusion = swept_segment_aabb(
-                segment,
-                prior_planar + target_planar + CLEARANCE_M,
-                prior_vertical + target_vertical + CLEARANCE_M,
+                segment, planar_margin, vertical_margin,
             )
             xs, ys, zs = aabb_index_ranges(derived_grid.spec, exclusion)
             for k in zs:
@@ -140,7 +144,7 @@ def run_b1_benchmark(
         for priority_rank, system in enumerate(B1_SYSTEM_PRIORITY, start=1):
             base_grid = base_grids[(case["scenario_id"], system)]
             derived_grid = clone_grid(base_grid)
-            dynamic_count = block_prior_routes(derived_grid, completed_prior_routes, definitions[system], definitions)
+            dynamic_count = block_prior_routes(derived_grid, completed_prior_routes, definitions[system], definitions, target_system=system)
             requests = sorted(requests_by_system[system], key=lambda item: (item["terminal_index"], item["connection_id"]))
             system_routes = []
             for request in requests:
