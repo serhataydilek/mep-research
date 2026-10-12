@@ -124,13 +124,53 @@ All scenarios use 0.05 m, so the three sources agree only by coincidence. A non-
 
 **9D.2, committed.** `viewer/index.html` (Three.js, Z-up) renders the exported `s01` fixture; `python -m src.visualization_export` regenerates it byte-identically.
 
-## Phase 9D.3 multi-system physical routing — uncommitted for review
+## Phase 9D.3 multi-system physical routing — committed
 
-`src/multi_system_routing.py` discovers systems from authoritative demand, reuses the planner's DIRECT and per-system SHARED_MAIN candidates, places junctions, and routes each shared MAIN once per selected proposal (bounded by `max_proposal_attempts` and `max_expansions`). An incomplete or zero-length shared main triggers evaluation of the DIRECT alternative; the attempt with more routed connections is kept. Every authoritative connection receives exactly one `ROUTED`/`FAILED`/`UNSUPPORTED`/`UNRESOLVED` record; physical edges are candidate-qualified (`candidate#edge`). Drainage is grid routing only (`DRAINAGE_GRAVITY_SLOPE_UNVALIDATED`). `route_physical_edge` gained an optional, still-FREE-checked `endpoint_cells` override used only by the explicit snap variant.
+`src/multi_system_routing.py` discovers systems from authoritative demand, reuses the planner's DIRECT and per-system SHARED_MAIN candidates, places junctions, and routes each shared MAIN once per selected proposal (bounded by `max_proposal_attempts` and `max_expansions`). An incomplete or zero-length shared main triggers evaluation of the DIRECT alternative; the attempt with more routed connections is kept. Every authoritative connection receives exactly one `ROUTED`/`FAILED`/`UNSUPPORTED`/`UNRESOLVED` record; physical edges are candidate-qualified (`candidate#edge`). Drainage is grid routing only (`DRAINAGE_GRAVITY_SLOPE_UNVALIDATED`).
 
 `src/multi_system_diagnostics.py` runs independent checks on fully routed edges only (partial networks are listed as excluded): inter-system shared cells plus the Phase 3C swept-AABB proxy, same-system overlaps beyond shared topology nodes (clearance `UNDEFINED` stays unresolved), ownership, obstacle cells/AABBs, and policy/grid digest and margin consistency. Verdicts are `INCONSISTENT_INPUTS`, `CONFLICTS_DETECTED`, `NOT_FULLY_EVALUATED` or `NO_GRID_CONFLICT_DETECTED_SEMANTICS_UNRESOLVED`; never a zero-clash certification.
 
-Measured on `s01-d01` (13 connections, 5 systems): containing-cell mode routes 5/13 (electrical SHARED_MAIN, drainage DIRECT); hvac, water and fire egress cells are `BLOCKED_FIXED` in their own grids, so 8 connections are `UNRESOLVED` and DIRECT cannot recover them. The snap variant moves those three egress endpoints by 0.103–0.123 m and routes 13/13, with 28 conflicting inter-system edge pairs (10 sharing grid cells) and 2 same-system unexplained overlaps. Fixtures: `viewer/multi_system_fixture.json`, `viewer/multi_system_snap_fixture.json` (`python -m src.visualization_export --multi-system`).
+Measured on `s01-d01` (13 connections, 5 systems): containing-cell mode routes 5/13 (electrical SHARED_MAIN, drainage DIRECT); hvac, water and fire egress cells are `BLOCKED_FIXED` in their own grids, so 8 connections are `UNRESOLVED` and DIRECT cannot recover them. Exploratory modes can reach 13/13 grid paths with residual inter-system conflicts. Fixtures: `viewer/multi_system_fixture.json`, `viewer/multi_system_entry_fixture.json`, `viewer/multi_system_snap_fixture.json`.
+
+## Phase 9D.4 endpoint integrity and coordination readiness — uncommitted for review
+
+### Completeness distinctions (must not be conflated)
+
+| Layer | Meaning | Current s01/d01 status |
+|---|---|---|
+| Logical topology completeness | Every authoritative connection has a topology assignment | Yes (planner coverage `COMPLETE`) |
+| Grid-path completeness | Every connection has a FREE-cell centreline on its service grid | Strict 5/13; exploratory entry/snap 13/13 |
+| Authoritative connector engagement | True endpoint reaches the first routed cell through a validated connector / transition | Never claimed; exploratory modes record unresolved requirements |
+| Physical geometry validity | Continuous solids, fittings and exact clearances | Unevaluated (AABB / voxel proxies only) |
+| Whole-network collision certification | Independent continuous clash check of the accepted network | Unevaluated; grid diagnostics only |
+
+### Endpoint-entry diagnostics
+
+`src/endpoint_entry.py` classifies each authoritative endpoint against its occupancy grid without mutating coordinates. It distinguishes usable cells, clearance-inflation blockage, possible raw-AABB obstruction, ambiguous/unsupported geometry, and bounded FREE entry candidates. A candidate preserves the original world position, records displacement, and always leaves connector transition unvalidated. Root cause on s01: `egress/hvac`, `egress/fire` and `egress/water` are outside shaft-wall solids but inside Phase 3A inflated-AABB rasters (`VOLUME_MATCH_UNCERTAIN` AABBs).
+
+### Routing modes
+
+- **Strict (`CONTAINING_CELL_ONLY`)**: authoritative containing cells only.
+- **Exploratory entry (`EXPLORATORY_ENTRY_CANDIDATE`)**: may use diagnosed FREE entry cells; marks `EXPLORATORY_ENTRY_CELL_USED` and never sets `connector_engagement_validated`.
+- **Evidence snap (`EVIDENCE_SNAP_WITHIN_TOLERANCE`)**: retained exploratory legacy path; same connector disclaimer.
+
+### Proposed sequential coordination algorithm (design only — not implemented)
+
+1. **Order:** use stable `SYSTEM_ORDER` (hvac → drainage → water → fire → electrical) as the deterministic priority; document that this is a research tie-break, not an engineering priority claim.
+2. **Per-system route:** run the existing multi-system orchestrator one system at a time on that system's occupancy snapshot.
+3. **Reserve:** after a successful system network, expand its routed cells into lower-priority grids using `legacy_reservation_margin_m` (inter-system pair rule; legacy 0.05 m provenance). Shared MAIN cells of the owning system are reserved once.
+4. **Legal share:** only topology-owned shared physical edges (same `physical_edge_id` / MAIN ownership) may overlap; independent same-system runs remain unresolved while `SameSystemClearanceStatus.UNDEFINED`.
+5. **Reroute bound:** if a later system fails, retry that system only with `max_expansions` and `max_proposal_attempts` unchanged; do not reopen higher-priority systems in 9E.0.
+6. **Evaluate independently:** always re-run `multi_system_diagnostics` on the accepted set; routing success never implies zero conflict.
+7. **Clearance sources:** obstacle margins come from configured `routing.clearance_m` + envelopes; inter-system reservation/clash use the legacy-hardcoded 0.05 m pair rule until physical certification replaces both with one measured policy. Same-system clearance must be defined before any zero-conflict claim that includes parallel same-system runs.
+
+### Exact acceptance criteria before honest “complete routing + zero grid conflicts”
+
+1. All 13 authoritative connection IDs present with status `ROUTED` under **strict** endpoint rules, or every non-strict entry is an explicitly authorized connector-clearance exception with geometry checks.
+2. `connector_engagement_validated` remains false until a transition from the authoritative point to the first FREE cell is independently validated (or an IFC port / approved opening supplies that transition).
+3. Diagnostics: `inter_system_conflicting_pair_count == 0`, `same_system_unexplained_overlap_pair_count == 0`, ownership/policy/obstacle checks `PASS`, and same-system clearance is no longer `UNDEFINED` for evaluated systems.
+4. Incomplete networks remain excluded from conflict denominators; absent checks must not be reported as zero.
+5. No claim of continuous-geometry clash freedom.
 
 ## Future safety gates
 

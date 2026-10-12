@@ -312,11 +312,21 @@ class MultiSystemExportTests(MultiSystemBase):
     def test_viewer_supports_multi_system_features(self):
         text = (ROOT / "viewer" / "index.html").read_text(encoding="utf-8")
         for required in ("viewer_fixture.json", *MULTI_SYSTEM_FIXTURES.values(), "SYSTEM_COLORS", "data-system", "LineDashedMaterial",
-                         "id=\"conflicts\"", "certification_warning", "geometric_clash_certified!==false", "required_connection_count",
-                         "failed_connection_count", "showConnection", "showConflict", "diagnostics_evaluated", "schema_version===1",
-                         "shortId", "physical_edge_ids.join"):
+                         "id=\"conflicts\"", "certification_warning", "geometric_clash_certified!==false", "connector_engagement_validated===true",
+                         "required_connection_count", "failed_connection_count", "showConnection", "showConflict", "diagnostics_evaluated",
+                         "schema_version===1", "shortId", "physical_edge_ids.join"):
             self.assertIn(required, text)
         self.assertNotIn("x.split('#').pop()", text)
+
+    def test_conflict_records_use_qualified_edge_identities(self):
+        for diagnostics in (self.strict_d, self.snap_d):
+            for record in diagnostics["checks"]["inter_system_overlap"].get("records", []):
+                self.assertIn("#", record["edge_a"])
+                self.assertIn("#", record["edge_b"])
+                self.assertTrue(record["edge_a"].startswith("candidate/"))
+                self.assertTrue(record["edge_b"].startswith("candidate/"))
+            for edge_id in diagnostics["evaluated_physical_edge_ids"] + diagnostics["excluded_physical_edge_ids"]:
+                self.assertIn("#", edge_id)
 
 
 if __name__ == "__main__":

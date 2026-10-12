@@ -72,8 +72,12 @@ def export_single_system_fixture(path:Path,root:Path=ROOT)->dict:
  return export_viewer_fixture(route,evidence,candidate,path)
 
 MAX_REGIONS_PER_PAIR=10
-MULTI_SYSTEM_FIXTURES={'CONTAINING_CELL_ONLY':'multi_system_fixture.json','EVIDENCE_SNAP_WITHIN_TOLERANCE':'multi_system_snap_fixture.json'}
-CERTIFICATION_WARNING='Grid-level diagnostics only: voxel centerlines and AABB envelope proxies. This is NOT continuous-geometry clash certification; no zero-clash claim is made.'
+MULTI_SYSTEM_FIXTURES={
+ 'CONTAINING_CELL_ONLY':'multi_system_fixture.json',
+ 'EXPLORATORY_ENTRY_CANDIDATE':'multi_system_entry_fixture.json',
+ 'EVIDENCE_SNAP_WITHIN_TOLERANCE':'multi_system_snap_fixture.json',
+}
+CERTIFICATION_WARNING='Grid-level diagnostics only: voxel centerlines and AABB envelope proxies. This is NOT continuous-geometry clash certification; no zero-clash claim is made. Grid-path completeness does not imply authoritative connector engagement.'
 
 def _polyline(cells,spec)->list:
  from .route_geometry import compress_path_cells
@@ -86,6 +90,7 @@ def _r(value:float)->float:
 def validate_multi_system_fixture(data:dict)->dict:
  if not isinstance(data,dict) or data.get('schema_version')!=2 or data.get('kind')!='MULTI_SYSTEM' or data.get('units')!='m': raise ValueError('Invalid multi-system viewer fixture schema.')
  if data.get('geometric_clash_certified') is not False or data.get('collision_free_claimed') is not False: raise ValueError('Viewer fixture must not claim clash certification.')
+ if data.get('connector_engagement_validated', False) is not False: raise ValueError('Viewer fixture must not claim connector engagement validation.')
  for key in ('obstacles','systems','endpoints','junctions','edges','connections','conflicts'):
   if not isinstance(data.get(key),list): raise ValueError(f'Multi-system fixture {key} list is missing.')
  edges={edge['physical_edge_id']:edge for edge in data['edges']}
@@ -124,7 +129,9 @@ def export_multi_system_fixture(result,diagnostics:dict,evidence:SpatialEvidence
   if record['unexplained_shared_cell_count']: conflicts.append({'kind':'SAME_SYSTEM_UNRESOLVED','severity':record['verdict'],'physical_edge_ids':[record['edge_a'],record['edge_b']],'systems':[record['system']],'shared_cell_count':record['unexplained_shared_cell_count'],'shared_cells_world_m':record['unexplained_shared_cells_world_m'],'hard_segment_pair_count':None,'clearance_segment_pair_count':None,'hard_overlap_regions_shown':[],'hard_overlap_regions_total':0,'clearance_rule_status':record['clearance_rule_status']})
  data={'schema_version':2,'kind':'MULTI_SYSTEM','scenario_id':result.scenario_id,'coordinate_frame':evidence.coordinate_reference.frame_id,'units':'m','building_geometry_kind':'AABB_APPROXIMATION',
   'endpoint_cell_mode':result.endpoint_cell_mode.value,'disclaimer':'Grid routing only — physical geometry and zero-clash validation pending','certification_warning':CERTIFICATION_WARNING,
-  'geometric_clash_certified':False,'collision_free_claimed':False,'inter_system_reservation_applied':False,'policy_id':result.policy_id,'policy_digest_sha256':result.policy_digest_sha256,
+  'geometric_clash_certified':False,'collision_free_claimed':False,'connector_engagement_validated':False,'grid_paths_complete':result.grid_paths_complete,
+  'inter_system_reservation_applied':False,'policy_id':result.policy_id,'policy_digest_sha256':result.policy_digest_sha256,
+  'endpoint_entry_summary':None if result.endpoint_entry is None else result.endpoint_entry.to_canonical_dict()['summary'],
   'systems':list(result.systems),'required_connection_ids':list(result.required_connection_ids),'summary':result.summary(),'obstacles':obstacle_records(evidence),'endpoints':endpoints,'junctions':junctions,
   'edges':edges,'connections':[item.to_canonical_dict() for item in result.connections],'attempts':[item.to_canonical_dict() for item in result.attempts],'conflicts':conflicts,
   'max_regions_per_pair':MAX_REGIONS_PER_PAIR,'diagnostics_summary':diagnostics['summary'],'unresolved_collision_semantics':diagnostics['unresolved_collision_semantics'],
@@ -138,11 +145,12 @@ def export_multi_system_fixtures(directory:Path,root:Path=ROOT,diagnostics_direc
  from .multi_system_diagnostics import diagnose_multi_system_conflicts, diagnostics_to_json
  from .multi_system_routing import EndpointCellMode, route_multi_system
  problem,evidence,policy,frame=controlled_s01_inputs(root);written={}
- for mode in EndpointCellMode:
+ for mode_name,filename in MULTI_SYSTEM_FIXTURES.items():
+  mode=EndpointCellMode(mode_name)
   result=route_multi_system(problem,evidence,policy,endpoint_frame_id=frame,endpoint_cell_mode=mode);diagnostics=diagnose_multi_system_conflicts(result,evidence,policy)
-  written[mode.value]=export_multi_system_fixture(result,diagnostics,evidence,problem,directory/MULTI_SYSTEM_FIXTURES[mode.value])
+  written[mode.value]=export_multi_system_fixture(result,diagnostics,evidence,problem,directory/filename)
   if diagnostics_directory is not None:
-   diagnostics_directory.mkdir(parents=True,exist_ok=True);stem=MULTI_SYSTEM_FIXTURES[mode.value].replace('fixture.json','')
+   diagnostics_directory.mkdir(parents=True,exist_ok=True);stem=filename.replace('fixture.json','')
    (diagnostics_directory/f'{stem}routing.json').write_text(result.to_canonical_json(),encoding='utf-8');(diagnostics_directory/f'{stem}diagnostics.json').write_text(diagnostics_to_json(diagnostics),encoding='utf-8')
  return written
 

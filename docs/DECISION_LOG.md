@@ -38,9 +38,12 @@
 | Policy migration is parity-gated per consumer | Accepted | 9C.3 routes existing voxel, B1 and clash calculations through compatible policy adapters only after preserving their differing legacy sources and outputs. |
 | Edge-routing readiness is not route feasibility | Accepted | Readiness only establishes that authoritative demand, frame, grid, policy and required virtual-junction coordinates are available for a bounded attempt. |
 | First physical edge routes remain grid evidence | Accepted | 9D.0 paths are deterministic FREE-cell centreline paths; fitting, connector engagement, shared-trunk geometry and exact collision validation remain unevaluated. |
-| 9D.3 multi-system baseline uses containing-cell endpoints | Proposed | Authoritative result keeps 9D.0's no-snap rule; an opt-in `EVIDENCE_SNAP_WITHIN_TOLERANCE` variant reuses spatial-evidence snap cells, records each snap and marks connector engagement unvalidated. Both are reported. |
-| Systems routed independently, conflicts measured afterwards | Proposed | No inter-system reservation in 9D.3; grid-level diagnostics report overlaps and never certify clash freedom. Coordination is a later milestone. |
-| Zero-length shared MAIN rejected | Proposed | A junction proposal coinciding with the (snapped) source cell yields no physical main; the attempt is recorded as `DEGENERATE_ZERO_LENGTH_MAIN` and the next proposal rank or DIRECT is evaluated. |
+| 9D.3 multi-system baseline uses containing-cell endpoints | Accepted | Authoritative result keeps 9D.0's no-snap rule; exploratory modes may use entry/snap cells but never claim connector engagement. |
+| Systems routed independently, conflicts measured afterwards | Accepted | No inter-system reservation in 9D.3; grid-level diagnostics report overlaps and never certify clash freedom. Coordination is a later milestone. |
+| Zero-length shared MAIN rejected | Accepted | A junction proposal coinciding with the (snapped) source cell yields no physical main; the attempt is recorded as `DEGENERATE_ZERO_LENGTH_MAIN` and the next proposal rank or DIRECT is evaluated. |
+| Grid-path completeness ≠ connector engagement | Proposed | 9D.4 keeps `grid_paths_complete` and `connector_engagement_validated` as separate flags; exploratory 13/13 grid routing is not complete physical connection. |
+| Endpoint-entry proposals do not rewrite anchors | Proposed | `endpoint_entry` may propose FREE cells and displacements but preserves authoritative world coordinates and records unresolved connector transitions. |
+| Sequential reservation before PBS/LNS | Proposed | Next coordination milestone is deterministic per-system routing with legacy inter-system reservation margins; PBS/LNS remain out of scope. |
 
 ## Risks
 

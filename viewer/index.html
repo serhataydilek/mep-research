@@ -14,8 +14,9 @@
 <div id="ui"><b>MEP grid-routing schematic</b>
   <label>Fixture <select id="fixture">
     <option value="viewer_fixture.json">s01 single SHARED_MAIN group (regression)</option>
-    <option value="multi_system_fixture.json">s01 multi-system — containing-cell endpoints (authoritative)</option>
-    <option value="multi_system_snap_fixture.json">s01 multi-system — evidence-snapped endpoints (variant)</option>
+    <option value="multi_system_fixture.json">s01 multi-system — containing-cell endpoints (strict / authoritative)</option>
+    <option value="multi_system_entry_fixture.json">s01 multi-system — exploratory entry candidates (connector unvalidated)</option>
+    <option value="multi_system_snap_fixture.json">s01 multi-system — evidence-snapped endpoints (exploratory legacy)</option>
   </select></label>
   <div id="warning">Grid routing only — physical geometry and zero-clash validation pending.</div>
   <div id="summary"></div>
@@ -51,6 +52,7 @@ function normalize(d){
   }
   if(!d||d.schema_version!==2||d.kind!=='MULTI_SYSTEM'||d.units!=='m'||!Array.isArray(d.edges)||!Array.isArray(d.connections)||!Array.isArray(d.conflicts))throw new Error('Invalid viewer fixture schema (expected schema_version 1 or 2).');
   if(d.geometric_clash_certified!==false)throw new Error('Fixture claims geometric clash certification; refusing to display it as a debug result.');
+  if(d.connector_engagement_validated===true)throw new Error('Fixture claims connector engagement validation; refusing to display it as complete physical routing.');
   return d;
 }
 function addRoute(edge,bounds){
