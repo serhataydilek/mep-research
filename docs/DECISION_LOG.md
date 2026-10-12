@@ -37,6 +37,7 @@
 | Single versioned clearance policy (`BENCHMARK_V1` first) | Accepted | Phase 9C.2's immutable read-only contract separates envelope, obstacle, inter-system, same-system and legal-shared rules. It characterizes existing values but does not yet replace a legacy consumer. |
 | Policy migration is parity-gated per consumer | Accepted | 9C.3 routes existing voxel, B1 and clash calculations through compatible policy adapters only after preserving their differing legacy sources and outputs. |
 | Edge-routing readiness is not route feasibility | Accepted | Readiness only establishes that authoritative demand, frame, grid, policy and required virtual-junction coordinates are available for a bounded attempt. |
+| First physical edge routes remain grid evidence | Accepted | 9D.0 paths are deterministic FREE-cell centreline paths; fitting, connector engagement, shared-trunk geometry and exact collision validation remain unevaluated. |
 
 ## Risks
 
