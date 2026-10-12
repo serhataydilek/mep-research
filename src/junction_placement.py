@@ -635,6 +635,7 @@ def _search(
 def _place_junction(
     candidate: TopologyCandidate, node_id: str, evidence: SpatialEvidence, frame_matches: bool,
     endpoint_frame_id: str, limits: JunctionSearchLimits,
+    extra_excluded_cells: tuple[tuple[int, int, int], ...] = (),
 ) -> JunctionPlacementResult:
     group = _identify_group(candidate, node_id)
     diagnostics = _Diagnostics()
@@ -693,6 +694,21 @@ def _place_junction(
     cells = [anchor.containing_cell for anchor in anchors]
     region = _region(grid, cells, limits.region_margin_cells)  # type: ignore[arg-type]
     excluded = {grid.spec.linear_index(*cell) for cell in cells}  # type: ignore[misc]
+    for cell in extra_excluded_cells:
+        try:
+            excluded.add(grid.spec.linear_index(*cell))
+        except (ValueError, IndexError):
+            diagnostics.add(
+                "EXCLUDED_CELL_OUTSIDE_GRID", DiagnosticSeverity.LIMITATION,
+                f"Extra excluded cell {list(cell)} lies outside the {system} grid and was ignored.", node_id,
+            )
+    if extra_excluded_cells:
+        diagnostics.add(
+            "EXTRA_CELLS_EXCLUDED_FROM_JUNCTION_SEARCH", DiagnosticSeverity.LIMITATION,
+            f"Excluded {len(extra_excluded_cells)} additional cell(s) (endpoint-entry / mode cells) from junction search "
+            "so a shared MAIN cannot collapse onto a selected endpoint or entry cell.",
+            node_id,
+        )
     reference = GridEvidenceReference(
         evidence.coordinate_reference.frame_id, evidence.provenance.source_model_id, grid.scenario_id, grid.system,
         grid.cells_sha256, grid.spec.voxel_size_m, grid.clearance_m, grid.required_planar_margin_m,
@@ -755,12 +771,15 @@ def propose_junction_placements(
     *,
     endpoint_frame_id: str,
     limits: JunctionSearchLimits | None = None,
+    extra_excluded_cells: tuple[tuple[int, int, int], ...] = (),
 ) -> CandidateJunctionPlacement:
     """Generate bounded FREE-cell junction proposals for every virtual junction of a candidate.
 
     ``endpoint_frame_id`` declares the frame of the candidate's endpoint
     positions; a mismatch with the evidence frame leaves every junction
     unresolved.  The candidate and its demand are not modified.
+    ``extra_excluded_cells`` may list selected endpoint-entry cells that must
+    not become junction centres (prevents zero-length shared MAIN collapses).
     """
     if not isinstance(candidate, TopologyCandidate):
         raise ValueError("Junction placement requires a TopologyCandidate.")
@@ -770,10 +789,13 @@ def propose_junction_placements(
     limits = limits or JunctionSearchLimits()
     if not isinstance(limits, JunctionSearchLimits):
         raise ValueError("Junction placement limits must be JunctionSearchLimits.")
+    if any(len(cell) != 3 or any(isinstance(v, bool) or not isinstance(v, int) for v in cell) for cell in extra_excluded_cells):
+        raise ValueError("extra_excluded_cells must be integer grid index triples.")
     frame_matches = endpoint_frame_id == evidence.coordinate_reference.frame_id
     virtual = [node.node_id for node in candidate.demand.topology.nodes if node.endpoint_id is None]
     junctions = tuple(
-        _place_junction(candidate, node_id, evidence, frame_matches, endpoint_frame_id, limits) for node_id in virtual
+        _place_junction(candidate, node_id, evidence, frame_matches, endpoint_frame_id, limits, extra_excluded_cells)
+        for node_id in virtual
     )
     diagnostics = _coincidence_diagnostics(junctions)
     if not junctions:

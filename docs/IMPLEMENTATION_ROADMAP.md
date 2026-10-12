@@ -139,38 +139,51 @@ Measured on `s01-d01` (13 connections, 5 systems): containing-cell mode routes 5
 | Layer | Meaning | Current s01/d01 status |
 |---|---|---|
 | Logical topology completeness | Every authoritative connection has a topology assignment | Yes (planner coverage `COMPLETE`) |
-| Grid-path completeness | Every connection has a FREE-cell centreline on its service grid | Strict 5/13; exploratory entry/snap 13/13 |
-| Authoritative connector engagement | True endpoint reaches the first routed cell through a validated connector / transition | Never claimed; exploratory modes record unresolved requirements |
+| Grid-path completeness | Every connection has a FREE-cell centreline on its service grid | Strict 5/13; benchmark controlled entry 13/13; legacy snap 13/13 |
+| Authoritative connector engagement | True endpoint reaches the first routed cell through a validated connector / transition | Never claimed; non-strict modes record unresolved requirements |
 | Physical geometry validity | Continuous solids, fittings and exact clearances | Unevaluated (AABB / voxel proxies only) |
 | Whole-network collision certification | Independent continuous clash check of the accepted network | Unevaluated; grid diagnostics only |
 
-### Endpoint-entry diagnostics
+### Endpoint-entry diagnostics (9D.4)
 
 `src/endpoint_entry.py` classifies each authoritative endpoint against its occupancy grid without mutating coordinates. It distinguishes usable cells, clearance-inflation blockage, possible raw-AABB obstruction, ambiguous/unsupported geometry, and bounded FREE entry candidates. A candidate preserves the original world position, records displacement, and always leaves connector transition unvalidated. Root cause on s01: `egress/hvac`, `egress/fire` and `egress/water` are outside shaft-wall solids but inside Phase 3A inflated-AABB rasters (`VOLUME_MATCH_UNCERTAIN` AABBs).
 
-### Routing modes
+### Controlled endpoint-entry policy (9D.5)
 
-- **Strict (`CONTAINING_CELL_ONLY`)**: authoritative containing cells only.
-- **Exploratory entry (`EXPLORATORY_ENTRY_CANDIDATE`)**: may use diagnosed FREE entry cells; marks `EXPLORATORY_ENTRY_CELL_USED` and never sets `connector_engagement_validated`.
-- **Evidence snap (`EVIDENCE_SNAP_WITHIN_TOLERANCE`)**: retained exploratory legacy path; same connector disclaimer.
+`src/endpoint_entry_policy.py` defines immutable `BENCHMARK_CONTROLLED_ENTRY_V1`. For each diagnosed candidate it preserves the authoritative world point, records the proposed FREE-cell centre separately, samples the connecting segment against BLOCKED_FIXED AABB proxies, and distinguishes raw-solid-proxy hits from clearance-inflation obstruction. Authorization is granted only for short clearance-inflation-only transitions with FREE entry cells; raw hits are rejected; unsupported/exact-geometry cases stay unresolved. Selected entry cells are excluded from junction placement so shared MAIN cannot collapse to zero length. `connector_engagement_validated` remains false.
 
-### Proposed sequential coordination algorithm (design only — not implemented)
+### Routing modes (keep distinct)
 
-1. **Order:** use stable `SYSTEM_ORDER` (hvac → drainage → water → fire → electrical) as the deterministic priority; document that this is a research tie-break, not an engineering priority claim.
-2. **Per-system route:** run the existing multi-system orchestrator one system at a time on that system's occupancy snapshot.
-3. **Reserve:** after a successful system network, expand its routed cells into lower-priority grids using `legacy_reservation_margin_m` (inter-system pair rule; legacy 0.05 m provenance). Shared MAIN cells of the owning system are reserved once.
-4. **Legal share:** only topology-owned shared physical edges (same `physical_edge_id` / MAIN ownership) may overlap; independent same-system runs remain unresolved while `SameSystemClearanceStatus.UNDEFINED`.
-5. **Reroute bound:** if a later system fails, retry that system only with `max_expansions` and `max_proposal_attempts` unchanged; do not reopen higher-priority systems in 9E.0.
-6. **Evaluate independently:** always re-run `multi_system_diagnostics` on the accepted set; routing success never implies zero conflict.
-7. **Clearance sources:** obstacle margins come from configured `routing.clearance_m` + envelopes; inter-system reservation/clash use the legacy-hardcoded 0.05 m pair rule until physical certification replaces both with one measured policy. Same-system clearance must be defined before any zero-conflict claim that includes parallel same-system runs.
+- **Strict (`CONTAINING_CELL_ONLY`)**: authoritative containing cells only; s01 = 5/13 routed.
+- **Benchmark controlled entry (`BENCHMARK_CONTROLLED_ENTRY`)**: uses policy-authorized FREE entry cells for grid search only; s01 = 13/13 grid-routed, connector unvalidated. Alias `EXPLORATORY_ENTRY_CANDIDATE` normalizes to this mode.
+- **Fully validated physical connector engagement**: not implemented; requires independently validated connector / opening geometry.
+- **Evidence snap (`EVIDENCE_SNAP_WITHIN_TOLERANCE`)**: retained legacy exploratory path; same connector disclaimer; s01 = 13/13 grid-routed.
+
+Report routed counts per mode. Never rename benchmark grid completion as strict completion.
+
+### Phase 9E.0 sequential reservation — concrete implementation plan (design only)
+
+Do **not** implement PBS or LNS. Build a thin coordinator on top of the existing edge/network router.
+
+1. **Inputs:** controlled s01 `RoutingProblem`, `SpatialEvidence` (system-specific occupancy grids), `BENCHMARK_V1` clearance policy, chosen endpoint mode (default strict for acceptance; optional named benchmark entry for research), fixed `SYSTEM_ORDER` priority (research tie-break, not an engineering claim).
+2. **Working copies:** clone each system grid into a mutable reservation snapshot. Never mutate the authoritative evidence grids in place without recording provenance.
+3. **Per-system route:** for system `S` in priority order, call the existing physical edge/network router (`route_multi_system` scoped or equivalent per-system SHARED_MAIN→DIRECT path) against snapshot `S` with the same `max_expansions` / `max_proposal_attempts` bounds.
+4. **World-space reservation envelopes:** after `S` accepts a network, convert each routed FREE cell to its world AABB (or centreline service envelope using the owning system's diameter/clearance from `BENCHMARK_V1`), expand by `legacy_reservation_margin_m(S, T)` for every lower-priority system `T`, then mark overlapping cells on snapshot `T` as reserved/blocked. Do **not** copy voxel indices between grids; always transform through world coordinates and each target grid's `spec`.
+5. **Legal share:** only topology-owned shared physical edges (same `physical_edge_id` / MAIN ownership within one system) may occupy the same cells; cross-system share is forbidden by reservation. Independent same-system overlaps remain unresolved while `SameSystemClearanceStatus.UNDEFINED`.
+6. **Bounded reroute:** if system `T` fails after reservations, retry `T` only (same expansion/proposal limits). Do not reopen higher-priority systems in 9E.0.
+7. **Demand integrity:** emit one record per authoritative connection ID for every system, including unsuccessful connections. Completeness and conflict counts are measured together.
+8. **Independent diagnostics:** after the sequential pass, run `multi_system_diagnostics` for inter-system and same-system checks on the accepted edge set. Routing success never implies zero conflict or continuous clash freedom.
+9. **Reporting:** publish per-mode routed counts, reservation application flag, conflict pair counts, and unresolved connector / exact-geometry requirements. No zero-clash claim.
+10. **Out of scope:** PBS, LNS, IFC ports, fabricated penetrations, global clearance relaxation, connector certification.
 
 ### Exact acceptance criteria before honest “complete routing + zero grid conflicts”
 
-1. All 13 authoritative connection IDs present with status `ROUTED` under **strict** endpoint rules, or every non-strict entry is an explicitly authorized connector-clearance exception with geometry checks.
+1. All 13 authoritative connection IDs present with status `ROUTED` under **strict** endpoint rules, or every non-strict entry is an explicitly authorized named policy exception that still leaves connector engagement unvalidated until geometry checks exist.
 2. `connector_engagement_validated` remains false until a transition from the authoritative point to the first FREE cell is independently validated (or an IFC port / approved opening supplies that transition).
 3. Diagnostics: `inter_system_conflicting_pair_count == 0`, `same_system_unexplained_overlap_pair_count == 0`, ownership/policy/obstacle checks `PASS`, and same-system clearance is no longer `UNDEFINED` for evaluated systems.
 4. Incomplete networks remain excluded from conflict denominators; absent checks must not be reported as zero.
 5. No claim of continuous-geometry clash freedom.
+6. Reservations applied via world-space envelopes, not raw cross-grid index copies.
 
 ## Future safety gates
 

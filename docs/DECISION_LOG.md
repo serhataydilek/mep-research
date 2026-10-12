@@ -41,9 +41,12 @@
 | 9D.3 multi-system baseline uses containing-cell endpoints | Accepted | Authoritative result keeps 9D.0's no-snap rule; exploratory modes may use entry/snap cells but never claim connector engagement. |
 | Systems routed independently, conflicts measured afterwards | Accepted | No inter-system reservation in 9D.3; grid-level diagnostics report overlaps and never certify clash freedom. Coordination is a later milestone. |
 | Zero-length shared MAIN rejected | Accepted | A junction proposal coinciding with the (snapped) source cell yields no physical main; the attempt is recorded as `DEGENERATE_ZERO_LENGTH_MAIN` and the next proposal rank or DIRECT is evaluated. |
-| Grid-path completeness ≠ connector engagement | Proposed | 9D.4 keeps `grid_paths_complete` and `connector_engagement_validated` as separate flags; exploratory 13/13 grid routing is not complete physical connection. |
-| Endpoint-entry proposals do not rewrite anchors | Proposed | `endpoint_entry` may propose FREE cells and displacements but preserves authoritative world coordinates and records unresolved connector transitions. |
-| Sequential reservation before PBS/LNS | Proposed | Next coordination milestone is deterministic per-system routing with legacy inter-system reservation margins; PBS/LNS remain out of scope. |
+| Grid-path completeness ≠ connector engagement | Accepted | 9D.4 keeps `grid_paths_complete` and `connector_engagement_validated` as separate flags; exploratory 13/13 grid routing is not complete physical connection. |
+| Endpoint-entry proposals do not rewrite anchors | Accepted | `endpoint_entry` may propose FREE cells and displacements but preserves authoritative world coordinates and records unresolved connector transitions. |
+| Controlled benchmark entry is an explicit named policy | Accepted | 9D.5 `BENCHMARK_CONTROLLED_ENTRY_V1` may authorize short clearance-inflation-only transitions for grid search; raw AABB hits stay rejected; connector engagement is never certified. |
+| Strict / benchmark-entry / connector-engagement remain distinct | Accepted | Report routed counts per mode; never rename benchmark grid completion as strict completion or as connector validation. |
+| Junction placement excludes selected entry/snap cells | Accepted | Prevents zero-length shared MAIN collapse onto an authorized entry cell; degenerate attempts stay unselected. |
+| Sequential reservation before PBS/LNS | Proposed | Next coordination milestone (9E.0) is deterministic per-system routing with world-space reservation envelopes; PBS/LNS remain out of scope. |
 
 ## Risks
 

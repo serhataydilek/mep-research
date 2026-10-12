@@ -14,7 +14,8 @@ from .endpoints import RoutingProblem
 from .junction_placement import JunctionPlacementStatus, propose_junction_placements
 from .physical_edge_routing import PhysicalEdgeRoute, PhysicalEdgeRouteStatus, route_physical_edge
 from .physical_network_routing import route_shared_main_group
-from .endpoint_entry import EndpointEntryReport, EntryClassification, diagnose_routing_problem_endpoints
+from .endpoint_entry import EndpointEntryReport, diagnose_routing_problem_endpoints
+from .endpoint_entry_policy import ControlledEntryDecision, authorize_controlled_entries, benchmark_controlled_entry_v1
 from .spatial_evidence import EndpointGridCompatibility, SpatialEvidence, assess_topology_candidate
 from .topology import TopologyEdgeRole
 from .topology_planner import TopologyCandidate, TopologyCandidateKind, plan_topology_candidates
@@ -32,16 +33,31 @@ class RoutingStrategy(str, Enum):
 
 
 class EndpointCellMode(str, Enum):
-    """Strict mode uses authoritative containing cells; exploratory modes never claim connector engagement."""
+    """Three distinct concepts: strict anchors, policy-authorized benchmark entry, legacy snap exploration.
+
+    None of these modes certifies physical connector engagement.
+    """
     CONTAINING_CELL_ONLY = "CONTAINING_CELL_ONLY"
-    EXPLORATORY_ENTRY_CANDIDATE = "EXPLORATORY_ENTRY_CANDIDATE"
+    BENCHMARK_CONTROLLED_ENTRY = "BENCHMARK_CONTROLLED_ENTRY"
+    EXPLORATORY_ENTRY_CANDIDATE = "EXPLORATORY_ENTRY_CANDIDATE"  # alias retained; resolves to BENCHMARK_CONTROLLED_ENTRY
     EVIDENCE_SNAP_WITHIN_TOLERANCE = "EVIDENCE_SNAP_WITHIN_TOLERANCE"
 
 
+AUTHORIZED_BENCHMARK_MODES = frozenset({
+    EndpointCellMode.BENCHMARK_CONTROLLED_ENTRY,
+    EndpointCellMode.EXPLORATORY_ENTRY_CANDIDATE,
+})
 EXPLORATORY_MODES = frozenset({
+    EndpointCellMode.BENCHMARK_CONTROLLED_ENTRY,
     EndpointCellMode.EXPLORATORY_ENTRY_CANDIDATE,
     EndpointCellMode.EVIDENCE_SNAP_WITHIN_TOLERANCE,
 })
+
+
+def _normalize_endpoint_mode(mode: EndpointCellMode) -> EndpointCellMode:
+    if mode is EndpointCellMode.EXPLORATORY_ENTRY_CANDIDATE:
+        return EndpointCellMode.BENCHMARK_CONTROLLED_ENTRY
+    return mode
 
 
 @dataclass(frozen=True, slots=True)
@@ -122,8 +138,9 @@ class MultiSystemRoutingResult:
     connections: tuple[ConnectionRouteRecord, ...]; edges: tuple[PhysicalEdgeRecord, ...]; attempts: tuple[StrategyAttempt, ...]
     limits: tuple[tuple[str, int], ...]; endpoint_cell_mode: EndpointCellMode = EndpointCellMode.CONTAINING_CELL_ONLY
     endpoint_snaps: tuple[EndpointSnap, ...] = (); endpoint_entry: EndpointEntryReport | None = None
+    controlled_entry: ControlledEntryDecision | None = None
     grid_paths_complete: bool = False; connector_engagement_validated: bool = False
-    inter_system_reservation_applied: bool = False; collision_free_claimed: bool = False
+    strict_mode: bool = True; inter_system_reservation_applied: bool = False; collision_free_claimed: bool = False
 
     def __post_init__(self) -> None:
         if self.collision_free_claimed: raise ValueError('Multi-system routing cannot claim collision freedom.')
@@ -134,6 +151,10 @@ class MultiSystemRoutingResult:
         if len(ids) != len(set(ids)): raise ValueError('A physical edge may be routed only once.')
         if self.grid_paths_complete != (self.count(ConnectionRouteStatus.ROUTED) == len(self.required_connection_ids)):
             raise ValueError('grid_paths_complete must equal full ROUTED coverage of required connections.')
+        if self.strict_mode and self.endpoint_cell_mode is not EndpointCellMode.CONTAINING_CELL_ONLY:
+            raise ValueError('strict_mode is reserved for CONTAINING_CELL_ONLY results.')
+        if self.strict_mode and self.controlled_entry is not None and self.controlled_entry.authorized_entry_cells:
+            raise ValueError('Strict mode cannot carry authorized benchmark entry cells.')
 
     def count(self, status: ConnectionRouteStatus) -> int:
         return sum(x.status is status for x in self.connections)
@@ -148,6 +169,9 @@ class MultiSystemRoutingResult:
                 **{f"{s.value.lower()}_connection_count": self.count(s) for s in ConnectionRouteStatus},
                 "physical_edge_count": len(self.edges), "routed_physical_edge_count": sum(x.route.status is PhysicalEdgeRouteStatus.ROUTED for x in self.edges),
                 "grid_paths_complete": self.grid_paths_complete, "connector_engagement_validated": False,
+                "strict_mode": self.strict_mode,
+                "benchmark_controlled_entry_mode": self.endpoint_cell_mode is EndpointCellMode.BENCHMARK_CONTROLLED_ENTRY,
+                "legacy_evidence_snap_mode": self.endpoint_cell_mode is EndpointCellMode.EVIDENCE_SNAP_WITHIN_TOLERANCE,
                 "exploratory_endpoint_mode": self.endpoint_cell_mode in EXPLORATORY_MODES, "per_system": per_system}
 
     def to_canonical_dict(self) -> dict[str, Any]:
@@ -158,7 +182,8 @@ class MultiSystemRoutingResult:
                 "attempts": [x.to_canonical_dict() for x in self.attempts], "limits": dict(self.limits), "summary": self.summary(),
                 "endpoint_cell_mode": self.endpoint_cell_mode.value, "endpoint_snaps": [x.to_canonical_dict() for x in self.endpoint_snaps],
                 "endpoint_entry": None if self.endpoint_entry is None else self.endpoint_entry.to_canonical_dict(),
-                "grid_paths_complete": self.grid_paths_complete, "connector_engagement_validated": False,
+                "controlled_entry": None if self.controlled_entry is None else self.controlled_entry.to_canonical_dict(),
+                "grid_paths_complete": self.grid_paths_complete, "connector_engagement_validated": False, "strict_mode": self.strict_mode,
                 "inter_system_reservation_applied": False, "collision_free_claimed": False,
                 "unresolved_physical_requirements": ["FITTING_GEOMETRY_UNEVALUATED", "CONNECTOR_ENGAGEMENT_UNEVALUATED", "EXACT_COLLISION_CERTIFICATION_UNAVAILABLE"]}
 
@@ -235,16 +260,26 @@ def route_multi_system(problem: RoutingProblem, evidence: SpatialEvidence, polic
         raise ValueError('Multi-system routing requires a RoutingProblem, SpatialEvidence and ClearancePolicy.')
     if max_expansions < 1 or max_proposal_attempts < 1: raise ValueError('Routing limits must be positive.')
     if not isinstance(endpoint_cell_mode, EndpointCellMode): raise ValueError('Endpoint cell mode must be an EndpointCellMode.')
+    requested_mode = endpoint_cell_mode
+    endpoint_cell_mode = _normalize_endpoint_mode(endpoint_cell_mode)
     candidates = plan_topology_candidates(problem)
     direct = next(x for x in candidates if x.kind is TopologyCandidateKind.DIRECT)
     entry_report = diagnose_routing_problem_endpoints(problem, evidence, policy, endpoint_frame_id=endpoint_frame_id)
-    snaps = _endpoint_snaps(direct, evidence, endpoint_frame_id) if endpoint_cell_mode is EndpointCellMode.EVIDENCE_SNAP_WITHIN_TOLERANCE else ()
+    controlled = None
+    snaps = ()
+    excluded_for_junctions: tuple[tuple[int, int, int], ...] = ()
     if endpoint_cell_mode is EndpointCellMode.CONTAINING_CELL_ONLY:
         cells = None
-    elif endpoint_cell_mode is EndpointCellMode.EXPLORATORY_ENTRY_CANDIDATE:
-        cells = entry_report.entry_cells() or None
-    else:
+    elif endpoint_cell_mode is EndpointCellMode.BENCHMARK_CONTROLLED_ENTRY:
+        controlled = authorize_controlled_entries(entry_report, evidence, policy, benchmark_controlled_entry_v1())
+        cells = controlled.entry_cells() or None
+        excluded_for_junctions = tuple(sorted(set(controlled.entry_cells().values())))
+    elif endpoint_cell_mode is EndpointCellMode.EVIDENCE_SNAP_WITHIN_TOLERANCE:
+        snaps = _endpoint_snaps(direct, evidence, endpoint_frame_id)
         cells = {x.endpoint_id: x.snap_cell for x in snaps} or None
+        excluded_for_junctions = tuple(sorted({x.snap_cell for x in snaps}))
+    else:
+        raise ValueError(f'Unsupported endpoint cell mode: {requested_mode.value}')
     demand_systems = {x.system.value for x in problem.connections}
     systems = tuple(s for s in SYSTEM_ORDER if s in demand_systems) + tuple(sorted(demand_systems - set(SYSTEM_ORDER)))
     groups: dict[str, list[tuple[TopologyCandidate, tuple[str, ...]]]] = {}
@@ -267,7 +302,16 @@ def route_multi_system(problem: RoutingProblem, evidence: SpatialEvidence, polic
         grouped = set()
         for candidate, members in groups.get(system, []):
             grouped.update(members); group_id = f"{system}/{candidate.candidate_id}"
-            placement = propose_junction_placements(candidate, evidence, endpoint_frame_id=endpoint_frame_id)
+            system_cell_map = {}
+            if cells:
+                for endpoint_id, cell in cells.items():
+                    ep = next((x for x in problem.endpoints if x.endpoint_id == endpoint_id), None)
+                    if ep is not None and ep.system.value == system:
+                        system_cell_map[endpoint_id] = cell
+            system_exclusions = tuple(sorted(set(system_cell_map.values())))
+            placement = propose_junction_placements(
+                candidate, evidence, endpoint_frame_id=endpoint_frame_id, extra_excluded_cells=system_exclusions,
+            )
             junction = placement.junctions[0] if len(placement.junctions) == 1 else None
             shared_options = []
             if junction is None:
@@ -276,11 +320,16 @@ def route_multi_system(problem: RoutingProblem, evidence: SpatialEvidence, polic
                 reason = f"JUNCTION_PLACEMENT_{junction.unresolved_reason.value if junction.unresolved_reason else 'UNRESOLVED'}"
             else:
                 reason = None
-                for rank in range(min(len(junction.proposals), max_proposal_attempts)):
+                forbidden = set(system_exclusions)
+                usable_ranks = [rank for rank, proposal in enumerate(junction.proposals) if proposal.grid_index not in forbidden]
+                if not usable_ranks and junction.proposals:
+                    reason = 'ALL_JUNCTION_PROPOSALS_COINCIDE_WITH_ENDPOINT_OR_ENTRY_CELL'
+                for rank in usable_ranks[:max_proposal_attempts]:
                     network = route_shared_main_group(candidate, evidence, policy, placement, junction_node_id=junction.junction_node_id,
                                                       proposal_rank=rank, endpoint_frame_id=endpoint_frame_id, max_expansions=max_expansions, endpoint_cells=cells)
                     routes = (network.main, *network.branches); by_edge = {r.edge_id: r for r in routes}
                     conn = _connection_records(candidate, members, by_edge, group_id, RoutingStrategy.SHARED_MAIN)
+                    # Defense in depth: never accept a zero-length MAIN even if exclusion missed a cell.
                     degenerate = network.main.status is PhysicalEdgeRouteStatus.ROUTED and len(network.main.grid_cells) < 2
                     shared_options.append((rank, network, routes, conn, degenerate))
                     if network.complete and not degenerate: break
@@ -317,7 +366,7 @@ def route_multi_system(problem: RoutingProblem, evidence: SpatialEvidence, polic
     required = tuple(x.connection_id for x in problem.connections)
     missing = [x for x in required if x not in records]
     if missing: raise RuntimeError(f"Multi-system routing lost connection identities: {missing}")
-    entry_ids = set(entry_report.entry_cells()) if endpoint_cell_mode is EndpointCellMode.EXPLORATORY_ENTRY_CANDIDATE else set()
+    authorized_ids = set(controlled.entry_cells()) if controlled is not None else set()
     snapped = {x.endpoint_id for x in snaps}
     ends = {x.connection_id: {x.start_endpoint_id, x.end_endpoint_id} for x in problem.connections}
     final_records = []
@@ -325,16 +374,19 @@ def route_multi_system(problem: RoutingProblem, evidence: SpatialEvidence, polic
         extra: tuple[str, ...] = ()
         touched = ends[connection_id]
         if touched & snapped:
-            extra += ("ENDPOINT_SNAPPED_CONNECTOR_ENGAGEMENT_UNVALIDATED", "GRID_PATH_COMPLETE_DOES_NOT_IMPLY_CONNECTOR_ENGAGEMENT")
-        if touched & entry_ids:
-            extra += ("EXPLORATORY_ENTRY_CELL_USED", "CONNECTOR_TRANSITION_TO_ENTRY_CELL_UNEVALUATED", "PHYSICAL_CONNECTOR_ENGAGEMENT_UNVALIDATED",
-                      "AUTHORITATIVE_ENDPOINT_COORDINATE_UNCHANGED", "GRID_PATH_COMPLETE_DOES_NOT_IMPLY_CONNECTOR_ENGAGEMENT")
+            extra += ("ENDPOINT_SNAPPED_CONNECTOR_ENGAGEMENT_UNVALIDATED", "GRID_PATH_COMPLETE_DOES_NOT_IMPLY_CONNECTOR_ENGAGEMENT",
+                      "LEGACY_EVIDENCE_SNAP_MODE_NOT_STRICT")
+        if touched & authorized_ids:
+            extra += ("BENCHMARK_CONTROLLED_ENTRY_AUTHORIZED", "CONNECTOR_TRANSITION_TO_ENTRY_CELL_UNEVALUATED",
+                      "PHYSICAL_CONNECTOR_ENGAGEMENT_UNVALIDATED", "AUTHORITATIVE_ENDPOINT_COORDINATE_UNCHANGED",
+                      "GRID_PATH_COMPLETE_DOES_NOT_IMPLY_CONNECTOR_ENGAGEMENT", "NOT_STRICT_AUTHORITATIVE_ENDPOINT_ROUTING")
         final_records.append(_regroup(records[connection_id], records[connection_id].group_id, extra))
     routed_count = sum(item.status is ConnectionRouteStatus.ROUTED for item in final_records)
     return MultiSystemRoutingResult(evidence.provenance.scenario_id, evidence.coordinate_reference.frame_id, policy.policy_id, policy.digest_sha256,
                                     systems, required, tuple(final_records), tuple(sorted(edges, key=lambda e: (SYSTEM_ORDER.index(e.system) if e.system in SYSTEM_ORDER else len(SYSTEM_ORDER), e.physical_edge_id))),
                                     tuple(attempts), (("max_expansions_per_edge", max_expansions), ("max_proposal_attempts_per_junction", max_proposal_attempts)),
-                                    endpoint_cell_mode, snaps, entry_report, routed_count == len(required), False)
+                                    endpoint_cell_mode, snaps, entry_report, controlled, routed_count == len(required), False,
+                                    endpoint_cell_mode is EndpointCellMode.CONTAINING_CELL_ONLY)
 
 
 def _regroup(record: ConnectionRouteRecord, group_id: str, extra_requirements: tuple[str, ...] = ()) -> ConnectionRouteRecord:

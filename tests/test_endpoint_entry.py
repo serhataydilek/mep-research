@@ -147,10 +147,10 @@ class EndpointEntryTests(unittest.TestCase):
         demand = [item.connection_id for item in self.p.connections]
         self.assertEqual(len(demand), 13)
         strict = route_multi_system(self.p, self.e, self.pol, endpoint_frame_id=self.f)
-        exploratory = route_multi_system(
-            self.p, self.e, self.pol, endpoint_frame_id=self.f, endpoint_cell_mode=EndpointCellMode.EXPLORATORY_ENTRY_CANDIDATE
+        controlled = route_multi_system(
+            self.p, self.e, self.pol, endpoint_frame_id=self.f, endpoint_cell_mode=EndpointCellMode.BENCHMARK_CONTROLLED_ENTRY
         )
-        for result, routed in ((strict, 5), (exploratory, 13)):
+        for result, routed in ((strict, 5), (controlled, 13)):
             self.assertEqual(list(result.required_connection_ids), demand)
             self.assertEqual([item.connection_id for item in result.connections], demand)
             self.assertEqual(result.count(result.connections[0].status.__class__.ROUTED), routed)
@@ -158,23 +158,28 @@ class EndpointEntryTests(unittest.TestCase):
             self.assertEqual(result.grid_paths_complete, routed == 13)
             self.assertIsNotNone(result.endpoint_entry)
             self.assertEqual(len(result.endpoint_entry.diagnoses), len({eid for c in self.p.connections for eid in (c.start_endpoint_id, c.end_endpoint_id)}))
-        for record in exploratory.connections:
+        self.assertTrue(strict.strict_mode)
+        self.assertFalse(controlled.strict_mode)
+        self.assertIsNotNone(controlled.controlled_entry)
+        for record in controlled.connections:
             if record.system in ("hvac", "fire", "water"):
-                self.assertIn("EXPLORATORY_ENTRY_CELL_USED", record.unvalidated_requirements)
+                self.assertIn("BENCHMARK_CONTROLLED_ENTRY_AUTHORIZED", record.unvalidated_requirements)
                 self.assertIn("PHYSICAL_CONNECTOR_ENGAGEMENT_UNVALIDATED", record.unvalidated_requirements)
                 self.assertIn("GRID_PATH_COMPLETE_DOES_NOT_IMPLY_CONNECTOR_ENGAGEMENT", record.unvalidated_requirements)
         with self.assertRaisesRegex(ValueError, "connector engagement validation"):
-            replace(exploratory, connector_engagement_validated=True)
+            replace(controlled, connector_engagement_validated=True)
 
     def test_no_false_complete_physical_network_claim(self):
-        exploratory = route_multi_system(
-            self.p, self.e, self.pol, endpoint_frame_id=self.f, endpoint_cell_mode=EndpointCellMode.EXPLORATORY_ENTRY_CANDIDATE
+        controlled = route_multi_system(
+            self.p, self.e, self.pol, endpoint_frame_id=self.f, endpoint_cell_mode=EndpointCellMode.BENCHMARK_CONTROLLED_ENTRY
         )
-        payload = exploratory.to_canonical_dict()
+        payload = controlled.to_canonical_dict()
         self.assertTrue(payload["grid_paths_complete"])
         self.assertFalse(payload["connector_engagement_validated"])
         self.assertFalse(payload["collision_free_claimed"])
+        self.assertFalse(payload["strict_mode"])
         self.assertIn("CONNECTOR_ENGAGEMENT_UNEVALUATED", payload["unresolved_physical_requirements"])
+        self.assertTrue(payload["summary"]["benchmark_controlled_entry_mode"])
         self.assertTrue(payload["summary"]["exploratory_endpoint_mode"])
         self.assertFalse(payload["summary"]["connector_engagement_validated"])
 

@@ -64,13 +64,20 @@ class MultiSystemRoutingTests(MultiSystemBase):
         self.assertEqual([x.system for x in self.snap.attempts if x.selected], list(self.snap.systems))
 
     def test_degenerate_zero_length_main_is_rejected(self):
-        water = [x for x in self.snap.attempts if x.system == "water"]
-        self.assertEqual(water[0].reason, "DEGENERATE_ZERO_LENGTH_MAIN")
-        self.assertFalse(water[0].selected)
-        self.assertEqual(water[0].routed_connection_ids, ())
+        # Entry/snap cells are excluded from junction search so a shared MAIN cannot collapse.
+        for result in (self.strict, self.snap):
+            degenerate = [x for x in result.attempts if x.reason == "DEGENERATE_ZERO_LENGTH_MAIN"]
+            self.assertTrue(all(not x.selected and x.routed_connection_ids == () for x in degenerate))
+            self.assertTrue(
+                all(len(x.route.grid_cells) >= 2 for x in result.edges
+                    if x.role == "MAIN" and x.route.status is PhysicalEdgeRouteStatus.ROUTED)
+            )
+        water = [x for x in self.snap.attempts if x.system == "water" and x.selected]
+        self.assertEqual(len(water), 1)
+        self.assertIs(water[0].strategy, RoutingStrategy.SHARED_MAIN)
+        self.assertIsNone(water[0].reason)
         main = next(x for x in self.snap.edges if x.role == "MAIN" and x.system == "water")
         self.assertGreaterEqual(len(main.route.grid_cells), 2)
-        self.assertTrue(all(len(x.route.grid_cells) >= 2 for x in self.snap.edges if x.role == "MAIN"))
 
     def test_shared_main_routed_once_and_owned_by_one_system(self):
         mains = [x for x in self.snap.edges if x.role == "MAIN"]

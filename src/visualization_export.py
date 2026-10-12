@@ -74,7 +74,7 @@ def export_single_system_fixture(path:Path,root:Path=ROOT)->dict:
 MAX_REGIONS_PER_PAIR=10
 MULTI_SYSTEM_FIXTURES={
  'CONTAINING_CELL_ONLY':'multi_system_fixture.json',
- 'EXPLORATORY_ENTRY_CANDIDATE':'multi_system_entry_fixture.json',
+ 'BENCHMARK_CONTROLLED_ENTRY':'multi_system_entry_fixture.json',
  'EVIDENCE_SNAP_WITHIN_TOLERANCE':'multi_system_snap_fixture.json',
 }
 CERTIFICATION_WARNING='Grid-level diagnostics only: voxel centerlines and AABB envelope proxies. This is NOT continuous-geometry clash certification; no zero-clash claim is made. Grid-path completeness does not imply authoritative connector engagement.'
@@ -132,6 +132,8 @@ def export_multi_system_fixture(result,diagnostics:dict,evidence:SpatialEvidence
   'geometric_clash_certified':False,'collision_free_claimed':False,'connector_engagement_validated':False,'grid_paths_complete':result.grid_paths_complete,
   'inter_system_reservation_applied':False,'policy_id':result.policy_id,'policy_digest_sha256':result.policy_digest_sha256,
   'endpoint_entry_summary':None if result.endpoint_entry is None else result.endpoint_entry.to_canonical_dict()['summary'],
+  'controlled_entry_summary':None if result.controlled_entry is None else result.controlled_entry.to_canonical_dict()['summary'],
+  'strict_mode':result.strict_mode,
   'systems':list(result.systems),'required_connection_ids':list(result.required_connection_ids),'summary':result.summary(),'obstacles':obstacle_records(evidence),'endpoints':endpoints,'junctions':junctions,
   'edges':edges,'connections':[item.to_canonical_dict() for item in result.connections],'attempts':[item.to_canonical_dict() for item in result.attempts],'conflicts':conflicts,
   'max_regions_per_pair':MAX_REGIONS_PER_PAIR,'diagnostics_summary':diagnostics['summary'],'unresolved_collision_semantics':diagnostics['unresolved_collision_semantics'],
