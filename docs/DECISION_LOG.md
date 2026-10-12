@@ -46,7 +46,9 @@
 | Controlled benchmark entry is an explicit named policy | Accepted | 9D.5 `BENCHMARK_CONTROLLED_ENTRY_V1` may authorize short clearance-inflation-only transitions for grid search; raw AABB hits stay rejected; connector engagement is never certified. |
 | Strict / benchmark-entry / connector-engagement remain distinct | Accepted | Report routed counts per mode; never rename benchmark grid completion as strict completion or as connector validation. |
 | Junction placement excludes selected entry/snap cells | Accepted | Prevents zero-length shared MAIN collapse onto an authorized entry cell; degenerate attempts stay unselected. |
-| Sequential reservation before PBS/LNS | Proposed | Next coordination milestone (9E.0) is deterministic per-system routing with world-space reservation envelopes; PBS/LNS remain out of scope. |
+| Sequential reservation before PBS/LNS | Accepted | 9E.0 `SEQUENTIAL_RESERVATION_V1` routes systems in `SYSTEM_ORDER`, reserves accepted physical edges via world-space `legacy_reservation_margin_m` envelopes onto derived grids, and measures completeness with conflicts. PBS/LNS remain out of scope. |
+| Reserve only fully routed edge ownership | Accepted | Incomplete network fragments are not reserved; matches diagnostic evaluation denominators and avoids blocking lower systems with rejected paths. |
+| Coordination may reduce routed count to cut conflicts | Accepted | Honest trade-off: s01 coordinated benchmark entry yields fewer grid-complete connections and fewer inter-system pairs; neither outcome is fabricated or renamed as physical certification. |
 
 ## Risks
 

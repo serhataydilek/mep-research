@@ -130,7 +130,7 @@ def export_multi_system_fixture(result,diagnostics:dict,evidence:SpatialEvidence
  data={'schema_version':2,'kind':'MULTI_SYSTEM','scenario_id':result.scenario_id,'coordinate_frame':evidence.coordinate_reference.frame_id,'units':'m','building_geometry_kind':'AABB_APPROXIMATION',
   'endpoint_cell_mode':result.endpoint_cell_mode.value,'disclaimer':'Grid routing only — physical geometry and zero-clash validation pending','certification_warning':CERTIFICATION_WARNING,
   'geometric_clash_certified':False,'collision_free_claimed':False,'connector_engagement_validated':False,'grid_paths_complete':result.grid_paths_complete,
-  'inter_system_reservation_applied':False,'policy_id':result.policy_id,'policy_digest_sha256':result.policy_digest_sha256,
+  'inter_system_reservation_applied':bool(result.inter_system_reservation_applied),'policy_id':result.policy_id,'policy_digest_sha256':result.policy_digest_sha256,
   'endpoint_entry_summary':None if result.endpoint_entry is None else result.endpoint_entry.to_canonical_dict()['summary'],
   'controlled_entry_summary':None if result.controlled_entry is None else result.controlled_entry.to_canonical_dict()['summary'],
   'strict_mode':result.strict_mode,
@@ -143,9 +143,12 @@ def export_multi_system_fixture(result,diagnostics:dict,evidence:SpatialEvidence
  validate_multi_system_fixture(data);geometry_bounds(data['obstacles'],[{'world_centerline_m':e['world_polyline_m']} for e in data['edges']],[e['world_m'] for e in endpoints]+[j['world_m'] for j in junctions])
  write_fixture(data,path);return data
 
-def export_multi_system_fixtures(directory:Path,root:Path=ROOT,diagnostics_directory:Path|None=None)->dict:
+COORDINATED_FIXTURE='multi_system_coordinated_fixture.json'
+
+def export_multi_system_fixtures(directory:Path,root:Path=ROOT,diagnostics_directory:Path|None=None,*,include_coordinated:bool=False)->dict:
  from .multi_system_diagnostics import diagnose_multi_system_conflicts, diagnostics_to_json
  from .multi_system_routing import EndpointCellMode, route_multi_system
+ from .sequential_coordination import coordinate_and_diagnose
  problem,evidence,policy,frame=controlled_s01_inputs(root);written={}
  for mode_name,filename in MULTI_SYSTEM_FIXTURES.items():
   mode=EndpointCellMode(mode_name)
@@ -154,17 +157,28 @@ def export_multi_system_fixtures(directory:Path,root:Path=ROOT,diagnostics_direc
   if diagnostics_directory is not None:
    diagnostics_directory.mkdir(parents=True,exist_ok=True);stem=filename.replace('fixture.json','')
    (diagnostics_directory/f'{stem}routing.json').write_text(result.to_canonical_json(),encoding='utf-8');(diagnostics_directory/f'{stem}diagnostics.json').write_text(diagnostics_to_json(diagnostics),encoding='utf-8')
+ if include_coordinated:
+  coordinated,diagnostics=coordinate_and_diagnose(problem,evidence,policy,endpoint_frame_id=frame,endpoint_cell_mode=EndpointCellMode.BENCHMARK_CONTROLLED_ENTRY)
+  data=export_multi_system_fixture(coordinated.routing,diagnostics,evidence,problem,directory/COORDINATED_FIXTURE)
+  data['coordination']=coordinated.to_canonical_dict();data['coordination_method_id']=coordinated.method_id
+  data['coordination_summary']=coordinated.summary();write_fixture(data,directory/COORDINATED_FIXTURE)
+  written['SEQUENTIAL_RESERVATION_V1']=data
+  if diagnostics_directory is not None:
+   diagnostics_directory.mkdir(parents=True,exist_ok=True)
+   (diagnostics_directory/'multi_system_coordinated_routing.json').write_text(coordinated.to_canonical_json(),encoding='utf-8')
+   (diagnostics_directory/'multi_system_coordinated_diagnostics.json').write_text(diagnostics_to_json(diagnostics),encoding='utf-8')
  return written
 
 def main()->int:
  parser=argparse.ArgumentParser(description='Regenerate the deterministic s01 viewer fixtures.')
  parser.add_argument('--output',type=Path,default=ROOT/'viewer'/'viewer_fixture.json')
  parser.add_argument('--multi-system',action='store_true',help='Also write both multi-system fixtures next to --output.')
+ parser.add_argument('--coordinated',action='store_true',help='Also write the sequential-coordination multi-system fixture.')
  parser.add_argument('--diagnostics-dir',type=Path,default=None,help='Optionally write full routing and diagnostics JSON here.')
  args=parser.parse_args();data=export_single_system_fixture(args.output)
  print(f"{args.output}: {1+len(data['network']['branches'])} edges, {len(data['obstacles'])} obstacles")
- if args.multi_system:
-  for mode,fixture in export_multi_system_fixtures(args.output.parent,diagnostics_directory=args.diagnostics_dir).items():
+ if args.multi_system or args.coordinated:
+  for mode,fixture in export_multi_system_fixtures(args.output.parent,diagnostics_directory=args.diagnostics_dir,include_coordinated=args.coordinated).items():
    s=fixture['summary'];print(f"{mode}: {s['routed_connection_count']}/{s['required_connection_count']} routed, {len(fixture['conflicts'])} conflict records, verdict {fixture['diagnostics_summary']['grid_level_verdict']}")
  return 0
 

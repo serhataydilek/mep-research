@@ -161,20 +161,33 @@ Measured on `s01-d01` (13 connections, 5 systems): containing-cell mode routes 5
 
 Report routed counts per mode. Never rename benchmark grid completion as strict completion.
 
-### Phase 9E.0 sequential reservation — concrete implementation plan (design only)
+### Phase 9E.0 sequential reservation — implemented (`SEQUENTIAL_RESERVATION_V1`)
 
-Do **not** implement PBS or LNS. Build a thin coordinator on top of the existing edge/network router.
+`src/sequential_coordination.py` coordinates systems in deterministic `SYSTEM_ORDER` without PBS/LNS.
 
-1. **Inputs:** controlled s01 `RoutingProblem`, `SpatialEvidence` (system-specific occupancy grids), `BENCHMARK_V1` clearance policy, chosen endpoint mode (default strict for acceptance; optional named benchmark entry for research), fixed `SYSTEM_ORDER` priority (research tie-break, not an engineering claim).
-2. **Working copies:** clone each system grid into a mutable reservation snapshot. Never mutate the authoritative evidence grids in place without recording provenance.
-3. **Per-system route:** for system `S` in priority order, call the existing physical edge/network router (`route_multi_system` scoped or equivalent per-system SHARED_MAIN→DIRECT path) against snapshot `S` with the same `max_expansions` / `max_proposal_attempts` bounds.
-4. **World-space reservation envelopes:** after `S` accepts a network, convert each routed FREE cell to its world AABB (or centreline service envelope using the owning system's diameter/clearance from `BENCHMARK_V1`), expand by `legacy_reservation_margin_m(S, T)` for every lower-priority system `T`, then mark overlapping cells on snapshot `T` as reserved/blocked. Do **not** copy voxel indices between grids; always transform through world coordinates and each target grid's `spec`.
-5. **Legal share:** only topology-owned shared physical edges (same `physical_edge_id` / MAIN ownership within one system) may occupy the same cells; cross-system share is forbidden by reservation. Independent same-system overlaps remain unresolved while `SameSystemClearanceStatus.UNDEFINED`.
-6. **Bounded reroute:** if system `T` fails after reservations, retry `T` only (same expansion/proposal limits). Do not reopen higher-priority systems in 9E.0.
-7. **Demand integrity:** emit one record per authoritative connection ID for every system, including unsuccessful connections. Completeness and conflict counts are measured together.
-8. **Independent diagnostics:** after the sequential pass, run `multi_system_diagnostics` for inter-system and same-system checks on the accepted edge set. Routing success never implies zero conflict or continuous clash freedom.
-9. **Reporting:** publish per-mode routed counts, reservation application flag, conflict pair counts, and unresolved connector / exact-geometry requirements. No zero-clash claim.
-10. **Out of scope:** PBS, LNS, IFC ports, fabricated penetrations, global clearance relaxation, connector certification.
+1. Clone each system occupancy grid into a derived `bytearray` snapshot; never mutate source `SpatialEvidence` grids.
+2. For system `S`, call `route_multi_system(..., only_systems=(S,))` on the full problem (stable physical-edge IDs) against evidence rebuilt from derived cells.
+3. After fully routed connections for `S`, reserve each accepted physical edge once onto every lower-priority target via world-space `swept_segment_aabb` + `legacy_reservation_margin_m` (B1 provenance), rasterized with `aabb_index_ranges` on the target `GridSpec`.
+4. Incomplete network fragments are not reserved. Cross-system ownership remains forbidden. Same-system clearance stays `UNDEFINED`.
+5. Bounded SHARED_MAIN proposal attempts and DIRECT fallback remain inside existing router limits; no global backtracking.
+6. Independent `multi_system_diagnostics` runs against source evidence after reminting route digests to source grid hashes.
+7. Viewer fixture: `multi_system_coordinated_fixture.json` (optional `--coordinated` export).
+
+Measured s01/d01 (benchmark controlled entry unless noted):
+
+| Method | Required | Routed | Inter-system conflicts | Same-system unresolved |
+|---|---|---|---|---|
+| Strict containing-cell | 13 | 5 | 2 | 0 |
+| Controlled entry, no coordination | 13 | 13 | 28 | 2 |
+| Controlled entry + sequential reservation | 13 | 8 | 0 | 2 |
+
+Water and electrical remain unresolved under coordination when prior reservations occupy authoritative/entry cells (`ENDPOINT_CELL_NOT_FREE`). Connector engagement and continuous clash freedom remain uncertified.
+
+### Next toward conflict repair / PBS (not started)
+
+- Selective repair of blocked lower-priority systems without dropping demand.
+- Explicit same-system clearance definition before zero same-system unresolved claims.
+- Optional PBS/LNS only after sequential baselines and independent diagnostics stay honest.
 
 ### Exact acceptance criteria before honest “complete routing + zero grid conflicts”
 

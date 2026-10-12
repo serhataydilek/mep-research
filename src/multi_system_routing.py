@@ -170,6 +170,7 @@ class MultiSystemRoutingResult:
                 "physical_edge_count": len(self.edges), "routed_physical_edge_count": sum(x.route.status is PhysicalEdgeRouteStatus.ROUTED for x in self.edges),
                 "grid_paths_complete": self.grid_paths_complete, "connector_engagement_validated": False,
                 "strict_mode": self.strict_mode,
+                "inter_system_reservation_applied": self.inter_system_reservation_applied,
                 "benchmark_controlled_entry_mode": self.endpoint_cell_mode is EndpointCellMode.BENCHMARK_CONTROLLED_ENTRY,
                 "legacy_evidence_snap_mode": self.endpoint_cell_mode is EndpointCellMode.EVIDENCE_SNAP_WITHIN_TOLERANCE,
                 "exploratory_endpoint_mode": self.endpoint_cell_mode in EXPLORATORY_MODES, "per_system": per_system}
@@ -184,7 +185,7 @@ class MultiSystemRoutingResult:
                 "endpoint_entry": None if self.endpoint_entry is None else self.endpoint_entry.to_canonical_dict(),
                 "controlled_entry": None if self.controlled_entry is None else self.controlled_entry.to_canonical_dict(),
                 "grid_paths_complete": self.grid_paths_complete, "connector_engagement_validated": False, "strict_mode": self.strict_mode,
-                "inter_system_reservation_applied": False, "collision_free_claimed": False,
+                "inter_system_reservation_applied": self.inter_system_reservation_applied, "collision_free_claimed": False,
                 "unresolved_physical_requirements": ["FITTING_GEOMETRY_UNEVALUATED", "CONNECTOR_ENGAGEMENT_UNEVALUATED", "EXACT_COLLISION_CERTIFICATION_UNAVAILABLE"]}
 
     def to_canonical_json(self) -> str:
@@ -254,12 +255,22 @@ def _endpoint_snaps(direct: TopologyCandidate, evidence: SpatialEvidence, frame:
 
 def route_multi_system(problem: RoutingProblem, evidence: SpatialEvidence, policy: ClearancePolicy, *, endpoint_frame_id: str,
                        max_expansions: int = 50000, max_proposal_attempts: int = 3,
-                       endpoint_cell_mode: EndpointCellMode = EndpointCellMode.CONTAINING_CELL_ONLY) -> MultiSystemRoutingResult:
-    """Route every authoritative connection once; record every success, failure and unresolved case."""
+                       endpoint_cell_mode: EndpointCellMode = EndpointCellMode.CONTAINING_CELL_ONLY,
+                       only_systems: tuple[str, ...] | None = None) -> MultiSystemRoutingResult:
+    """Route every authoritative connection once; record every success, failure and unresolved case.
+
+    ``only_systems`` optionally limits routing to a subset while still planning topology on the
+    full problem so physical edge identities stay globally unique (used by sequential coordination).
+    """
     if not isinstance(problem, RoutingProblem) or not isinstance(evidence, SpatialEvidence) or not isinstance(policy, ClearancePolicy):
         raise ValueError('Multi-system routing requires a RoutingProblem, SpatialEvidence and ClearancePolicy.')
     if max_expansions < 1 or max_proposal_attempts < 1: raise ValueError('Routing limits must be positive.')
     if not isinstance(endpoint_cell_mode, EndpointCellMode): raise ValueError('Endpoint cell mode must be an EndpointCellMode.')
+    if only_systems is not None:
+        if not only_systems or any(not isinstance(item, str) or not item for item in only_systems):
+            raise ValueError('only_systems must be a non-empty tuple of system names when provided.')
+        if len(set(only_systems)) != len(only_systems):
+            raise ValueError('only_systems must not contain duplicates.')
     requested_mode = endpoint_cell_mode
     endpoint_cell_mode = _normalize_endpoint_mode(endpoint_cell_mode)
     candidates = plan_topology_candidates(problem)
@@ -282,6 +293,11 @@ def route_multi_system(problem: RoutingProblem, evidence: SpatialEvidence, polic
         raise ValueError(f'Unsupported endpoint cell mode: {requested_mode.value}')
     demand_systems = {x.system.value for x in problem.connections}
     systems = tuple(s for s in SYSTEM_ORDER if s in demand_systems) + tuple(sorted(demand_systems - set(SYSTEM_ORDER)))
+    if only_systems is not None:
+        unknown = [item for item in only_systems if item not in demand_systems]
+        if unknown:
+            raise ValueError(f'only_systems references systems absent from demand: {unknown}')
+        systems = tuple(item for item in systems if item in set(only_systems))
     groups: dict[str, list[tuple[TopologyCandidate, tuple[str, ...]]]] = {}
     for candidate in candidates:
         if candidate.kind is not TopologyCandidateKind.SHARED_MAIN: continue
@@ -363,7 +379,7 @@ def route_multi_system(problem: RoutingProblem, evidence: SpatialEvidence, polic
             routed = tuple(c.connection_id for c in d_records if c.status is ConnectionRouteStatus.ROUTED)
             attempts.append(StrategyAttempt(system, f"{system}/direct", RoutingStrategy.DIRECT, direct.candidate_id, None, None, None, rest, routed,
                                             next((c.reason for c in d_records if c.status is not ConnectionRouteStatus.ROUTED), None), True, sum(r.expanded_node_count for r in d_routes.values())))
-    required = tuple(x.connection_id for x in problem.connections)
+    required = tuple(x.connection_id for x in problem.connections if x.system.value in systems)
     missing = [x for x in required if x not in records]
     if missing: raise RuntimeError(f"Multi-system routing lost connection identities: {missing}")
     authorized_ids = set(controlled.entry_cells()) if controlled is not None else set()

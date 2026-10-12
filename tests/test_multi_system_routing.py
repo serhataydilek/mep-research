@@ -11,7 +11,7 @@ from src.multi_system_diagnostics import diagnose_multi_system_conflicts
 from src.multi_system_routing import ConnectionRouteStatus, EndpointCellMode, MultiSystemRoutingResult, RoutingStrategy, route_multi_system
 from src.physical_edge_routing import PhysicalEdgeRouteStatus, route_physical_edge
 from src.topology_planner import plan_topology_candidates
-from src.visualization_export import MULTI_SYSTEM_FIXTURES, export_multi_system_fixture, export_multi_system_fixtures, controlled_s01_inputs, validate_multi_system_fixture
+from src.visualization_export import COORDINATED_FIXTURE, MULTI_SYSTEM_FIXTURES, export_multi_system_fixture, export_multi_system_fixtures, controlled_s01_inputs, validate_multi_system_fixture
 from src.voxel import SYSTEM_ORDER
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -318,7 +318,7 @@ class MultiSystemExportTests(MultiSystemBase):
 
     def test_viewer_supports_multi_system_features(self):
         text = (ROOT / "viewer" / "index.html").read_text(encoding="utf-8")
-        for required in ("viewer_fixture.json", *MULTI_SYSTEM_FIXTURES.values(), "SYSTEM_COLORS", "data-system", "LineDashedMaterial",
+        for required in ("viewer_fixture.json", *MULTI_SYSTEM_FIXTURES.values(), COORDINATED_FIXTURE, "SYSTEM_COLORS", "data-system", "LineDashedMaterial",
                          "id=\"conflicts\"", "certification_warning", "geometric_clash_certified!==false", "connector_engagement_validated===true",
                          "required_connection_count", "failed_connection_count", "showConnection", "showConflict", "diagnostics_evaluated",
                          "schema_version===1", "shortId", "physical_edge_ids.join"):
