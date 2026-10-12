@@ -8,5 +8,6 @@ experiments/results/*
 validation/results/*
 !validation/results/.gitkeep
 validation/ifc_samples/external/
+viewer/chrome-headless-profile/
 .env
 .DS_Store
