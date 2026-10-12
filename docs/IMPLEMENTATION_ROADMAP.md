@@ -6,7 +6,7 @@ Each phase is gated; none promises a calendar date. Existing v1.0 code remains t
 |---|---|---|---|---|
 | 9A | Immutable demand model and provenanced ports. **Implemented:** typed endpoint/connection models and read-only synthetic benchmark adapter. | General routing and IFC extraction. | Focused endpoint fixtures; no inferred endpoint silently authoritative. | Sparse IFC metadata. |
 | 9B | Topology graph for mains, branches, headers and legal sharing. **Partial:** immutable topology data model; demand association and read-only coverage diagnostics; deterministic abstract direct/shared-main candidates for compatible authoritative upstream groups. Geometry-independent candidate planning, header semantics, and routing integration remain open. | Global geometry optimization; geometry-level clash certification; automated trunk/header synthesis as authoritative geometry. | Branch/shared-overlap synthetic cases; exact connection-ID coverage and source-to-terminal topology walks. | Topology explosion. |
-| 9C | Semantic spatial classification plus opening/penetration records. **In progress:** 9C.0 immutable spatial evidence from existing synthetic IFC geometry and read-only topology-candidate evidence assessment; 9C.1 bounded FREE-cell junction candidate proposals for SHARED_MAIN groups. Clearance policy (9C.2, designed), penetration policy and spatially informed selection remain open. | Structural approval automation; route feasibility claims. | Existing-opening and forbidden-wall cases. | Geometry policy variance. |
+| 9C | Semantic spatial classification plus opening/penetration records. **In progress:** 9C.0 immutable spatial evidence from existing synthetic IFC geometry and read-only topology-candidate evidence assessment; 9C.1 bounded FREE-cell junction candidate proposals for SHARED_MAIN groups; 9C.2 read-only `BENCHMARK_V1` clearance-policy contract. Penetration policy and spatially informed selection remain open. | Structural approval automation; route feasibility claims. | Existing-opening and forbidden-wall cases. | Geometry policy variance. |
 | 9D | Zero-clash constrained low-level router. | Global multi-route optimization. | Every returned route passes local hard checks. | Over-conservative state space. |
 | 9E | PBS-inspired global coordination. | Claim of optimality. | Conflict cases end valid or structured unresolved. | Search-state explosion. |
 | 9F | Neighborhood rip-up/reroute recovery. | Unbounded search. | Deadlock/reroute fixtures; deterministic budgets. | Local minima. |
@@ -75,7 +75,9 @@ Still out of scope for completed 9B: header synthesis, spatially informed candid
 
 **Not established.** Proposals are not physical junction positions. Fitting envelopes, take-offs, combined trunk sizing, inter-system clearance, reachability of the main or branches, gravity constraints and collision freedom all remain unevaluated. Selecting a proposal, and comparing DIRECT with SHARED_MAIN candidates, requires routed geometry from 9D and independent validation from 9H.
 
-## Phase 9C.2 clearance policy contract (designed, not implemented)
+**Selection limitation.** The candidate cap preserves exploration order, so a bounded result can contain many nearby cells rather than spatially diverse alternatives. Future selection must add diversity-aware ranking after clearance and fitting evidence exists; this milestone intentionally does not pretend proximity is physical quality.
+
+## Phase 9C.2 clearance policy contract
 
 **Current inventory (benchmark behaviour, preserved).**
 
@@ -90,7 +92,7 @@ Still out of scope for completed 9B: header synthesis, spatially informed candid
 
 All scenarios use 0.05 m, so the three sources agree only by coincidence. A non-default `routing.clearance_m` would change obstacle occupancy but not B1 reservation or clash evaluation. Same-system independent-run clearance is not defined anywhere.
 
-**Contract.** A single immutable, versioned `ClearancePolicy` identified by a SHA-256 of its canonical form:
+**Implemented contract.** `src/clearance_policy.py` provides one immutable, versioned `ClearancePolicy`, identified by a SHA-256 of canonical JSON. It is read-only: no legacy routing, reservation, clash, junction or IFC-validation consumer has been switched. It supplies adapters for Phase 3A obstacle margins and B1 pairwise reservation margins, so migration can be parity-gated rather than hidden behind defaults:
 
 1. *Service envelope*: per system shape and dimensions from `config/mep_systems.json`, with an explicit half-extent rule (`ORIENTATION_AGNOSTIC_MAX` reproduces today's rule; an oriented rule may be added later). Envelope is geometry, not clearance.
 2. *Architectural obstacle clearance*: `obstacle_clearance(system, obstacle_class)` in metres for each evidence classification and for the plenum boundary.
@@ -98,9 +100,9 @@ All scenarios use 0.05 m, so the three sources agree only by coincidence. A non-
 4. *Same-system independent-run clearance*: `same_system_clearance(system)` for two runs that are not one owned segment. It may be `UNDEFINED`; consumers must treat `UNDEFINED` as unresolved, never as zero.
 5. *Legal shared physical segments*: clearance does not apply between assignments traversing the same owned topology edge (`owner_edge_id`, or one SHARED_MAIN edge walked by several connections), because they are one physical segment. Everything else about that segment uses rules 2 to 4. Sharing remains authorised only by topology, never inferred from geometry.
 
-**Benchmark preservation.** The first policy, `BENCHMARK_V1`, encodes exactly today's behaviour: obstacle clearance from `routing.clearance_m` for every class and the boundary, inter-system clearance 0.05 m for every pair (the existing constants), same-system clearance `UNDEFINED`. If a config clearance differs from 0.05, `BENCHMARK_V1` reports the divergence instead of silently picking one. Its acceptance gates are byte-identical grid digests for all scenarios and identical B0, B1 and clash summaries. A non-default-clearance fixture must show every consumer reading the policy. No engineering or regulatory values are introduced; any other policy must come from an explicit, cited input.
+**Benchmark preservation.** The first policy, `BENCHMARK_V1`, encodes exactly today's behaviour: obstacle clearance from `routing.clearance_m` for every class and the boundary, inter-system clearance 0.05 m for every pair (the existing constants), same-system clearance `UNDEFINED`. The compatibility report names every remaining legacy consumer and reports a non-default config clearance as a divergence rather than silently choosing a value. Characterization covers all 12 synthetic benchmark case definitions, the configured 0.05 m values, service-specific circular/rectangular envelopes, pair symmetry and read-only adapters. It does not claim byte-identical B0/B1/clash reruns through the policy because the consumers intentionally still use their legacy sources. No engineering or regulatory values are introduced; any other policy must come from an explicit, cited input.
 
-**Consumers in later milestones.** Occupancy inflation, B1 reservation and clash evaluation read the policy (legacy modules change only behind the parity gate). Junction proposals add the policy digest to their grid evidence reference. Constrained A* (9D) and the 9H validator must use the same policy digest, or report a mismatch.
+**Consumers in later milestones.** First parity-gate voxel obstacle inflation against `legacy_obstacle_margin_m`; then B1 reservation against `legacy_reservation_margin_m`; then make clash use the inter-system pair lookup and require an explicit result for independent same-system runs. Junction proposals can then add the policy digest to their grid evidence reference. Constrained A* (9D) and the 9H validator must use the same policy digest, or report a mismatch. IFC validation remains a separate uninflated, any-overlap rasterization until its semantics are deliberately aligned.
 
 ## Future safety gates
 

@@ -25,7 +25,7 @@
 | Spatial evidence precedes spatial selection | Accepted | Phase 9C.0 records only geometry derivable from the existing IFC and voxel pipeline; a selector based on invented corridors, junction positions or costs is rejected. |
 | Reuse existing IFC tessellation and occupancy grids for evidence | Accepted | Identity-preserving AABBs feed `src.voxel.build_occupancy_grid` unchanged; grids are byte-identical to legacy output and referenced by digest. |
 | Unsupported or unknown geometry is never free space | Accepted | Failed tessellation, non-metre units and unmodelled elements in the occupancy domain yield explicit diagnostics and a non-available status. |
-| AABB evidence is approximate, labelled per element | Accepted | Volume comparison labels each AABB exact or over-approximate; rotated placements are flagged; no exact collision certification is claimed. |
+| AABB evidence is approximate, labelled per element | Accepted | A volume match is labelled `VOLUME_MATCH_UNCERTAIN`, not exact: tessellation validity and numerical tolerance are not sufficient for solid equivalence. Rotated placements are flagged; no exact collision certification is claimed. |
 | Existing IFC openings are not MEP penetrations | Accepted | Openings are recorded with host and fillings; approval is structurally impossible in the evidence model. |
 | Candidate assessment is evidence-only | Accepted | Statuses describe evidence availability; feasibility and collision-freedom flags are fixed false; virtual junctions remain unresolved requirements. |
 | Junction proposals are FREE cells of the junction system's own grid | Accepted | Phase 9C.1 reuses Phase 3A semantics and FREE-only router behaviour; no other system's grid is substituted and no second voxel engine is built. |
@@ -34,7 +34,7 @@
 | Empty bounded search is unresolved, never infeasible | Accepted | Statuses are `PROPOSALS_GENERATED` or `UNRESOLVED`; global infeasibility cannot be claimed from a bounded neighbourhood. |
 | Authoritative endpoints are never snapped for placement | Accepted | Containing cells are read as-is; non-FREE endpoint cells are flagged, not moved. |
 | Coincident proposals across junctions are flagged, not merged | Accepted | Independent groups, including different systems, never share a junction; joint selection needs clearance evaluation. |
-| Single versioned clearance policy (`BENCHMARK_V1` first) | Proposed | Phase 9C.2 contract separates envelope, obstacle, inter-system, same-system and legal-shared rules; `BENCHMARK_V1` must reproduce current outputs byte-for-byte before any consumer migrates. |
+| Single versioned clearance policy (`BENCHMARK_V1` first) | Accepted | Phase 9C.2's immutable read-only contract separates envelope, obstacle, inter-system, same-system and legal-shared rules. It characterizes existing values but does not yet replace a legacy consumer. |
 
 ## Risks
 
