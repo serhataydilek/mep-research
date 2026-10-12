@@ -120,6 +120,8 @@ All scenarios use 0.05 m, so the three sources agree only by coincidence. A non-
 
 **Implemented, uncommitted for review.** `src/physical_edge_routing.py` reuses the existing Manhattan heuristic and six-neighbour occupancy convention in a bounded adapter. It resolves endpoint-backed nodes without snapping and virtual nodes only from caller-selected grid-derived proposals. `ROUTED` paths include topology/grid/policy identities, ordered free cells, matching voxel centres, length and expansion count. A benchmark `s01` DIRECT drainage edge routed in 197 cells; a selected `SHARED_MAIN` edge routed in 65 cells (6.4 m, 221 expansions). These are grid-centreline demonstrations only.
 
+**9D.1, uncommitted.** `src/physical_network_routing.py` composes a selected proposal's MAIN and every BRANCH exactly once for one controlled SHARED_MAIN group. Per-connection paths reference the MAIN then their branch; completeness requires every group demand path, never a partial result. A viewer can consume its canonical JSON centreline payload later, but no viewer or continuous-geometry certification is implemented.
+
 ## Future safety gates
 
 The following are acceptance gates for later work, not delivered functionality:
