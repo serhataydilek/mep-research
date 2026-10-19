@@ -1,0 +1,3241 @@
+{
+  "cases": [
+    {
+      "additional_clearance_m": 0.0,
+      "allowances": [
+        {
+          "cell_center_m": [
+            8.950000000000001,
+            12.150000000000002,
+            3.05
+          ],
+          "cell_index": [
+            28,
+            24,
+            15
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "0IU610uqLBi9PW0cPG4ERE",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            8.933234,
+            12.102481,
+            3.05
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 5.400200391450232e-06,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        },
+        {
+          "cell_center_m": [
+            12.25,
+            11.350000000000001,
+            3.1500000000000004
+          ],
+          "cell_index": [
+            61,
+            16,
+            16
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "33LHvKw7n5VOooYSuD9Xlz",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            12.263355,
+            11.335481,
+            3.126574
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 1.3128799380979217e-08,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        }
+      ],
+      "astar_invoked": true,
+      "body_half_extent_m": 0.10500000000000043,
+      "collision_validation": {
+        "additional_clearance_m": 0.0,
+        "allowance_segments_not_counted_against_boundary_host": [
+          "0IU610uqLBi9PW0cPG4ERE"
+        ],
+        "body_half_extent_m": 0.10500000000000043,
+        "broad_phase_hit_count": 4,
+        "clearance_violations": [
+          {
+            "body_half_extent_m": 0.10500000000000043,
+            "file_role": "ventilation",
+            "global_id": "0IU610uqLBi9PW0cPG4ERE",
+            "measurement": "MESH_SURFACE_DISTANCE_OF_CENTERLINE_SAMPLES",
+            "min_centerline_distance_m": 0.05039182939962755,
+            "required_separation_m": 0.10500000000000043
+          },
+          {
+            "body_half_extent_m": 0.10500000000000043,
+            "file_role": "architecture",
+            "global_id": "1U1xl08gr5ah9up5e9rM1u",
+            "measurement": "MESH_SURFACE_DISTANCE_OF_CENTERLINE_SAMPLES",
+            "min_centerline_distance_m": 0.024999999999999467,
+            "required_separation_m": 0.10500000000000043
+          }
+        ],
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": [],
+        "confirmed_separation": false,
+        "label": "CLEARANCE_VIOLATION",
+        "mesh_separated_samples": [
+          {
+            "body_half_extent_m": 0.10500000000000043,
+            "file_role": "architecture",
+            "global_id": "0tHIUa9tj2ZQQI_dPBF8Nk",
+            "measurement": "MESH_SURFACE_DISTANCE_OF_CENTERLINE_SAMPLES",
+            "min_centerline_distance_m": 2.216643013658187,
+            "required_separation_m": 0.10500000000000043
+          }
+        ],
+        "method": "SWEPT_AABB_THEN_LOCAL_MESH",
+        "note": "Mesh tests cover swept-AABB candidates only. Separation from those candidates is not clearance from every untested solid. Zero broad-phase hits would not be reported as confirmed separation.",
+        "required_separation_m": 0.10500000000000043,
+        "unresolved_global_ids": []
+      },
+      "discipline": "ventilation",
+      "endpoint_status": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "exact_port_to_port": true,
+      "expanded_node_count": 83,
+      "geometric_state": "CLEARANCE_VIOLATION",
+      "goal_grid_index": [
+        61,
+        16,
+        16
+      ],
+      "immutable_goal_m": [
+        12.263355,
+        11.335481,
+        3.126574
+      ],
+      "immutable_start_m": [
+        8.933234,
+        12.102481,
+        3.05
+      ],
+      "mesh_refined_obstacle_count": 3,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "occupancy_policy": {
+        "aabb_inflation_m": 0.10500000000000043,
+        "additional_clearance_m": 0.0,
+        "body_half_extent_m": 0.10500000000000043,
+        "covering_mesh_contact_m": 0.001,
+        "endpoint_solid_contact_m": 0.001,
+        "voxel_size_m": 0.1
+      },
+      "path_found": true,
+      "path_found_is_not_sufficient": true,
+      "physical_bend_count": 9,
+      "physical_route_length_m": 4.315585000000006,
+      "physical_vertical_travel_m": 0.1234260000000007,
+      "physically_acceptable_under_declared_policy": false,
+      "process_memory": {
+        "peak_working_set_bytes": 448229376,
+        "working_set_bytes": 448229376
+      },
+      "python_tracemalloc_peak_bytes": 53432,
+      "request_id": "DH11B-V1",
+      "required_separation_m": 0.10500000000000043,
+      "runtime_seconds": 0.004562,
+      "search_state": "SEARCH_PATH_FOUND",
+      "start_grid_index": [
+        28,
+        24,
+        15
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "ZUL_R 2"
+      ],
+      "validation_label": "CLEARANCE_VIOLATION",
+      "voxel_size_m": 0.1,
+      "world_polyline_m": [
+        [
+          8.933234,
+          12.102481,
+          3.05
+        ],
+        [
+          8.950000000000001,
+          12.102481,
+          3.05
+        ],
+        [
+          8.950000000000001,
+          12.150000000000002,
+          3.05
+        ],
+        [
+          9.05,
+          12.150000000000002,
+          3.05
+        ],
+        [
+          9.05,
+          12.05,
+          3.05
+        ],
+        [
+          9.05,
+          11.950000000000001,
+          3.05
+        ],
+        [
+          9.05,
+          11.850000000000001,
+          3.05
+        ],
+        [
+          9.05,
+          11.750000000000002,
+          3.05
+        ],
+        [
+          9.05,
+          11.650000000000002,
+          3.05
+        ],
+        [
+          9.05,
+          11.55,
+          3.05
+        ],
+        [
+          9.05,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          9.15,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          9.25,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          9.350000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          9.450000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          9.55,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          9.65,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          9.75,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          9.850000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          9.950000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.05,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.15,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.25,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.350000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.450000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.55,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.65,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.75,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.850000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          10.950000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.05,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.150000000000002,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.25,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.350000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.450000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.55,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.650000000000002,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.75,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.850000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          11.950000000000001,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          12.05,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          12.150000000000002,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          12.25,
+          11.450000000000001,
+          3.05
+        ],
+        [
+          12.25,
+          11.450000000000001,
+          3.1500000000000004
+        ],
+        [
+          12.25,
+          11.350000000000001,
+          3.1500000000000004
+        ],
+        [
+          12.263355,
+          11.350000000000001,
+          3.1500000000000004
+        ],
+        [
+          12.263355,
+          11.335481,
+          3.1500000000000004
+        ],
+        [
+          12.263355,
+          11.335481,
+          3.126574
+        ]
+      ]
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "allowances": [
+        {
+          "cell_center_m": [
+            12.25,
+            11.350000000000001,
+            3.1500000000000004
+          ],
+          "cell_index": [
+            61,
+            16,
+            16
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "33LHvKw7n5VOooYSuD9Xlz",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            12.263355,
+            11.335481,
+            3.126574
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 1.3128799380979217e-08,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        }
+      ],
+      "astar_invoked": false,
+      "body_half_extent_m": 0.10500000000000043,
+      "collision_validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": null,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": null,
+        "label": "NOT_RUN_ENDPOINT_INVALID",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "discipline": "ventilation",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "exact_port_to_port": null,
+      "expanded_node_count": null,
+      "geometric_state": null,
+      "goal_grid_index": [
+        61,
+        16,
+        16
+      ],
+      "immutable_goal_m": [
+        12.263355,
+        11.335481,
+        3.126574
+      ],
+      "immutable_start_m": [
+        8.933234,
+        12.102481,
+        3.05
+      ],
+      "mesh_refined_obstacle_count": 3,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN",
+      "occupancy_policy": {
+        "aabb_inflation_m": 0.10500000000000043,
+        "additional_clearance_m": 0.0,
+        "body_half_extent_m": 0.10500000000000043,
+        "covering_mesh_contact_m": 0.10500000000000043,
+        "endpoint_solid_contact_m": 0.10500000000000043,
+        "voxel_size_m": 0.1
+      },
+      "path_found": false,
+      "path_found_is_not_sufficient": false,
+      "physical_bend_count": null,
+      "physical_route_length_m": null,
+      "physical_vertical_travel_m": null,
+      "physically_acceptable_under_declared_policy": false,
+      "process_memory": {},
+      "python_tracemalloc_peak_bytes": null,
+      "request_id": "DH11B-V1",
+      "required_separation_m": 0.10500000000000043,
+      "runtime_seconds": null,
+      "search_state": "ENDPOINT_BLOCKED",
+      "start_grid_index": [
+        28,
+        24,
+        15
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "ZUL_R 2"
+      ],
+      "validation_label": "NOT_RUN_ENDPOINT_INVALID",
+      "voxel_size_m": 0.1,
+      "world_polyline_m": null
+    },
+    {
+      "additional_clearance_m": 0.025,
+      "allowances": [],
+      "astar_invoked": false,
+      "body_half_extent_m": 0.10500000000000043,
+      "collision_validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": null,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": null,
+        "label": "NOT_RUN_ENDPOINT_INVALID",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "discipline": "ventilation",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID"
+      ],
+      "exact_port_to_port": null,
+      "expanded_node_count": null,
+      "geometric_state": null,
+      "goal_grid_index": [
+        61,
+        16,
+        16
+      ],
+      "immutable_goal_m": [
+        12.263355,
+        11.335481,
+        3.126574
+      ],
+      "immutable_start_m": [
+        8.933234,
+        12.102481,
+        3.05
+      ],
+      "mesh_refined_obstacle_count": 3,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN",
+      "occupancy_policy": {
+        "aabb_inflation_m": 0.13000000000000042,
+        "additional_clearance_m": 0.024999999999999994,
+        "body_half_extent_m": 0.10500000000000043,
+        "covering_mesh_contact_m": 0.13000000000000042,
+        "endpoint_solid_contact_m": 0.13000000000000042,
+        "voxel_size_m": 0.1
+      },
+      "path_found": false,
+      "path_found_is_not_sufficient": false,
+      "physical_bend_count": null,
+      "physical_route_length_m": null,
+      "physical_vertical_travel_m": null,
+      "physically_acceptable_under_declared_policy": false,
+      "process_memory": {},
+      "python_tracemalloc_peak_bytes": null,
+      "request_id": "DH11B-V1",
+      "required_separation_m": 0.13000000000000042,
+      "runtime_seconds": null,
+      "search_state": "ENDPOINT_BLOCKED",
+      "start_grid_index": [
+        28,
+        24,
+        15
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "ZUL_R 2"
+      ],
+      "validation_label": "NOT_RUN_ENDPOINT_INVALID",
+      "voxel_size_m": 0.1,
+      "world_polyline_m": null
+    },
+    {
+      "additional_clearance_m": 0.05,
+      "allowances": [],
+      "astar_invoked": false,
+      "body_half_extent_m": 0.10500000000000043,
+      "collision_validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": null,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": null,
+        "label": "NOT_RUN_ENDPOINT_INVALID",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "discipline": "ventilation",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID"
+      ],
+      "exact_port_to_port": null,
+      "expanded_node_count": null,
+      "geometric_state": null,
+      "goal_grid_index": [
+        61,
+        16,
+        16
+      ],
+      "immutable_goal_m": [
+        12.263355,
+        11.335481,
+        3.126574
+      ],
+      "immutable_start_m": [
+        8.933234,
+        12.102481,
+        3.05
+      ],
+      "mesh_refined_obstacle_count": 3,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN",
+      "occupancy_policy": {
+        "aabb_inflation_m": 0.15500000000000042,
+        "additional_clearance_m": 0.04999999999999999,
+        "body_half_extent_m": 0.10500000000000043,
+        "covering_mesh_contact_m": 0.15500000000000042,
+        "endpoint_solid_contact_m": 0.15500000000000042,
+        "voxel_size_m": 0.1
+      },
+      "path_found": false,
+      "path_found_is_not_sufficient": false,
+      "physical_bend_count": null,
+      "physical_route_length_m": null,
+      "physical_vertical_travel_m": null,
+      "physically_acceptable_under_declared_policy": false,
+      "process_memory": {},
+      "python_tracemalloc_peak_bytes": null,
+      "request_id": "DH11B-V1",
+      "required_separation_m": 0.15500000000000042,
+      "runtime_seconds": null,
+      "search_state": "ENDPOINT_BLOCKED",
+      "start_grid_index": [
+        28,
+        24,
+        15
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "ZUL_R 2"
+      ],
+      "validation_label": "NOT_RUN_ENDPOINT_INVALID",
+      "voxel_size_m": 0.1,
+      "world_polyline_m": null
+    },
+    {
+      "additional_clearance_m": 0.1,
+      "allowances": [],
+      "astar_invoked": false,
+      "body_half_extent_m": 0.10500000000000043,
+      "collision_validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": null,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": null,
+        "label": "NOT_RUN_ENDPOINT_INVALID",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "discipline": "ventilation",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID"
+      ],
+      "exact_port_to_port": null,
+      "expanded_node_count": null,
+      "geometric_state": null,
+      "goal_grid_index": [
+        61,
+        16,
+        16
+      ],
+      "immutable_goal_m": [
+        12.263355,
+        11.335481,
+        3.126574
+      ],
+      "immutable_start_m": [
+        8.933234,
+        12.102481,
+        3.05
+      ],
+      "mesh_refined_obstacle_count": 3,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN",
+      "occupancy_policy": {
+        "aabb_inflation_m": 0.20500000000000043,
+        "additional_clearance_m": 0.1,
+        "body_half_extent_m": 0.10500000000000043,
+        "covering_mesh_contact_m": 0.20500000000000043,
+        "endpoint_solid_contact_m": 0.20500000000000043,
+        "voxel_size_m": 0.1
+      },
+      "path_found": false,
+      "path_found_is_not_sufficient": false,
+      "physical_bend_count": null,
+      "physical_route_length_m": null,
+      "physical_vertical_travel_m": null,
+      "physically_acceptable_under_declared_policy": false,
+      "process_memory": {},
+      "python_tracemalloc_peak_bytes": null,
+      "request_id": "DH11B-V1",
+      "required_separation_m": 0.20500000000000043,
+      "runtime_seconds": null,
+      "search_state": "ENDPOINT_BLOCKED",
+      "start_grid_index": [
+        28,
+        24,
+        15
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "ZUL_R 2"
+      ],
+      "validation_label": "NOT_RUN_ENDPOINT_INVALID",
+      "voxel_size_m": 0.1,
+      "world_polyline_m": null
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "astar_invoked": false,
+      "discipline": "ventilation",
+      "exact_port_to_port": null,
+      "expanded_node_count": null,
+      "geometric_state": null,
+      "mode": "FINER_GRID_BODY_ENVELOPE_SENSITIVITY",
+      "note": "Finer-grid sensitivity not run. Estimated 865524 cells exceed the adapter limit of 800000. A* was not changed.",
+      "path_found": false,
+      "physical_bend_count": null,
+      "physical_route_length_m": null,
+      "physical_vertical_travel_m": null,
+      "process_memory": {
+        "peak_working_set_bytes": 452235264,
+        "working_set_bytes": 450908160
+      },
+      "python_tracemalloc_peak_bytes": null,
+      "request_id": "DH11B-V1",
+      "runtime_seconds": null,
+      "search_state": "NOT_RUN",
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "ZUL_R 2"
+      ],
+      "voxel_size_m": 0.05
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "allowances": [
+        {
+          "cell_center_m": [
+            38.05,
+            15.750000000000002,
+            -0.4500000000000002
+          ],
+          "cell_index": [
+            15,
+            15,
+            43
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "3ELBYKoMX93QrK7TjQe1uy",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            38.095146,
+            15.765459,
+            -0.445
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 2.6706499767215064e-07,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        },
+        {
+          "cell_center_m": [
+            38.35,
+            16.950000000000003,
+            -3.1500000000000004
+          ],
+          "cell_index": [
+            18,
+            27,
+            16
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "3ELBYKoMX93QrK7TjQe1vS",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            38.372146,
+            16.941981,
+            -3.1925
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 1.3128797604622378e-08,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        }
+      ],
+      "astar_invoked": true,
+      "body_half_extent_m": 0.01538698754851986,
+      "collision_validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": false,
+        "label": "NOT_RUN_NO_VOXEL_PATH",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "discipline": "heating",
+      "endpoint_status": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "exact_port_to_port": false,
+      "expanded_node_count": 1,
+      "geometric_state": null,
+      "goal_grid_index": [
+        18,
+        27,
+        16
+      ],
+      "immutable_goal_m": [
+        38.372146,
+        16.941981,
+        -3.1925
+      ],
+      "immutable_start_m": [
+        38.095146,
+        15.765459,
+        -0.445
+      ],
+      "mesh_refined_obstacle_count": 4,
+      "mesh_refinement_fallback_count": 3,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "occupancy_policy": {
+        "aabb_inflation_m": 0.01538698754851986,
+        "additional_clearance_m": 0.0,
+        "body_half_extent_m": 0.01538698754851986,
+        "covering_mesh_contact_m": 0.001,
+        "endpoint_solid_contact_m": 0.001,
+        "voxel_size_m": 0.1
+      },
+      "path_found": false,
+      "path_found_is_not_sufficient": false,
+      "physical_bend_count": null,
+      "physical_route_length_m": null,
+      "physical_vertical_travel_m": null,
+      "physically_acceptable_under_declared_policy": false,
+      "process_memory": {
+        "peak_working_set_bytes": 504315904,
+        "working_set_bytes": 468484096
+      },
+      "python_tracemalloc_peak_bytes": 696,
+      "request_id": "DH11B-H1",
+      "required_separation_m": 0.01538698754851986,
+      "runtime_seconds": 3.2e-05,
+      "search_state": "SEARCH_NO_PATH",
+      "start_grid_index": [
+        15,
+        15,
+        43
+      ],
+      "storeys": [
+        "B01_OKFB"
+      ],
+      "system_names": [
+        "H_VL 9"
+      ],
+      "validation_label": "NOT_RUN_NO_VOXEL_PATH",
+      "voxel_size_m": 0.1,
+      "world_polyline_m": null
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "allowances": [
+        {
+          "cell_center_m": [
+            34.85,
+            26.25,
+            -1.45
+          ],
+          "cell_index": [
+            35,
+            85,
+            16
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "2fZ7PNx81BzA_Qze7yXsj0",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            34.843955,
+            26.281034,
+            -1.400787
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 0.024817385311062257,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        },
+        {
+          "cell_center_m": [
+            32.95,
+            19.349999999999998,
+            -0.44999999999999973
+          ],
+          "cell_index": [
+            16,
+            16,
+            26
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "3ELBYKoMX93QrK7TjQe1s4",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            32.953946,
+            19.385734,
+            -0.445
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 1.2605454869230298e-07,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        }
+      ],
+      "astar_invoked": true,
+      "body_half_extent_m": 0.028788557348846666,
+      "collision_validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": false,
+        "label": "NOT_RUN_NO_VOXEL_PATH",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "discipline": "heating",
+      "endpoint_status": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "exact_port_to_port": false,
+      "expanded_node_count": 50570,
+      "geometric_state": null,
+      "goal_grid_index": [
+        16,
+        16,
+        26
+      ],
+      "immutable_goal_m": [
+        32.953946,
+        19.385734,
+        -0.445
+      ],
+      "immutable_start_m": [
+        34.843955,
+        26.281034,
+        -1.400787
+      ],
+      "mesh_refined_obstacle_count": 4,
+      "mesh_refinement_fallback_count": 3,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "occupancy_policy": {
+        "aabb_inflation_m": 0.028788557348846666,
+        "additional_clearance_m": 0.0,
+        "body_half_extent_m": 0.028788557348846666,
+        "covering_mesh_contact_m": 0.001,
+        "endpoint_solid_contact_m": 0.001,
+        "voxel_size_m": 0.1
+      },
+      "path_found": false,
+      "path_found_is_not_sufficient": false,
+      "physical_bend_count": null,
+      "physical_route_length_m": null,
+      "physical_vertical_travel_m": null,
+      "physically_acceptable_under_declared_policy": false,
+      "process_memory": {
+        "peak_working_set_bytes": 504315904,
+        "working_set_bytes": 471511040
+      },
+      "python_tracemalloc_peak_bytes": 8460176,
+      "request_id": "DH11B-H2",
+      "required_separation_m": 0.028788557348846666,
+      "runtime_seconds": 1.370865,
+      "search_state": "SEARCH_NO_PATH",
+      "start_grid_index": [
+        35,
+        85,
+        16
+      ],
+      "storeys": [
+        "B01_OKFB"
+      ],
+      "system_names": [
+        "H_VL 9"
+      ],
+      "validation_label": "NOT_RUN_NO_VOXEL_PATH",
+      "voxel_size_m": 0.1,
+      "world_polyline_m": null
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "allowances": [
+        {
+          "cell_center_m": [
+            20.650000000000002,
+            16.55,
+            3.1500000000000004
+          ],
+          "cell_index": [
+            50,
+            41,
+            17
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "13pKJiczr64fqA9_0X9is5",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            20.619955,
+            16.525318,
+            3.169519
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 1.7507053367421532e-07,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        },
+        {
+          "cell_center_m": [
+            17.25,
+            15.15,
+            3.3500000000000005
+          ],
+          "cell_index": [
+            16,
+            27,
+            19
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "13pKJiczr64fqA9_0X9izn",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            17.21509,
+            15.139942,
+            3.324673
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 3.1521521209415754e-07,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        }
+      ],
+      "astar_invoked": true,
+      "body_half_extent_m": 0.045530268932769014,
+      "collision_validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": false,
+        "label": "NOT_RUN_NO_VOXEL_PATH",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "discipline": "sanitary",
+      "endpoint_status": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "exact_port_to_port": false,
+      "expanded_node_count": 7090,
+      "geometric_state": null,
+      "goal_grid_index": [
+        16,
+        27,
+        19
+      ],
+      "immutable_goal_m": [
+        17.21509,
+        15.139942,
+        3.324673
+      ],
+      "immutable_start_m": [
+        20.619955,
+        16.525318,
+        3.169519
+      ],
+      "mesh_refined_obstacle_count": 4,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "occupancy_policy": {
+        "aabb_inflation_m": 0.045530268932769014,
+        "additional_clearance_m": 0.0,
+        "body_half_extent_m": 0.045530268932769014,
+        "covering_mesh_contact_m": 0.001,
+        "endpoint_solid_contact_m": 0.001,
+        "voxel_size_m": 0.1
+      },
+      "path_found": false,
+      "path_found_is_not_sufficient": false,
+      "physical_bend_count": null,
+      "physical_route_length_m": null,
+      "physical_vertical_travel_m": null,
+      "physically_acceptable_under_declared_policy": false,
+      "process_memory": {
+        "peak_working_set_bytes": 504315904,
+        "working_set_bytes": 471539712
+      },
+      "python_tracemalloc_peak_bytes": 924448,
+      "request_id": "DH11B-S1",
+      "required_separation_m": 0.045530268932769014,
+      "runtime_seconds": 0.14678,
+      "search_state": "SEARCH_NO_PATH",
+      "start_grid_index": [
+        50,
+        41,
+        17
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "S_SW 3"
+      ],
+      "validation_label": "NOT_RUN_NO_VOXEL_PATH",
+      "voxel_size_m": 0.1,
+      "world_polyline_m": null
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "allowances": [
+        {
+          "cell_center_m": [
+            20.55,
+            18.75,
+            -0.55
+          ],
+          "cell_index": [
+            83,
+            20,
+            16
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "1UpJeJrVD4fuuztpHsZjwa",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            20.541947,
+            18.722993,
+            -0.549903
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 7.254216476803438e-07,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        },
+        {
+          "cell_center_m": [
+            13.750000000000002,
+            18.349999999999998,
+            -0.4500000000000002
+          ],
+          "cell_index": [
+            15,
+            16,
+            17
+          ],
+          "discipline_or_system_excluded": false,
+          "host_global_id": "2UK9EuqMj0HOetl3_go5Dk",
+          "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+          "port_m": [
+            13.798977,
+            18.392719,
+            -0.444409
+          ],
+          "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+          "surface_distance_m": 3.418382931441588e-07,
+          "tolerance_m": 0.05,
+          "whole_host_excluded": false
+        }
+      ],
+      "astar_invoked": true,
+      "body_half_extent_m": 0.05390003895104539,
+      "collision_validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": false,
+        "label": "NOT_RUN_NO_VOXEL_PATH",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "discipline": "sanitary",
+      "endpoint_status": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "exact_port_to_port": false,
+      "expanded_node_count": 1,
+      "geometric_state": null,
+      "goal_grid_index": [
+        15,
+        16,
+        17
+      ],
+      "immutable_goal_m": [
+        13.798977,
+        18.392719,
+        -0.444409
+      ],
+      "immutable_start_m": [
+        20.541947,
+        18.722993,
+        -0.549903
+      ],
+      "mesh_refined_obstacle_count": 7,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "occupancy_policy": {
+        "aabb_inflation_m": 0.05390003895104539,
+        "additional_clearance_m": 0.0,
+        "body_half_extent_m": 0.05390003895104539,
+        "covering_mesh_contact_m": 0.001,
+        "endpoint_solid_contact_m": 0.001,
+        "voxel_size_m": 0.1
+      },
+      "path_found": false,
+      "path_found_is_not_sufficient": false,
+      "physical_bend_count": null,
+      "physical_route_length_m": null,
+      "physical_vertical_travel_m": null,
+      "physically_acceptable_under_declared_policy": false,
+      "process_memory": {
+        "peak_working_set_bytes": 504315904,
+        "working_set_bytes": 471580672
+      },
+      "python_tracemalloc_peak_bytes": 696,
+      "request_id": "DH11B-S2",
+      "required_separation_m": 0.05390003895104539,
+      "runtime_seconds": 4e-05,
+      "search_state": "SEARCH_NO_PATH",
+      "start_grid_index": [
+        83,
+        20,
+        16
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "S_SW 3"
+      ],
+      "validation_label": "NOT_RUN_NO_VOXEL_PATH",
+      "voxel_size_m": 0.1,
+      "world_polyline_m": null
+    }
+  ],
+  "clearance_policy": {
+    "baseline_occupancy": "Obstacle AABBs are inflated by the measured route-body half-extent. Covering and proxy cells are blocked only when the cell centre is enclosed or within 1 mm of the mesh. Walls, slabs, and MEP keep their inflated AABBs.",
+    "benchmark_v1_inter_system_m": 0.05,
+    "boundary_host_exception": "Only the containing cell of a retained boundary host may be released, and only for that host. Samples in that cell are connection contact. The rest of the route is still checked against that host.",
+    "building_code_compliance_claimed": false,
+    "clearance_aware_occupancy": "AABB inflation and covering/proxy mesh contact both equal the body half-extent plus the declared additional clearance. The frozen A* implementation is unchanged.",
+    "project_building_clearance_defined": false,
+    "reason": "BENCHMARK_V1 defines 0.05 m only between distinct synthetic systems. Same-system clearance is UNDEFINED. No DigitalHub duct-to-architecture clearance is declared.",
+    "same_system_status": "UNDEFINED",
+    "sensitivity_additional_clearance_m": [
+      0.0,
+      0.025,
+      0.05,
+      0.1
+    ],
+    "sensitivity_label": "NOT_A_BUILDING_CODE_CLAIM",
+    "validation": "The full physical polyline, including connector stubs and bends, is tested. Swept AABBs select candidates. Mesh surface distance of centreline samples then decides enclosure or clearance. Required separation is the body half-extent plus the declared additional clearance. Absence of a confirmed intersection is not sufficient clearance.",
+    "voxel_limitation": "A 0.1 m grid can miss features narrower than one cell. Occupancy uses cell centres, so a free cell can still be closer to a solid than the route body. Mesh validation of the reconstructed polyline is the geometric check. A 0.05 m run is a localized sensitivity when the adapter cell limit allows it.",
+    "voxel_limitation_m": 0.1,
+    "zero_aabb_hits": "ZERO_BROAD_PHASE_CANDIDATES does not prove clearance. Those routes stay validation-incomplete."
+  },
+  "counts": {
+    "ASTAR_PATHS_FOUND": 1,
+    "CLEARANCE_VIOLATIONS": 1,
+    "CONFIRMED_GEOMETRIC_COLLISIONS": 0,
+    "MULTI_SYSTEM_COORDINATION_EXECUTED": "NO",
+    "PHYSICALLY_ACCEPTABLE_ROUTES": 0,
+    "REAL_IFC_REQUESTS_EXECUTED": 5,
+    "REAL_IFC_REQUESTS_QUALIFIED": 5,
+    "VALIDATION_INCOMPLETE": 0
+  },
+  "dataset_id": "rwth-digitalhub-v1",
+  "examined_not_qualified": [
+    {
+      "boundary_host_global_ids": [
+        "1_iL4uYlj8i8E82DrFR3dq",
+        "3xZIHu$zHEXugu3xVQCDWE"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "obstruction_global_ids": [
+        "3LJODRGPbDdfXHXShFL8tL"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "replaced_host_global_ids": [
+        "1_iL4uYlj8i8E82DrFR3gy",
+        "1_iL4uYlj8i8E82DrFR3fU",
+        "3M8bvm875AFQwasz10fuvx",
+        "2zmDchjvXABgWkFuboTr8d",
+        "2zmDchjvXABgWkFuboTr8l",
+        "1qX$MMTNzDlQyQrkUvXK8n",
+        "1qX$MMTNzDlQyQrkUvXK85"
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 7.212213611935392,
+      "system_names": [
+        "H_RL 63"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "0WErJv5cj6NB5b$ofJagFD",
+        "3xZIHu$zHEXugu3xVQCDWs"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "obstruction_global_ids": [
+        "3LJODRGPbDdfXHXShFL8tL"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "replaced_host_global_ids": [
+        "0WErJv5cj6NB5b$ofJagFa",
+        "0WErJv5cj6NB5b$ofJagFm",
+        "3M8bvm875AFQwasz10fuuL",
+        "1Qa8Fh4szFZBxwaBngujfi",
+        "1Qa8Fh4szFZBxwaBngujfY",
+        "1qX$MMTNzDlQyQrkUvXK1K",
+        "1qX$MMTNzDlQyQrkUvXK1Q"
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 7.163620704058849,
+      "system_names": [
+        "H_VL 63"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "0xo1MzWzP1bwA_4JhJwKrb",
+        "3xZIHu$zHEXugu3xVQCDVa"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "obstruction_global_ids": [
+        "3BmeJtEDj3AQO77Os2w6ZR"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "replaced_host_global_ids": [
+        "0xo1MzWzP1bwA_4JhJwKra",
+        "0AmLCSWKn3YvhN$b7SbhB8",
+        "31uXLqO9j8GfohxObGkTYN",
+        "31uXLqO9j8GfohxObGkTYF",
+        "31uXLqO9j8GfohxObGkTXl"
+      ],
+      "storeys": [
+        "E01_OKRD"
+      ],
+      "straight_line_m": 7.064895118814656,
+      "system_names": [
+        "H_RL 74"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "0AmLCSWKn3YvhN$b7SbhDr",
+        "3xZIHu$zHEXugu3xVQCDVq"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "obstruction_global_ids": [
+        "3BmeJtEDj3AQO77Os2w6ZR"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "replaced_host_global_ids": [
+        "0AmLCSWKn3YvhN$b7SbhD9",
+        "0AmLCSWKn3YvhN$b7SbhD3",
+        "1sz7SlB2j11BEHXGLw$1sj",
+        "31uXLqO9j8GfohxObGkTX_",
+        "31uXLqO9j8GfohxObGkTWj"
+      ],
+      "storeys": [
+        "E01_OKRD"
+      ],
+      "straight_line_m": 7.026267722249856,
+      "system_names": [
+        "H_VL 29"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "1_iL4uYlj8i8E82DrFR2Id",
+        "3xZIHu$zHEXugu3xVQCDrC"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "obstruction_global_ids": [
+        "3LJODRGPbDdfXHXShFL8tL"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "replaced_host_global_ids": [
+        "1PO8_6BBT97gCnBagBct3F",
+        "1PO8_6BBT97gCnBagBct3$",
+        "1PO8_6BBT97gCnBagBct3n",
+        "0vkf5AvWL7NuEeI4Yo4U1j",
+        "0vkf5AvWL7NuEeI4Yo4U2y"
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 6.723324743941491,
+      "system_names": [
+        "H_VL 68"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "16ftRrEjL5mA59Olan9oxL",
+        "2MToEQgCj7AuBOk0JK$sK6"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "obstruction_global_ids": [
+        "3BmeJtEDj3AQO77Os2w6ZR"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "replaced_host_global_ids": [
+        "16ftRrEjL5mA59Olan9o$C",
+        "16ftRrEjL5mA59Olan9o$m",
+        "16ftRrEjL5mA59Olan9o$4",
+        "2MToEQgCj7AuBOk0JK$s2x",
+        "2MToEQgCj7AuBOk0JK$sik"
+      ],
+      "storeys": [
+        "E01_OKRD"
+      ],
+      "straight_line_m": 6.652293128137467,
+      "system_names": [
+        "H_VL 40"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "0KDl_Pd9bF6RK3eO7wIXui",
+        "1PO8_6BBT97gCnBagBctKC"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID"
+      ],
+      "obstruction_global_ids": [
+        "3LJODRGPbDdfXHXShFL8tL"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID"
+      ],
+      "replaced_host_global_ids": [
+        "0KDl_Pd9bF6RK3eO7wIY5Q",
+        "0KDl_Pd9bF6RK3eO7wIY4j",
+        "0KDl_Pd9bF6RK3eO7wIY3R",
+        "2hMjjbZvP4CAN9xX2G5FBF",
+        "1PO8_6BBT97gCnBagBctS_",
+        "2hMjjbZvP4CAN9xX2G5F5a"
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 2.801776245737655,
+      "system_names": [
+        "H_RL 68"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "1_iL4uYlj8i8E82DrFR3ZL",
+        "3M8bvm875AFQwasz10fvpl"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "obstruction_global_ids": [
+        "3LJODRGPbDdfXHXShFL8tL"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "replaced_host_global_ids": [
+        "0WErJv5cj6NB5b$ofJag3R",
+        "1_iL4uYlj8i8E82DrFR3dT",
+        "0WErJv5cj6NB5b$ofJagVo",
+        "3M8bvm875AFQwasz10fvVh",
+        "3M8bvm875AFQwasz10fvaT",
+        "3M8bvm875AFQwasz10fvat"
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 2.801062831862861,
+      "system_names": [
+        "H_RL 63"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "0KDl_Pd9bF6RK3eO7wIXui",
+        "2hMjjbZvP4CAN9xX2G5F3x"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID"
+      ],
+      "obstruction_global_ids": [
+        "3LJODRGPbDdfXHXShFL8tL"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID"
+      ],
+      "replaced_host_global_ids": [
+        "0KDl_Pd9bF6RK3eO7wIY5t",
+        "0KDl_Pd9bF6RK3eO7wIY5D",
+        "0KDl_Pd9bF6RK3eO7wIY2w",
+        "2hMjjbZvP4CAN9xX2G5F8h",
+        "2hMjjbZvP4CAN9xX2G5F8Z",
+        "2hMjjbZvP4CAN9xX2G5F3w"
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 2.794085924519842,
+      "system_names": [
+        "H_VL 68"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "0WErJv5cj6NB5b$ofJagDE",
+        "3M8bvm875AFQwasz10fvpl"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "obstruction_global_ids": [
+        "3LJODRGPbDdfXHXShFL8tL"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "replaced_host_global_ids": [
+        "0WErJv5cj6NB5b$ofJagDu",
+        "0WErJv5cj6NB5b$ofJagD0",
+        "0WErJv5cj6NB5b$ofJagVE",
+        "3M8bvm875AFQwasz10fvU4",
+        "3M8bvm875AFQwasz10fvbj",
+        "3M8bvm875AFQwasz10fvaB"
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 2.794085924519842,
+      "system_names": [
+        "H_VL 63"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "2fZ7PNx81BzA_Qze7yXsrg",
+        "39eu3tBFnE6RpHVntL0kQV"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "EMBEDDED_IN_NON_EXEMPT_SOLID"
+      ],
+      "obstruction_global_ids": [
+        "3LJODRGPbDdfXHXShFLBoR"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "QUALIFIED_BOUNDARY_ALLOWANCE",
+        "EMBEDDED_IN_NON_EXEMPT_SOLID"
+      ],
+      "replaced_host_global_ids": [
+        "1qX$MMTNzDlQyQrkUvXMmd",
+        "2fZ7PNx81BzA_Qze7yXstX",
+        "1S7VbM5Mr9wBCUw2MH76KZ",
+        "1S7VbM5Mr9wBCUw2MH76Kd",
+        "39eu3tBFnE6RpHVntL0kLV"
+      ],
+      "storeys": [
+        "B01_OKFB"
+      ],
+      "straight_line_m": 7.3687142358888105,
+      "system_names": [
+        "H_RL 83"
+      ]
+    },
+    {
+      "boundary_host_global_ids": [
+        "16ftRrEjL5mA59Olan9ouI",
+        "16ftRrEjL5mA59Olan9ozL"
+      ],
+      "discipline": "heating",
+      "endpoint_status": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "obstruction_global_ids": [
+        "3BmeJtEDj3AQO77Os2w6ZR"
+      ],
+      "qualified": false,
+      "rejection_reason": [
+        "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID",
+        "QUALIFIED_BOUNDARY_ALLOWANCE"
+      ],
+      "replaced_host_global_ids": [
+        "16ftRrEjL5mA59Olan9ozy",
+        "16ftRrEjL5mA59Olan9oo5",
+        "16ftRrEjL5mA59Olan9ozV",
+        "16ftRrEjL5mA59Olan9ozJ",
+        "16ftRrEjL5mA59Olan9ozH",
+        "16ftRrEjL5mA59Olan9ozN"
+      ],
+      "storeys": [
+        "E01_OKRD"
+      ],
+      "straight_line_m": 5.443537101193909,
+      "system_names": [
+        "H_RL 66"
+      ]
+    }
+  ],
+  "frozen_phase11a2": {
+    "files": [
+      {
+        "file": "first_valid_routing_request.json",
+        "sha256": "0970026db0557a638f1810841e9143b7056926ab9b31533799d035c7642271f7"
+      },
+      {
+        "file": "first_valid_routing_execution.json",
+        "sha256": "a12621302dad789cdba065d19af4ececf5a31dff9795e557462b5aa7aed0b2dd"
+      },
+      {
+        "file": "port_pilot_summary.json",
+        "sha256": "868e83787da7fb32e74dcae584d586c04d4320ac1ca4a900b30ad6b338ab4d1a"
+      },
+      {
+        "file": "candidate_routing_requests.json",
+        "sha256": "e544abda232e4998c27c266262c896df46655e8bc131a886a7de16e346a3847d"
+      }
+    ],
+    "label": "Frozen Phase 11A.2 ventilation route and validation. Later Phase 11B reruns do not replace these files."
+  },
+  "h_rl_68_revived": false,
+  "multi_system": {
+    "b0": "Independent frozen astar_3d on each real-IFC occupancy. Those results are the per-request baseline cases.",
+    "b1_b2_pcore_reason": "run_b1_benchmark, B2, and P-CORE consume synthetic scenario anchors and service grids. They re-snap anchors and do not accept these IFC endpoints or obstacle fields.",
+    "b1_b2_pcore_support_real_ifc_requests": false,
+    "executed": false,
+    "reason": "Fewer than three physically qualified requests share a ROI of at least 0.5 m on every axis.",
+    "request_rois": [
+      {
+        "discipline": "ventilation",
+        "request_id": "DH11B-V1",
+        "roi_bounds_m": [
+          6.1000000000000005,
+          14.5,
+          9.700000000000001,
+          13.700000000000001,
+          1.5,
+          4.800000000000001
+        ],
+        "system_names": [
+          "ZUL_R 2"
+        ]
+      },
+      {
+        "discipline": "heating",
+        "request_id": "DH11B-H1",
+        "roi_bounds_m": [
+          36.5,
+          39.900000000000006,
+          14.200000000000001,
+          18.6,
+          -4.800000000000001,
+          1.1
+        ],
+        "system_names": [
+          "H_VL 9"
+        ]
+      },
+      {
+        "discipline": "heating",
+        "request_id": "DH11B-H2",
+        "roi_bounds_m": [
+          31.3,
+          36.7,
+          17.7,
+          27.900000000000002,
+          -3.1,
+          1.1
+        ],
+        "system_names": [
+          "H_VL 9"
+        ]
+      },
+      {
+        "discipline": "sanitary",
+        "request_id": "DH11B-S1",
+        "roi_bounds_m": [
+          15.600000000000001,
+          22.200000000000003,
+          12.4,
+          18.2,
+          1.4000000000000001,
+          4.9
+        ],
+        "system_names": [
+          "S_SW 3"
+        ]
+      },
+      {
+        "discipline": "sanitary",
+        "request_id": "DH11B-S2",
+        "roi_bounds_m": [
+          12.200000000000001,
+          22.200000000000003,
+          16.7,
+          20.5,
+          -2.2,
+          1.2000000000000002
+        ],
+        "system_names": [
+          "S_SW 3"
+        ]
+      }
+    ],
+    "status": "MULTI_SYSTEM_COMPARISON_NOT_YET_VALID"
+  },
+  "obstacle_policy": "Exclude only the exact replaced IFC hosts. Retain architecture, structure carried in the architecture model, and unrelated MEP. Openings are inventoried and are not subtracted. If the exported host mesh still encloses a point, the opening does not clear it.",
+  "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+  "requests": [
+    {
+      "approximate_obstacle_count": 13,
+      "bodies": [
+        {
+          "global_id": "0JV3InQaz9UBog62O3UPgq",
+          "half_extent_m": 0.10500000000000043,
+          "ifc_class": "IfcDuctFitting",
+          "name": "\u00dcbergang rechteck rund Flansch RS:Standard:7360566",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "0IU610uqLBi9PW0cPG4EXn",
+          "half_extent_m": 0.08,
+          "ifc_class": "IfcDuctSegment",
+          "name": "Rund:Bogen - Stutzen:7309862",
+          "profiles": [
+            {
+              "half_extent_m": 0.08,
+              "radius_m": 0.08,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "0JV3InQaz9UBog62O3UPgs",
+          "half_extent_m": 0.08000069063762072,
+          "ifc_class": "IfcDuctFitting",
+          "name": "Bogen rund:1.0 a:7360564",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "0IU610uqLBi9PW0cPG4EXE",
+          "half_extent_m": 0.08,
+          "ifc_class": "IfcDuctSegment",
+          "name": "Rund:Bogen - Stutzen:7309849",
+          "profiles": [
+            {
+              "half_extent_m": 0.08,
+              "radius_m": 0.08,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "0IU610uqLBi9PW0cPG4EYQ",
+          "half_extent_m": 0.07500000000000018,
+          "ifc_class": "IfcDuctFitting",
+          "name": "\u00dcbergang rund kurz:kurz:7310029",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "0IU610uqLBi9PW0cPG4EZe",
+          "half_extent_m": 0.0615,
+          "ifc_class": "IfcDuctSegment",
+          "name": "Rund:Bogen - Stutzen:7310015",
+          "profiles": [
+            {
+              "half_extent_m": 0.0615,
+              "radius_m": 0.0615,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        }
+      ],
+      "body_half_extent_m": 0.10500000000000043,
+      "body_half_extent_rule": "Measured IFC profile. Rectangular profiles use max(width, height) / 2 without applying the duct orientation.",
+      "boundary_host_global_ids": [
+        "0IU610uqLBi9PW0cPG4ERE",
+        "33LHvKw7n5VOooYSuD9Xlz"
+      ],
+      "cases_run": [
+        "BASELINE_BODY_AABB_1MM_COVERING@0.0",
+        "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN@0.0",
+        "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN@0.025",
+        "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN@0.05",
+        "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN@0.1",
+        "FINER_GRID_BODY_ENVELOPE_SENSITIVITY@0.0"
+      ],
+      "clearance_policy": {
+        "baseline_occupancy": "Obstacle AABBs are inflated by the measured route-body half-extent. Covering and proxy cells are blocked only when the cell centre is enclosed or within 1 mm of the mesh. Walls, slabs, and MEP keep their inflated AABBs.",
+        "benchmark_v1_inter_system_m": 0.05,
+        "boundary_host_exception": "Only the containing cell of a retained boundary host may be released, and only for that host. Samples in that cell are connection contact. The rest of the route is still checked against that host.",
+        "building_code_compliance_claimed": false,
+        "clearance_aware_occupancy": "AABB inflation and covering/proxy mesh contact both equal the body half-extent plus the declared additional clearance. The frozen A* implementation is unchanged.",
+        "project_building_clearance_defined": false,
+        "reason": "BENCHMARK_V1 defines 0.05 m only between distinct synthetic systems. Same-system clearance is UNDEFINED. No DigitalHub duct-to-architecture clearance is declared.",
+        "same_system_status": "UNDEFINED",
+        "sensitivity_additional_clearance_m": [
+          0.0,
+          0.025,
+          0.05,
+          0.1
+        ],
+        "sensitivity_label": "NOT_A_BUILDING_CODE_CLAIM",
+        "validation": "The full physical polyline, including connector stubs and bends, is tested. Swept AABBs select candidates. Mesh surface distance of centreline samples then decides enclosure or clearance. Required separation is the body half-extent plus the declared additional clearance. Absence of a confirmed intersection is not sufficient clearance.",
+        "voxel_limitation": "A 0.1 m grid can miss features narrower than one cell. Occupancy uses cell centres, so a free cell can still be closer to a solid than the route body. Mesh validation of the reconstructed polyline is the geometric check. A 0.05 m run is a localized sensitivity when the adapter cell limit allows it.",
+        "voxel_limitation_m": 0.1,
+        "zero_aabb_hits": "ZERO_BROAD_PHASE_CANDIDATES does not prove clearance. Those routes stay validation-incomplete."
+      },
+      "containing_indices": [
+        [
+          28,
+          24,
+          15
+        ],
+        [
+          61,
+          16,
+          16
+        ]
+      ],
+      "dataset_id": "rwth-digitalhub-v1",
+      "discipline": "ventilation",
+      "end_interface": {
+        "classification_evidence": {
+          "host_mesh_gap_m": 2.1060319179929678e-14
+        },
+        "coordinate_classification": "RELATIONSHIP_CONSTRAINED_GEOMETRIC",
+        "geometric_gap_m": 0.0,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "2JF9LjKuvEYA7nfLA$hSuu"
+        ],
+        "replaced_host_global_id": "0IU610uqLBi9PW0cPG4EZe",
+        "replaced_port": {
+          "global_id": "0CueDiYdb2vP1dotTL4WmU",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.061499999999998764,
+          "world_m": [
+            12.324854705067015,
+            11.3354809868712,
+            3.126574251728737
+          ]
+        },
+        "retained_host_global_id": "33LHvKw7n5VOooYSuD9Xlz",
+        "retained_port": {
+          "global_id": "0qX6PhdfzA7wQf_D6B9vhg",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.06149999999998623,
+          "world_m": [
+            12.324854705067,
+            11.3354809868712,
+            3.126574251728738
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          12.263355,
+          11.335481,
+          3.126574
+        ]
+      },
+      "endpoint_evidence_class": [
+        "RELATIONSHIP_CONSTRAINED_GEOMETRIC",
+        "RELATIONSHIP_CONSTRAINED_GEOMETRIC"
+      ],
+      "goal_m": [
+        12.263355,
+        11.335481,
+        3.126574
+      ],
+      "ifc_files": [
+        {
+          "file_name": "FM_ARC_DigitalHub_v1.ifc",
+          "role": "architecture",
+          "sha256": "eff9b18a0a2fce6180d8f25c8cfe0e986d4d2e4a7a3ee69f375a105b20ca593c",
+          "size_bytes": 14322717
+        },
+        {
+          "file_name": "FM_HZG_DigitalHub_v1.ifc",
+          "role": "heating",
+          "sha256": "70a40f5d0782b53ae573b89cca8990f66b54b21229527daddd58e5dc2573fbb6",
+          "size_bytes": 9869500
+        },
+        {
+          "file_name": "FM_LFT_DigitalHub_v1.ifc",
+          "role": "ventilation",
+          "sha256": "8647e24ea0c0e2f4188fad6222662c1004de55978f9a0d0e1190445e149dbd6c",
+          "size_bytes": 7369265
+        },
+        {
+          "file_name": "FM_SAN_DigitalHub_v1.ifc",
+          "role": "sanitary",
+          "sha256": "5d6b7998d9060626132f56010a75c238ebc00ed6b0f937f2c1db0ac46fbff87a",
+          "size_bytes": 16846052
+        }
+      ],
+      "obstacle_policy": "REPLACED_HOSTS_ONLY_EXCLUDED",
+      "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+      "relationship_constrained_geometric_is_not_native_port_placement": true,
+      "replaced_host_global_ids": [
+        "0JV3InQaz9UBog62O3UPgq",
+        "0IU610uqLBi9PW0cPG4EXn",
+        "0JV3InQaz9UBog62O3UPgs",
+        "0IU610uqLBi9PW0cPG4EXE",
+        "0IU610uqLBi9PW0cPG4EYQ",
+        "0IU610uqLBi9PW0cPG4EZe"
+      ],
+      "request_id": "DH11B-V1",
+      "roi_bounds_m": [
+        6.1000000000000005,
+        14.5,
+        9.700000000000001,
+        13.700000000000001,
+        1.5,
+        4.800000000000001
+      ],
+      "roi_margin_m": 1.5,
+      "source_file": "FM_LFT_DigitalHub_v1.ifc",
+      "span_bounds_m": [
+        7.624954704502249,
+        12.924854705067,
+        11.217480986871198,
+        12.1224809868712,
+        3.0,
+        3.2700000000000005
+      ],
+      "start_interface": {
+        "classification_evidence": {
+          "host_mesh_gap_m": 1.062740789237182e-05
+        },
+        "coordinate_classification": "RELATIONSHIP_CONSTRAINED_GEOMETRIC",
+        "geometric_gap_m": 1.1e-05,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "3myQAW04PF0wOsrQvlrcmy"
+        ],
+        "replaced_host_global_id": "0JV3InQaz9UBog62O3UPgq",
+        "replaced_port": {
+          "global_id": "1SWhV_CzPAAu78nL3Cjl27",
+          "local_origin_identity": true,
+          "mesh_distance_m": 0.11543280290160185,
+          "world_m": [
+            8.933239227207471,
+            12.0024809868712,
+            3.149999999435296
+          ]
+        },
+        "retained_host_global_id": "0IU610uqLBi9PW0cPG4ERE",
+        "retained_port": {
+          "global_id": "2MR9VXHi15Zx_jKerBs7ju",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.14142135623730542,
+          "world_m": [
+            8.933239227207471,
+            12.0024809868712,
+            3.149999999435296
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          8.933234,
+          12.102481,
+          3.05
+        ]
+      },
+      "start_m": [
+        8.933234,
+        12.102481,
+        3.05
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 3.4566592709308126,
+      "system_global_ids": [
+        "03yA$B7yP6BhT8dvTJ$G28"
+      ],
+      "system_names": [
+        "ZUL_R 2"
+      ],
+      "voxel_size_m": 0.1
+    },
+    {
+      "approximate_obstacle_count": 73,
+      "bodies": [
+        {
+          "global_id": "3ELBYKoMX93QrK7TjQe1dR",
+          "half_extent_m": 0.014,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7722020",
+          "profiles": [
+            {
+              "half_extent_m": 0.014,
+              "radius_m": 0.014,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "2OL8yBILvEUPk5cWM1VJEL",
+          "half_extent_m": 0.01538698754851986,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7722209",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "3ELBYKoMX93QrK7TjQe1dJ",
+          "half_extent_m": 0.014,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7722028",
+          "profiles": [
+            {
+              "half_extent_m": 0.014,
+              "radius_m": 0.014,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "2OL8yBILvEUPk5cWM1VJEN",
+          "half_extent_m": 0.015386987548517084,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7722211",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "2OL8yBILvEUPk5cWM1VJEZ",
+          "half_extent_m": 0.014,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7722199",
+          "profiles": [
+            {
+              "half_extent_m": 0.014,
+              "radius_m": 0.014,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "2OL8yBILvEUPk5cWM1VJEj",
+          "half_extent_m": 0.015386987548517084,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7722201",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        }
+      ],
+      "body_half_extent_m": 0.01538698754851986,
+      "body_half_extent_rule": "Measured IFC profile. Rectangular profiles use max(width, height) / 2 without applying the duct orientation.",
+      "boundary_host_global_ids": [
+        "3ELBYKoMX93QrK7TjQe1uy",
+        "3ELBYKoMX93QrK7TjQe1vS"
+      ],
+      "cases_run": [
+        "BASELINE_BODY_AABB_1MM_COVERING@0.0"
+      ],
+      "clearance_policy": {
+        "baseline_occupancy": "Obstacle AABBs are inflated by the measured route-body half-extent. Covering and proxy cells are blocked only when the cell centre is enclosed or within 1 mm of the mesh. Walls, slabs, and MEP keep their inflated AABBs.",
+        "benchmark_v1_inter_system_m": 0.05,
+        "boundary_host_exception": "Only the containing cell of a retained boundary host may be released, and only for that host. Samples in that cell are connection contact. The rest of the route is still checked against that host.",
+        "building_code_compliance_claimed": false,
+        "clearance_aware_occupancy": "AABB inflation and covering/proxy mesh contact both equal the body half-extent plus the declared additional clearance. The frozen A* implementation is unchanged.",
+        "project_building_clearance_defined": false,
+        "reason": "BENCHMARK_V1 defines 0.05 m only between distinct synthetic systems. Same-system clearance is UNDEFINED. No DigitalHub duct-to-architecture clearance is declared.",
+        "same_system_status": "UNDEFINED",
+        "sensitivity_additional_clearance_m": [
+          0.0,
+          0.025,
+          0.05,
+          0.1
+        ],
+        "sensitivity_label": "NOT_A_BUILDING_CODE_CLAIM",
+        "validation": "The full physical polyline, including connector stubs and bends, is tested. Swept AABBs select candidates. Mesh surface distance of centreline samples then decides enclosure or clearance. Required separation is the body half-extent plus the declared additional clearance. Absence of a confirmed intersection is not sufficient clearance.",
+        "voxel_limitation": "A 0.1 m grid can miss features narrower than one cell. Occupancy uses cell centres, so a free cell can still be closer to a solid than the route body. Mesh validation of the reconstructed polyline is the geometric check. A 0.05 m run is a localized sensitivity when the adapter cell limit allows it.",
+        "voxel_limitation_m": 0.1,
+        "zero_aabb_hits": "ZERO_BROAD_PHASE_CANDIDATES does not prove clearance. Those routes stay validation-incomplete."
+      },
+      "containing_indices": [
+        [
+          15,
+          15,
+          43
+        ],
+        [
+          18,
+          27,
+          16
+        ]
+      ],
+      "dataset_id": "rwth-digitalhub-v1",
+      "discipline": "heating",
+      "end_interface": {
+        "classification_evidence": {
+          "mesh_distance_m": 0.013999999999991419,
+          "ports_agree": true
+        },
+        "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+        "geometric_gap_m": 0.002327,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "2wGC1gIDb8RB7S16NcdgIy"
+        ],
+        "replaced_host_global_id": "2OL8yBILvEUPk5cWM1VJEj",
+        "replaced_port": {
+          "global_id": "265rBQzobBABQODOFeLoGC",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.01549999999999141,
+          "world_m": [
+            38.3721457329351,
+            16.9419809868712,
+            -3.1924999999999897
+          ]
+        },
+        "retained_host_global_id": "3ELBYKoMX93QrK7TjQe1vS",
+        "retained_port": {
+          "global_id": "1utKJ$zxPCovv_iTPPsSr6",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.013999999999991419,
+          "world_m": [
+            38.37214573293502,
+            16.9419809868712,
+            -3.1925000000000066
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          38.372146,
+          16.941981,
+          -3.1925
+        ]
+      },
+      "endpoint_evidence_class": [
+        "NATIVE_PORT_PLACEMENT",
+        "NATIVE_PORT_PLACEMENT"
+      ],
+      "goal_m": [
+        38.372146,
+        16.941981,
+        -3.1925
+      ],
+      "ifc_files": [
+        {
+          "file_name": "FM_ARC_DigitalHub_v1.ifc",
+          "role": "architecture",
+          "sha256": "eff9b18a0a2fce6180d8f25c8cfe0e986d4d2e4a7a3ee69f375a105b20ca593c",
+          "size_bytes": 14322717
+        },
+        {
+          "file_name": "FM_HZG_DigitalHub_v1.ifc",
+          "role": "heating",
+          "sha256": "70a40f5d0782b53ae573b89cca8990f66b54b21229527daddd58e5dc2573fbb6",
+          "size_bytes": 9869500
+        },
+        {
+          "file_name": "FM_LFT_DigitalHub_v1.ifc",
+          "role": "ventilation",
+          "sha256": "8647e24ea0c0e2f4188fad6222662c1004de55978f9a0d0e1190445e149dbd6c",
+          "size_bytes": 7369265
+        },
+        {
+          "file_name": "FM_SAN_DigitalHub_v1.ifc",
+          "role": "sanitary",
+          "sha256": "5d6b7998d9060626132f56010a75c238ebc00ed6b0f937f2c1db0ac46fbff87a",
+          "size_bytes": 16846052
+        }
+      ],
+      "obstacle_policy": "REPLACED_HOSTS_ONLY_EXCLUDED",
+      "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+      "relationship_constrained_geometric_is_not_native_port_placement": true,
+      "replaced_host_global_ids": [
+        "3ELBYKoMX93QrK7TjQe1dR",
+        "2OL8yBILvEUPk5cWM1VJEL",
+        "3ELBYKoMX93QrK7TjQe1dJ",
+        "2OL8yBILvEUPk5cWM1VJEN",
+        "2OL8yBILvEUPk5cWM1VJEZ",
+        "2OL8yBILvEUPk5cWM1VJEj"
+      ],
+      "request_id": "DH11B-H1",
+      "roi_bounds_m": [
+        36.5,
+        39.900000000000006,
+        14.200000000000001,
+        18.6,
+        -4.800000000000001,
+        1.1
+      ],
+      "roi_margin_m": 1.5,
+      "source_file": "FM_HZG_DigitalHub_v1.ifc",
+      "span_bounds_m": [
+        38.029145732935,
+        38.38764573293511,
+        15.749958593014993,
+        17.0149809868712,
+        -3.207999999999998,
+        -0.4294999999999886
+      ],
+      "start_interface": {
+        "classification_evidence": {
+          "mesh_distance_m": 0.015499999999992242,
+          "ports_agree": true
+        },
+        "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+        "geometric_gap_m": 0.002327,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "3XY4ChrnT9Ax$8xWPOF7i5"
+        ],
+        "replaced_host_global_id": "3ELBYKoMX93QrK7TjQe1dR",
+        "replaced_port": {
+          "global_id": "3RCzuzbBz0U9wCicdWN7bq",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.013999999999999346,
+          "world_m": [
+            38.095145732935,
+            15.765458593015033,
+            -0.4449999999999742
+          ]
+        },
+        "retained_host_global_id": "3ELBYKoMX93QrK7TjQe1uy",
+        "retained_port": {
+          "global_id": "2ddqFHD0rADBdG5wJsbKN0",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.015499999999992242,
+          "world_m": [
+            38.095145732935,
+            15.765458593015001,
+            -0.445
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          38.095146,
+          15.765459,
+          -0.445
+        ]
+      },
+      "start_m": [
+        38.095146,
+        15.765459,
+        -0.445
+      ],
+      "storeys": [
+        "B01_OKFB"
+      ],
+      "straight_line_m": 3.001614597719895,
+      "system_global_ids": [
+        "3ex4XNbP56dRvZoYYskUJA"
+      ],
+      "system_names": [
+        "H_VL 9"
+      ],
+      "voxel_size_m": 0.1
+    },
+    {
+      "approximate_obstacle_count": 64,
+      "bodies": [
+        {
+          "global_id": "1qX$MMTNzDlQyQrkUvXMyC",
+          "half_extent_m": 0.027,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7602199",
+          "profiles": [
+            {
+              "half_extent_m": 0.027,
+              "radius_m": 0.027,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "1S7VbM5Mr9wBCUw2MH76MR",
+          "half_extent_m": 0.028788557348843113,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7565250",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "1S7VbM5Mr9wBCUw2MH76MP",
+          "half_extent_m": 0.027,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7565248",
+          "profiles": [
+            {
+              "half_extent_m": 0.027,
+              "radius_m": 0.027,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "1S7VbM5Mr9wBCUw2MH76MT",
+          "half_extent_m": 0.028788557348846666,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7565252",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "1S7VbM5Mr9wBCUw2MH77vV",
+          "half_extent_m": 0.027,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7566342",
+          "profiles": [
+            {
+              "half_extent_m": 0.027,
+              "radius_m": 0.027,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        }
+      ],
+      "body_half_extent_m": 0.028788557348846666,
+      "body_half_extent_rule": "Measured IFC profile. Rectangular profiles use max(width, height) / 2 without applying the duct orientation.",
+      "boundary_host_global_ids": [
+        "2fZ7PNx81BzA_Qze7yXsj0",
+        "3ELBYKoMX93QrK7TjQe1s4"
+      ],
+      "cases_run": [
+        "BASELINE_BODY_AABB_1MM_COVERING@0.0"
+      ],
+      "clearance_policy": {
+        "baseline_occupancy": "Obstacle AABBs are inflated by the measured route-body half-extent. Covering and proxy cells are blocked only when the cell centre is enclosed or within 1 mm of the mesh. Walls, slabs, and MEP keep their inflated AABBs.",
+        "benchmark_v1_inter_system_m": 0.05,
+        "boundary_host_exception": "Only the containing cell of a retained boundary host may be released, and only for that host. Samples in that cell are connection contact. The rest of the route is still checked against that host.",
+        "building_code_compliance_claimed": false,
+        "clearance_aware_occupancy": "AABB inflation and covering/proxy mesh contact both equal the body half-extent plus the declared additional clearance. The frozen A* implementation is unchanged.",
+        "project_building_clearance_defined": false,
+        "reason": "BENCHMARK_V1 defines 0.05 m only between distinct synthetic systems. Same-system clearance is UNDEFINED. No DigitalHub duct-to-architecture clearance is declared.",
+        "same_system_status": "UNDEFINED",
+        "sensitivity_additional_clearance_m": [
+          0.0,
+          0.025,
+          0.05,
+          0.1
+        ],
+        "sensitivity_label": "NOT_A_BUILDING_CODE_CLAIM",
+        "validation": "The full physical polyline, including connector stubs and bends, is tested. Swept AABBs select candidates. Mesh surface distance of centreline samples then decides enclosure or clearance. Required separation is the body half-extent plus the declared additional clearance. Absence of a confirmed intersection is not sufficient clearance.",
+        "voxel_limitation": "A 0.1 m grid can miss features narrower than one cell. Occupancy uses cell centres, so a free cell can still be closer to a solid than the route body. Mesh validation of the reconstructed polyline is the geometric check. A 0.05 m run is a localized sensitivity when the adapter cell limit allows it.",
+        "voxel_limitation_m": 0.1,
+        "zero_aabb_hits": "ZERO_BROAD_PHASE_CANDIDATES does not prove clearance. Those routes stay validation-incomplete."
+      },
+      "containing_indices": [
+        [
+          35,
+          85,
+          16
+        ],
+        [
+          16,
+          16,
+          26
+        ]
+      ],
+      "dataset_id": "rwth-digitalhub-v1",
+      "discipline": "heating",
+      "end_interface": {
+        "classification_evidence": {
+          "mesh_distance_m": 0.028999857053312327,
+          "ports_agree": true
+        },
+        "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+        "geometric_gap_m": 0.002,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "2xO3SW9lL24eqorfknw0$g"
+        ],
+        "replaced_host_global_id": "1S7VbM5Mr9wBCUw2MH77vV",
+        "replaced_port": {
+          "global_id": "2pGq7w9kbEqxjsJTPWStpS",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.026999999999992752,
+          "world_m": [
+            32.95394625224141,
+            19.385734126054288,
+            -0.44500014399659
+          ]
+        },
+        "retained_host_global_id": "3ELBYKoMX93QrK7TjQe1s4",
+        "retained_port": {
+          "global_id": "3KMeW2HAnAdP0kVINoPq_$",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.028999857053312327,
+          "world_m": [
+            32.9539462522414,
+            19.385734126053862,
+            -0.44500028799317615
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          32.953946,
+          19.385734,
+          -0.445
+        ]
+      },
+      "endpoint_evidence_class": [
+        "NATIVE_PORT_PLACEMENT",
+        "NATIVE_PORT_PLACEMENT"
+      ],
+      "goal_m": [
+        32.953946,
+        19.385734,
+        -0.445
+      ],
+      "ifc_files": [
+        {
+          "file_name": "FM_ARC_DigitalHub_v1.ifc",
+          "role": "architecture",
+          "sha256": "eff9b18a0a2fce6180d8f25c8cfe0e986d4d2e4a7a3ee69f375a105b20ca593c",
+          "size_bytes": 14322717
+        },
+        {
+          "file_name": "FM_HZG_DigitalHub_v1.ifc",
+          "role": "heating",
+          "sha256": "70a40f5d0782b53ae573b89cca8990f66b54b21229527daddd58e5dc2573fbb6",
+          "size_bytes": 9869500
+        },
+        {
+          "file_name": "FM_LFT_DigitalHub_v1.ifc",
+          "role": "ventilation",
+          "sha256": "8647e24ea0c0e2f4188fad6222662c1004de55978f9a0d0e1190445e149dbd6c",
+          "size_bytes": 7369265
+        },
+        {
+          "file_name": "FM_SAN_DigitalHub_v1.ifc",
+          "role": "sanitary",
+          "sha256": "5d6b7998d9060626132f56010a75c238ebc00ed6b0f937f2c1db0ac46fbff87a",
+          "size_bytes": 16846052
+        }
+      ],
+      "obstacle_policy": "REPLACED_HOSTS_ONLY_EXCLUDED",
+      "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+      "relationship_constrained_geometric_is_not_native_port_placement": true,
+      "replaced_host_global_ids": [
+        "1qX$MMTNzDlQyQrkUvXMyC",
+        "1S7VbM5Mr9wBCUw2MH76MR",
+        "1S7VbM5Mr9wBCUw2MH76MP",
+        "1S7VbM5Mr9wBCUw2MH76MT",
+        "1S7VbM5Mr9wBCUw2MH77vV"
+      ],
+      "request_id": "DH11B-H2",
+      "roi_bounds_m": [
+        31.3,
+        36.7,
+        17.7,
+        27.900000000000002,
+        -3.1,
+        1.1
+      ],
+      "roi_margin_m": 1.5,
+      "source_file": "FM_HZG_DigitalHub_v1.ifc",
+      "span_bounds_m": [
+        32.892546252241395,
+        35.155954705067,
+        19.270834096193653,
+        26.370541096633545,
+        -1.55678668787355,
+        -0.4160131747177382
+      ],
+      "start_interface": {
+        "classification_evidence": {
+          "mesh_distance_m": 0.024999999999999013,
+          "ports_agree": true
+        },
+        "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+        "geometric_gap_m": 0.003721,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "2XsgK20Jf7cehiqivcDYPw"
+        ],
+        "replaced_host_global_id": "1qX$MMTNzDlQyQrkUvXMyC",
+        "replaced_port": {
+          "global_id": "14CR73pXT7$fqCVGrQPPN3",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.026999999999998896,
+          "world_m": [
+            34.84395470506701,
+            26.281034126050315,
+            -1.400786687873544
+          ]
+        },
+        "retained_host_global_id": "2fZ7PNx81BzA_Qze7yXsj0",
+        "retained_port": {
+          "global_id": "1qBjnK$AD8xwEsOb_fA2qN",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.024999999999999013,
+          "world_m": [
+            34.843954705067,
+            26.2810341260504,
+            -1.40078668787355
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          34.843955,
+          26.281034,
+          -1.400787
+        ]
+      },
+      "start_m": [
+        34.843955,
+        26.281034,
+        -1.400787
+      ],
+      "storeys": [
+        "B01_OKFB"
+      ],
+      "straight_line_m": 7.213239333607388,
+      "system_global_ids": [
+        "3ex4XNbP56dRvZoYYskUJA"
+      ],
+      "system_names": [
+        "H_VL 9"
+      ],
+      "voxel_size_m": 0.1
+    },
+    {
+      "approximate_obstacle_count": 112,
+      "bodies": [
+        {
+          "global_id": "13pKJiczr64fqA9_0X9imW",
+          "half_extent_m": 0.03750000000000142,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7461449",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9ih5",
+          "half_extent_m": 0.044500000000001094,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7462060",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9ihs",
+          "half_extent_m": 0.03750000000000142,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7462047",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9i$m",
+          "half_extent_m": 0.045530268932769014,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7461273",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9iyZ",
+          "half_extent_m": 0.037499999999999645,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7461194",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9iyP",
+          "half_extent_m": 0.045530268932769014,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7461232",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        }
+      ],
+      "body_half_extent_m": 0.045530268932769014,
+      "body_half_extent_rule": "Measured IFC profile. Rectangular profiles use max(width, height) / 2 without applying the duct orientation.",
+      "boundary_host_global_ids": [
+        "13pKJiczr64fqA9_0X9is5",
+        "13pKJiczr64fqA9_0X9izn"
+      ],
+      "cases_run": [
+        "BASELINE_BODY_AABB_1MM_COVERING@0.0"
+      ],
+      "clearance_policy": {
+        "baseline_occupancy": "Obstacle AABBs are inflated by the measured route-body half-extent. Covering and proxy cells are blocked only when the cell centre is enclosed or within 1 mm of the mesh. Walls, slabs, and MEP keep their inflated AABBs.",
+        "benchmark_v1_inter_system_m": 0.05,
+        "boundary_host_exception": "Only the containing cell of a retained boundary host may be released, and only for that host. Samples in that cell are connection contact. The rest of the route is still checked against that host.",
+        "building_code_compliance_claimed": false,
+        "clearance_aware_occupancy": "AABB inflation and covering/proxy mesh contact both equal the body half-extent plus the declared additional clearance. The frozen A* implementation is unchanged.",
+        "project_building_clearance_defined": false,
+        "reason": "BENCHMARK_V1 defines 0.05 m only between distinct synthetic systems. Same-system clearance is UNDEFINED. No DigitalHub duct-to-architecture clearance is declared.",
+        "same_system_status": "UNDEFINED",
+        "sensitivity_additional_clearance_m": [
+          0.0,
+          0.025,
+          0.05,
+          0.1
+        ],
+        "sensitivity_label": "NOT_A_BUILDING_CODE_CLAIM",
+        "validation": "The full physical polyline, including connector stubs and bends, is tested. Swept AABBs select candidates. Mesh surface distance of centreline samples then decides enclosure or clearance. Required separation is the body half-extent plus the declared additional clearance. Absence of a confirmed intersection is not sufficient clearance.",
+        "voxel_limitation": "A 0.1 m grid can miss features narrower than one cell. Occupancy uses cell centres, so a free cell can still be closer to a solid than the route body. Mesh validation of the reconstructed polyline is the geometric check. A 0.05 m run is a localized sensitivity when the adapter cell limit allows it.",
+        "voxel_limitation_m": 0.1,
+        "zero_aabb_hits": "ZERO_BROAD_PHASE_CANDIDATES does not prove clearance. Those routes stay validation-incomplete."
+      },
+      "containing_indices": [
+        [
+          50,
+          41,
+          17
+        ],
+        [
+          16,
+          27,
+          19
+        ]
+      ],
+      "dataset_id": "rwth-digitalhub-v1",
+      "discipline": "sanitary",
+      "end_interface": {
+        "classification_evidence": {
+          "mesh_distance_m": 0.037499999999994274,
+          "ports_agree": true
+        },
+        "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+        "geometric_gap_m": 0.007012,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "3rF_96lcz5dfkRbiIPI6_f"
+        ],
+        "replaced_host_global_id": "13pKJiczr64fqA9_0X9iyP",
+        "replaced_port": {
+          "global_id": "2HWyiEPwL3XBwjowTqS4tE",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.04448965436925041,
+          "world_m": [
+            17.21510055728938,
+            15.139942319759914,
+            3.3246734011624057
+          ]
+        },
+        "retained_host_global_id": "13pKJiczr64fqA9_0X9izn",
+        "retained_port": {
+          "global_id": "13wGSAWSLESvX_PPSnaZy1",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.037499999999994274,
+          "world_m": [
+            17.215090211141302,
+            15.139942319242701,
+            3.32467340116758
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          17.21509,
+          15.139942,
+          3.324673
+        ]
+      },
+      "endpoint_evidence_class": [
+        "NATIVE_PORT_PLACEMENT",
+        "NATIVE_PORT_PLACEMENT"
+      ],
+      "goal_m": [
+        17.21509,
+        15.139942,
+        3.324673
+      ],
+      "ifc_files": [
+        {
+          "file_name": "FM_ARC_DigitalHub_v1.ifc",
+          "role": "architecture",
+          "sha256": "eff9b18a0a2fce6180d8f25c8cfe0e986d4d2e4a7a3ee69f375a105b20ca593c",
+          "size_bytes": 14322717
+        },
+        {
+          "file_name": "FM_HZG_DigitalHub_v1.ifc",
+          "role": "heating",
+          "sha256": "70a40f5d0782b53ae573b89cca8990f66b54b21229527daddd58e5dc2573fbb6",
+          "size_bytes": 9869500
+        },
+        {
+          "file_name": "FM_LFT_DigitalHub_v1.ifc",
+          "role": "ventilation",
+          "sha256": "8647e24ea0c0e2f4188fad6222662c1004de55978f9a0d0e1190445e149dbd6c",
+          "size_bytes": 7369265
+        },
+        {
+          "file_name": "FM_SAN_DigitalHub_v1.ifc",
+          "role": "sanitary",
+          "sha256": "5d6b7998d9060626132f56010a75c238ebc00ed6b0f937f2c1db0ac46fbff87a",
+          "size_bytes": 16846052
+        }
+      ],
+      "obstacle_policy": "REPLACED_HOSTS_ONLY_EXCLUDED",
+      "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+      "relationship_constrained_geometric_is_not_native_port_placement": true,
+      "replaced_host_global_ids": [
+        "13pKJiczr64fqA9_0X9imW",
+        "13pKJiczr64fqA9_0X9ih5",
+        "13pKJiczr64fqA9_0X9ihs",
+        "13pKJiczr64fqA9_0X9i$m",
+        "13pKJiczr64fqA9_0X9iyZ",
+        "13pKJiczr64fqA9_0X9iyP"
+      ],
+      "request_id": "DH11B-S1",
+      "roi_bounds_m": [
+        15.600000000000001,
+        22.200000000000003,
+        12.4,
+        18.2,
+        1.4000000000000001,
+        4.9
+      ],
+      "roi_margin_m": 1.5,
+      "source_file": "FM_SAN_DigitalHub_v1.ifc",
+      "span_bounds_m": [
+        17.170592435751985,
+        20.679454705067005,
+        13.901510994065895,
+        16.69569197667742,
+        2.956644537684416,
+        3.3745520897474535
+      ],
+      "start_interface": {
+        "classification_evidence": {
+          "mesh_distance_m": 0.039999999999995345,
+          "ports_agree": true
+        },
+        "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+        "geometric_gap_m": 0.0025,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "3dY7nXTAP3U85Sq8kxfExo"
+        ],
+        "replaced_host_global_id": "13pKJiczr64fqA9_0X9imW",
+        "replaced_port": {
+          "global_id": "26xXdEx4X4$BC2oPoPA8Xo",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.03749999999999814,
+          "world_m": [
+            20.619954705067002,
+            16.525317633387303,
+            3.16951888097447
+          ]
+        },
+        "retained_host_global_id": "13pKJiczr64fqA9_0X9is5",
+        "retained_port": {
+          "global_id": "0rVmopOvL0wQbfzVitRdb3",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.039999999999995345,
+          "world_m": [
+            20.619954705067002,
+            16.52531763338733,
+            3.1695188809744743
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          20.619955,
+          16.525318,
+          3.169519
+        ]
+      },
+      "start_m": [
+        20.619955,
+        16.525318,
+        3.169519
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 3.679190115796356,
+      "system_global_ids": [
+        "14kK71eAf9rB9EcRWJPnwX"
+      ],
+      "system_names": [
+        "S_SW 3"
+      ],
+      "voxel_size_m": 0.1
+    },
+    {
+      "approximate_obstacle_count": 86,
+      "bodies": [
+        {
+          "global_id": "1UpJeJrVD4fuuztpHsZjwW",
+          "half_extent_m": 0.05390003895104539,
+          "ifc_class": "IfcPipeFitting",
+          "name": "\u00dcbergang HT:Standard:7479028",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "1UpJeJrVD4fuuztpHsZjp$",
+          "half_extent_m": 0.03998742756870044,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7478443",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "1UpJeJrVD4fuuztpHsZjwu",
+          "half_extent_m": 0.0510665974285785,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7479020",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "2UK9EuqMj0HOetl3_go5E_",
+          "half_extent_m": 0.03750000000000142,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7476143",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "2UK9EuqMj0HOetl3_go5FX",
+          "half_extent_m": 0.04526065714171906,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7476208",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "2UK9EuqMj0HOetl3_go5BG",
+          "half_extent_m": 0.029476027075483024,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7475905",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        }
+      ],
+      "body_half_extent_m": 0.05390003895104539,
+      "body_half_extent_rule": "Measured IFC profile. Rectangular profiles use max(width, height) / 2 without applying the duct orientation.",
+      "boundary_host_global_ids": [
+        "1UpJeJrVD4fuuztpHsZjwa",
+        "2UK9EuqMj0HOetl3_go5Dk"
+      ],
+      "cases_run": [
+        "BASELINE_BODY_AABB_1MM_COVERING@0.0"
+      ],
+      "clearance_policy": {
+        "baseline_occupancy": "Obstacle AABBs are inflated by the measured route-body half-extent. Covering and proxy cells are blocked only when the cell centre is enclosed or within 1 mm of the mesh. Walls, slabs, and MEP keep their inflated AABBs.",
+        "benchmark_v1_inter_system_m": 0.05,
+        "boundary_host_exception": "Only the containing cell of a retained boundary host may be released, and only for that host. Samples in that cell are connection contact. The rest of the route is still checked against that host.",
+        "building_code_compliance_claimed": false,
+        "clearance_aware_occupancy": "AABB inflation and covering/proxy mesh contact both equal the body half-extent plus the declared additional clearance. The frozen A* implementation is unchanged.",
+        "project_building_clearance_defined": false,
+        "reason": "BENCHMARK_V1 defines 0.05 m only between distinct synthetic systems. Same-system clearance is UNDEFINED. No DigitalHub duct-to-architecture clearance is declared.",
+        "same_system_status": "UNDEFINED",
+        "sensitivity_additional_clearance_m": [
+          0.0,
+          0.025,
+          0.05,
+          0.1
+        ],
+        "sensitivity_label": "NOT_A_BUILDING_CODE_CLAIM",
+        "validation": "The full physical polyline, including connector stubs and bends, is tested. Swept AABBs select candidates. Mesh surface distance of centreline samples then decides enclosure or clearance. Required separation is the body half-extent plus the declared additional clearance. Absence of a confirmed intersection is not sufficient clearance.",
+        "voxel_limitation": "A 0.1 m grid can miss features narrower than one cell. Occupancy uses cell centres, so a free cell can still be closer to a solid than the route body. Mesh validation of the reconstructed polyline is the geometric check. A 0.05 m run is a localized sensitivity when the adapter cell limit allows it.",
+        "voxel_limitation_m": 0.1,
+        "zero_aabb_hits": "ZERO_BROAD_PHASE_CANDIDATES does not prove clearance. Those routes stay validation-incomplete."
+      },
+      "containing_indices": [
+        [
+          83,
+          20,
+          16
+        ],
+        [
+          15,
+          16,
+          17
+        ]
+      ],
+      "dataset_id": "rwth-digitalhub-v1",
+      "discipline": "sanitary",
+      "end_interface": {
+        "classification_evidence": {
+          "mesh_distance_m": 0.0444533832122945,
+          "ports_agree": true
+        },
+        "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+        "geometric_gap_m": 0.007015,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "3Z0mr1fW52kuc4UbP3HAw$"
+        ],
+        "replaced_host_global_id": "2UK9EuqMj0HOetl3_go5BG",
+        "replaced_port": {
+          "global_id": "0cDhXz2Wb2aebGt_sVvWat",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.03749999999999825,
+          "world_m": [
+            13.7989825370013,
+            18.392712324722,
+            -0.444455302624345
+          ]
+        },
+        "retained_host_global_id": "2UK9EuqMj0HOetl3_go5Dk",
+        "retained_port": {
+          "global_id": "24ZQEO8EPDV8Ggd55Y63py",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.0444533832122945,
+          "world_m": [
+            13.798976796245555,
+            18.392718695779596,
+            -0.4444092928950525
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          13.798977,
+          18.392719,
+          -0.444409
+        ]
+      },
+      "endpoint_evidence_class": [
+        "NATIVE_PORT_PLACEMENT",
+        "NATIVE_PORT_PLACEMENT"
+      ],
+      "goal_m": [
+        13.798977,
+        18.392719,
+        -0.444409
+      ],
+      "ifc_files": [
+        {
+          "file_name": "FM_ARC_DigitalHub_v1.ifc",
+          "role": "architecture",
+          "sha256": "eff9b18a0a2fce6180d8f25c8cfe0e986d4d2e4a7a3ee69f375a105b20ca593c",
+          "size_bytes": 14322717
+        },
+        {
+          "file_name": "FM_HZG_DigitalHub_v1.ifc",
+          "role": "heating",
+          "sha256": "70a40f5d0782b53ae573b89cca8990f66b54b21229527daddd58e5dc2573fbb6",
+          "size_bytes": 9869500
+        },
+        {
+          "file_name": "FM_LFT_DigitalHub_v1.ifc",
+          "role": "ventilation",
+          "sha256": "8647e24ea0c0e2f4188fad6222662c1004de55978f9a0d0e1190445e149dbd6c",
+          "size_bytes": 7369265
+        },
+        {
+          "file_name": "FM_SAN_DigitalHub_v1.ifc",
+          "role": "sanitary",
+          "sha256": "5d6b7998d9060626132f56010a75c238ebc00ed6b0f937f2c1db0ac46fbff87a",
+          "size_bytes": 16846052
+        }
+      ],
+      "obstacle_policy": "REPLACED_HOSTS_ONLY_EXCLUDED",
+      "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+      "relationship_constrained_geometric_is_not_native_port_placement": true,
+      "replaced_host_global_ids": [
+        "1UpJeJrVD4fuuztpHsZjwW",
+        "1UpJeJrVD4fuuztpHsZjp$",
+        "1UpJeJrVD4fuuztpHsZjwu",
+        "2UK9EuqMj0HOetl3_go5E_",
+        "2UK9EuqMj0HOetl3_go5FX",
+        "2UK9EuqMj0HOetl3_go5BG"
+      ],
+      "request_id": "DH11B-S2",
+      "roi_bounds_m": [
+        12.200000000000001,
+        22.200000000000003,
+        16.7,
+        20.5,
+        -2.2,
+        1.2000000000000002
+      ],
+      "roi_margin_m": 1.5,
+      "source_file": "FM_SAN_DigitalHub_v1.ifc",
+      "span_bounds_m": [
+        13.70007615015317,
+        20.67941728987238,
+        18.26070106395674,
+        18.939952525623468,
+        -0.6311346536527396,
+        -0.39803684002145623
+      ],
+      "start_interface": {
+        "classification_evidence": {
+          "mesh_distance_m": 0.023662062557774866,
+          "ports_agree": true
+        },
+        "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+        "geometric_gap_m": 0.002984,
+        "not_a_native_source_to_terminal_design_request": true,
+        "ports_agree": true,
+        "ports_agree_within_m": 0.02,
+        "relation_global_ids": [
+          "2wfSxx$yH1xemofMRTPavE"
+        ],
+        "replaced_host_global_id": "1UpJeJrVD4fuuztpHsZjwW",
+        "replaced_port": {
+          "global_id": "0Ffrml3IfDbuRPZTxnPVzw",
+          "local_origin_identity": true,
+          "mesh_distance_m": 0.04298369926986204,
+          "world_m": [
+            20.5422514926734,
+            18.7227143444843,
+            -0.549975502632677
+          ]
+        },
+        "retained_host_global_id": "1UpJeJrVD4fuuztpHsZjwa",
+        "retained_port": {
+          "global_id": "1QXn1bsar1Rub1T8ve4Yub",
+          "local_origin_identity": false,
+          "mesh_distance_m": 0.023662062557774866,
+          "world_m": [
+            20.541947059234104,
+            18.722992893396718,
+            -0.5499032598040842
+          ]
+        },
+        "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+        "world_m": [
+          20.541947,
+          18.722993,
+          -0.549903
+        ]
+      },
+      "start_m": [
+        20.541947,
+        18.722993,
+        -0.549903
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "straight_line_m": 6.751878108364643,
+      "system_global_ids": [
+        "14kK71eAf9rB9EcRWJPnwX"
+      ],
+      "system_names": [
+        "S_SW 3"
+      ],
+      "voxel_size_m": 0.1
+    }
+  ],
+  "skipped_replaced_host_global_ids": [
+    "0KDl_Pd9bF6RK3eO7wIX_s",
+    "0KDl_Pd9bF6RK3eO7wIX_k",
+    "2hMjjbZvP4CAN9xX2G5FAP",
+    "2hMjjbZvP4CAN9xX2G5FAH",
+    "2hMjjbZvP4CAN9xX2G5FAZ",
+    "1PO8_6BBT97gCnBagBctV7"
+  ]
+}

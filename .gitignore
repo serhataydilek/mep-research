@@ -9,5 +9,6 @@ validation/results/*
 !validation/results/.gitkeep
 validation/ifc_samples/external/
 viewer/chrome-headless-profile/
+viewer/medical_dental_clinic_fixture.json
 .env
 .DS_Store

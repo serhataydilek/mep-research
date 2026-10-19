@@ -1,0 +1,137 @@
+{
+  "allowances": [
+    {
+      "cell_center_m": [
+        8.950000000000001,
+        12.150000000000002,
+        3.05
+      ],
+      "cell_index": [
+        28,
+        24,
+        15
+      ],
+      "discipline_or_system_excluded": false,
+      "host_global_id": "0IU610uqLBi9PW0cPG4ERE",
+      "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+      "port_m": [
+        8.933234,
+        12.102481,
+        3.05
+      ],
+      "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+      "surface_distance_m": 5.400200391450232e-06,
+      "tolerance_m": 0.05,
+      "whole_host_excluded": false
+    },
+    {
+      "cell_center_m": [
+        12.25,
+        11.350000000000001,
+        3.1500000000000004
+      ],
+      "cell_index": [
+        61,
+        16,
+        16
+      ],
+      "discipline_or_system_excluded": false,
+      "host_global_id": "33LHvKw7n5VOooYSuD9Xlz",
+      "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+      "port_m": [
+        12.263355,
+        11.335481,
+        3.126574
+      ],
+      "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+      "surface_distance_m": 1.3128799380979217e-08,
+      "tolerance_m": 0.05,
+      "whole_host_excluded": false
+    }
+  ],
+  "boundary_host_global_ids": [
+    "0IU610uqLBi9PW0cPG4ERE",
+    "33LHvKw7n5VOooYSuD9Xlz"
+  ],
+  "discipline": "ventilation",
+  "end_interface": {
+    "classification_evidence": {
+      "host_mesh_gap_m": 2.1060319179929678e-14
+    },
+    "coordinate_classification": "RELATIONSHIP_CONSTRAINED_GEOMETRIC",
+    "geometric_gap_m": 0.0,
+    "not_a_native_source_to_terminal_design_request": true,
+    "ports_agree": true,
+    "relation_global_ids": [
+      "2JF9LjKuvEYA7nfLA$hSuu"
+    ],
+    "replaced_host_global_id": "0IU610uqLBi9PW0cPG4EZe",
+    "replaced_port_global_id": "0CueDiYdb2vP1dotTL4WmU",
+    "retained_host_global_id": "33LHvKw7n5VOooYSuD9Xlz",
+    "retained_port_global_id": "0qX6PhdfzA7wQf_D6B9vhg",
+    "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+    "world_m": [
+      12.263355,
+      11.335481,
+      3.126574
+    ]
+  },
+  "endpoint_policy": "IMMUTABLE_PORT_PLUS_LOCAL_EVIDENCE",
+  "endpoint_qualification_status": [
+    "QUALIFIED_BOUNDARY_ALLOWANCE",
+    "QUALIFIED_BOUNDARY_ALLOWANCE"
+  ],
+  "frozen_before_search": true,
+  "not_a_native_source_to_terminal_design_request": true,
+  "replaced_host_global_ids": [
+    "0JV3InQaz9UBog62O3UPgq",
+    "0IU610uqLBi9PW0cPG4EXn",
+    "0JV3InQaz9UBog62O3UPgs",
+    "0IU610uqLBi9PW0cPG4EXE",
+    "0IU610uqLBi9PW0cPG4EYQ",
+    "0IU610uqLBi9PW0cPG4EZe"
+  ],
+  "request_kind": "EXISTING_SUBPATH_REPLACEMENT",
+  "source_file": "FM_LFT_DigitalHub_v1.ifc",
+  "start_interface": {
+    "classification_evidence": {
+      "host_mesh_gap_m": 1.062740789237182e-05
+    },
+    "coordinate_classification": "RELATIONSHIP_CONSTRAINED_GEOMETRIC",
+    "geometric_gap_m": 1.1e-05,
+    "not_a_native_source_to_terminal_design_request": true,
+    "ports_agree": true,
+    "relation_global_ids": [
+      "3myQAW04PF0wOsrQvlrcmy"
+    ],
+    "replaced_host_global_id": "0JV3InQaz9UBog62O3UPgq",
+    "replaced_port_global_id": "1SWhV_CzPAAu78nL3Cjl27",
+    "retained_host_global_id": "0IU610uqLBi9PW0cPG4ERE",
+    "retained_port_global_id": "2MR9VXHi15Zx_jKerBs7ju",
+    "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+    "world_m": [
+      8.933234,
+      12.102481,
+      3.05
+    ]
+  },
+  "storeys": [
+    "E00_OKRD"
+  ],
+  "system_global_ids": [
+    "03yA$B7yP6BhT8dvTJ$G28"
+  ],
+  "system_names": [
+    "ZUL_R 2"
+  ],
+  "topology_path_global_ids": [
+    "0IU610uqLBi9PW0cPG4ERE",
+    "0JV3InQaz9UBog62O3UPgq",
+    "0IU610uqLBi9PW0cPG4EXn",
+    "0JV3InQaz9UBog62O3UPgs",
+    "0IU610uqLBi9PW0cPG4EXE",
+    "0IU610uqLBi9PW0cPG4EYQ",
+    "0IU610uqLBi9PW0cPG4EZe",
+    "33LHvKw7n5VOooYSuD9Xlz"
+  ]
+}

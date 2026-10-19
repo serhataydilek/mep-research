@@ -1,0 +1,672 @@
+{
+  "allowances": [
+    {
+      "cell_center_m": [
+        8.950000000000001,
+        12.150000000000002,
+        3.05
+      ],
+      "cell_index": [
+        28,
+        24,
+        15
+      ],
+      "discipline_or_system_excluded": false,
+      "host_global_id": "0IU610uqLBi9PW0cPG4ERE",
+      "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+      "port_m": [
+        8.933234,
+        12.102481,
+        3.05
+      ],
+      "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+      "surface_distance_m": 5.400200391450232e-06,
+      "tolerance_m": 0.05,
+      "whole_host_excluded": false
+    },
+    {
+      "cell_center_m": [
+        12.25,
+        11.350000000000001,
+        3.1500000000000004
+      ],
+      "cell_index": [
+        61,
+        16,
+        16
+      ],
+      "discipline_or_system_excluded": false,
+      "host_global_id": "33LHvKw7n5VOooYSuD9Xlz",
+      "kind": "RETAINED_BOUNDARY_HOST_CONTAINING_CELL",
+      "port_m": [
+        12.263355,
+        11.335481,
+        3.126574
+      ],
+      "reason": "The immutable port lies on the retained boundary host surface. Only this host is ignored in the port's containing cell. The rest of the host stays occupied.",
+      "surface_distance_m": 1.3128799380979217e-08,
+      "tolerance_m": 0.05,
+      "whole_host_excluded": false
+    }
+  ],
+  "astar_invoked": true,
+  "boundary_host_global_ids": [
+    "0IU610uqLBi9PW0cPG4ERE",
+    "33LHvKw7n5VOooYSuD9Xlz"
+  ],
+  "collision_validation": {
+    "allowance_segments_not_counted_against_boundary_host": [
+      "0IU610uqLBi9PW0cPG4ERE"
+    ],
+    "broad_phase_hit_count": 4,
+    "clearance_violations": [
+      {
+        "body_half_extent_m": 0.10500000000000043,
+        "file_role": "ventilation",
+        "global_id": "0IU610uqLBi9PW0cPG4ERE",
+        "min_centerline_distance_m": 0.05039182939962755
+      },
+      {
+        "body_half_extent_m": 0.10500000000000043,
+        "file_role": "architecture",
+        "global_id": "1U1xl08gr5ah9up5e9rM1u",
+        "min_centerline_distance_m": 0.024999999999999467
+      }
+    ],
+    "confirmed_collision_result": false,
+    "confirmed_mesh_intersections": [],
+    "confirmed_separation": false,
+    "excluded_replaced_host_global_ids": [
+      "0IU610uqLBi9PW0cPG4EXE",
+      "0IU610uqLBi9PW0cPG4EXn",
+      "0IU610uqLBi9PW0cPG4EYQ",
+      "0IU610uqLBi9PW0cPG4EZe",
+      "0JV3InQaz9UBog62O3UPgq",
+      "0JV3InQaz9UBog62O3UPgs"
+    ],
+    "label": "CLEARANCE_VIOLATION",
+    "mesh_separated_samples": [
+      {
+        "file_role": "architecture",
+        "global_id": "0tHIUa9tj2ZQQI_dPBF8Nk",
+        "min_centerline_distance_m": 2.216643013658187
+      }
+    ],
+    "method": "SWEPT_AABB_THEN_LOCAL_MESH",
+    "note": "Mesh tests cover swept-AABB candidates only. Separation from those candidates is not clearance from every untested solid. Zero broad-phase hits would not be reported as confirmed separation.",
+    "unresolved_global_ids": []
+  },
+  "discipline": "ventilation",
+  "end_stub_m": [
+    [
+      12.25,
+      11.350000000000001,
+      3.1500000000000004
+    ],
+    [
+      12.263355,
+      11.350000000000001,
+      3.1500000000000004
+    ],
+    [
+      12.263355,
+      11.335481,
+      3.1500000000000004
+    ],
+    [
+      12.263355,
+      11.335481,
+      3.126574
+    ]
+  ],
+  "exact_port_to_port_connection": true,
+  "expanded_node_count": 83,
+  "goal_grid_index": [
+    61,
+    16,
+    16
+  ],
+  "grid_search_metrics": {
+    "bend_count": 4,
+    "expanded_node_count": 83,
+    "grid_route_length_m": 4.2,
+    "horizontal_step_count": 41,
+    "step_count": 42,
+    "vertical_step_count": 1,
+    "vertical_travel_m": 0.1
+  },
+  "immutable_goal_m": [
+    12.263355,
+    11.335481,
+    3.126574
+  ],
+  "immutable_start_m": [
+    8.933234,
+    12.102481,
+    3.05
+  ],
+  "path_cells": [
+    [
+      28,
+      24,
+      15
+    ],
+    [
+      29,
+      24,
+      15
+    ],
+    [
+      29,
+      23,
+      15
+    ],
+    [
+      29,
+      22,
+      15
+    ],
+    [
+      29,
+      21,
+      15
+    ],
+    [
+      29,
+      20,
+      15
+    ],
+    [
+      29,
+      19,
+      15
+    ],
+    [
+      29,
+      18,
+      15
+    ],
+    [
+      29,
+      17,
+      15
+    ],
+    [
+      30,
+      17,
+      15
+    ],
+    [
+      31,
+      17,
+      15
+    ],
+    [
+      32,
+      17,
+      15
+    ],
+    [
+      33,
+      17,
+      15
+    ],
+    [
+      34,
+      17,
+      15
+    ],
+    [
+      35,
+      17,
+      15
+    ],
+    [
+      36,
+      17,
+      15
+    ],
+    [
+      37,
+      17,
+      15
+    ],
+    [
+      38,
+      17,
+      15
+    ],
+    [
+      39,
+      17,
+      15
+    ],
+    [
+      40,
+      17,
+      15
+    ],
+    [
+      41,
+      17,
+      15
+    ],
+    [
+      42,
+      17,
+      15
+    ],
+    [
+      43,
+      17,
+      15
+    ],
+    [
+      44,
+      17,
+      15
+    ],
+    [
+      45,
+      17,
+      15
+    ],
+    [
+      46,
+      17,
+      15
+    ],
+    [
+      47,
+      17,
+      15
+    ],
+    [
+      48,
+      17,
+      15
+    ],
+    [
+      49,
+      17,
+      15
+    ],
+    [
+      50,
+      17,
+      15
+    ],
+    [
+      51,
+      17,
+      15
+    ],
+    [
+      52,
+      17,
+      15
+    ],
+    [
+      53,
+      17,
+      15
+    ],
+    [
+      54,
+      17,
+      15
+    ],
+    [
+      55,
+      17,
+      15
+    ],
+    [
+      56,
+      17,
+      15
+    ],
+    [
+      57,
+      17,
+      15
+    ],
+    [
+      58,
+      17,
+      15
+    ],
+    [
+      59,
+      17,
+      15
+    ],
+    [
+      60,
+      17,
+      15
+    ],
+    [
+      61,
+      17,
+      15
+    ],
+    [
+      61,
+      17,
+      16
+    ],
+    [
+      61,
+      16,
+      16
+    ]
+  ],
+  "path_found": true,
+  "physical_clash_freedom_claimed": false,
+  "physical_infeasibility_claimed": false,
+  "physical_route_length_m": 4.315585000000006,
+  "physical_route_metrics": {
+    "bend_count": 9,
+    "length_m": 4.315585000000006,
+    "net_vertical_m": 0.07657400000000036,
+    "orthogonal": true,
+    "segment_count": 47,
+    "vertical_travel_m": 0.1234260000000007
+  },
+  "physical_vertical_travel_m": 0.1234260000000007,
+  "process_memory": {
+    "peak_working_set_bytes": 507383808,
+    "working_set_bytes": 473522176
+  },
+  "python_tracemalloc_peak_bytes": 32304,
+  "replaced_host_global_ids": [
+    "0JV3InQaz9UBog62O3UPgq",
+    "0IU610uqLBi9PW0cPG4EXn",
+    "0JV3InQaz9UBog62O3UPgs",
+    "0IU610uqLBi9PW0cPG4EXE",
+    "0IU610uqLBi9PW0cPG4EYQ",
+    "0IU610uqLBi9PW0cPG4EZe"
+  ],
+  "router": "src.routing.astar_3d",
+  "routing_command_completed": true,
+  "runtime_seconds": 0.004537,
+  "search_status": "COMPLETED_PATH_FOUND",
+  "start_grid_index": [
+    28,
+    24,
+    15
+  ],
+  "start_stub_m": [
+    [
+      8.933234,
+      12.102481,
+      3.05
+    ],
+    [
+      8.950000000000001,
+      12.102481,
+      3.05
+    ],
+    [
+      8.950000000000001,
+      12.150000000000002,
+      3.05
+    ]
+  ],
+  "status_flags": {
+    "a_star_executed": true,
+    "astar_invoked": true,
+    "cli_completed": true,
+    "geometric_validation_status": "CLEARANCE_VIOLATION",
+    "path_found": true
+  },
+  "storeys": [
+    "E00_OKRD"
+  ],
+  "system_names": [
+    "ZUL_R 2"
+  ],
+  "world_polyline_m": [
+    [
+      8.933234,
+      12.102481,
+      3.05
+    ],
+    [
+      8.950000000000001,
+      12.102481,
+      3.05
+    ],
+    [
+      8.950000000000001,
+      12.150000000000002,
+      3.05
+    ],
+    [
+      9.05,
+      12.150000000000002,
+      3.05
+    ],
+    [
+      9.05,
+      12.05,
+      3.05
+    ],
+    [
+      9.05,
+      11.950000000000001,
+      3.05
+    ],
+    [
+      9.05,
+      11.850000000000001,
+      3.05
+    ],
+    [
+      9.05,
+      11.750000000000002,
+      3.05
+    ],
+    [
+      9.05,
+      11.650000000000002,
+      3.05
+    ],
+    [
+      9.05,
+      11.55,
+      3.05
+    ],
+    [
+      9.05,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      9.15,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      9.25,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      9.350000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      9.450000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      9.55,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      9.65,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      9.75,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      9.850000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      9.950000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.05,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.15,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.25,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.350000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.450000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.55,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.65,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.75,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.850000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      10.950000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.05,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.150000000000002,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.25,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.350000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.450000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.55,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.650000000000002,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.75,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.850000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      11.950000000000001,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      12.05,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      12.150000000000002,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      12.25,
+      11.450000000000001,
+      3.05
+    ],
+    [
+      12.25,
+      11.450000000000001,
+      3.1500000000000004
+    ],
+    [
+      12.25,
+      11.350000000000001,
+      3.1500000000000004
+    ],
+    [
+      12.263355,
+      11.350000000000001,
+      3.1500000000000004
+    ],
+    [
+      12.263355,
+      11.335481,
+      3.1500000000000004
+    ],
+    [
+      12.263355,
+      11.335481,
+      3.126574
+    ]
+  ]
+}

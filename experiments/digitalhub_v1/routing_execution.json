@@ -1,0 +1,655 @@
+{
+  "astar_invoked": false,
+  "collision_validation": {
+    "checked": false,
+    "confirmed_collision_result": false,
+    "label": "NOT_RUN_ENDPOINT_INVALID",
+    "method": "BROAD_PHASE_SWEPT_AABB",
+    "note": "No route was searched because a terminal containing cell is outside the grid or blocked. Zero swept-AABB candidates is not applicable."
+  },
+  "discipline": "heating",
+  "endpoint_policy": "CONTAINING_CELL_NO_RELOCATION",
+  "endpoint_validity_status": "ENDPOINT_CELL_BLOCKED",
+  "exact_port_to_port_connection": false,
+  "expanded_node_count": null,
+  "goal_grid_index": [
+    15,
+    15,
+    15
+  ],
+  "goal_grid_z_index": 15,
+  "grid_origin_m": [
+    48.6,
+    13.100000000000001,
+    -1.7000000000000002
+  ],
+  "grid_search_metrics": null,
+  "no_path_diagnosis": null,
+  "original_port_z_delta_m": -0.22,
+  "path_cells": null,
+  "path_found": false,
+  "physical_clash_freedom_claimed": false,
+  "physical_infeasibility_claimed": false,
+  "physical_route_metrics": null,
+  "physical_route_vertical_travel_m": null,
+  "prior_attempts": [],
+  "process_memory": {
+    "peak_working_set_bytes": 1100414976,
+    "working_set_bytes": 197357568
+  },
+  "python_tracemalloc_peak_bytes": null,
+  "replaced_host_global_ids": [
+    "0KDl_Pd9bF6RK3eO7wIX_s",
+    "0KDl_Pd9bF6RK3eO7wIX_k",
+    "2hMjjbZvP4CAN9xX2G5FAP",
+    "2hMjjbZvP4CAN9xX2G5FAH",
+    "2hMjjbZvP4CAN9xX2G5FAZ",
+    "1PO8_6BBT97gCnBagBctV7"
+  ],
+  "router": "src.routing.astar_3d",
+  "routing_executed": false,
+  "runtime_seconds": null,
+  "search_completed": false,
+  "search_status": "NOT_RUN_ENDPOINT_INVALID",
+  "start_grid_index": [
+    16,
+    27,
+    18
+  ],
+  "start_grid_z_index": 18,
+  "statement": "The immutable IFC interface coordinates do not both lie in free containing cells. The search was not started and the terminals were not moved.",
+  "terminals": [
+    {
+      "blocking_obstacles": [
+        {
+          "decision": "RETAINED_MEP_OBSTACLE",
+          "file_role": "heating",
+          "global_id": "0KDl_Pd9bF6RK3eO7wIX_z",
+          "ifc_class": "IfcSpaceHeater"
+        }
+      ],
+      "cell_state": "BLOCKED",
+      "clamped": false,
+      "containing_index": [
+        16,
+        27,
+        18
+      ],
+      "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+      "immutable_interface_m": [
+        50.245955,
+        15.827534,
+        0.1
+      ],
+      "normalized_coordinates": [
+        16.459550000000007,
+        27.275339999999986,
+        18.0
+      ],
+      "outside_axes": [],
+      "paired_port_placement": {
+        "composed_world_m": [
+          50.245954705066815,
+          15.827534126054315,
+          0.1
+        ],
+        "length_unit_scale_m": 0.001,
+        "nested_placement_chain_child_to_root": [
+          {
+            "composed_world_m": [
+              50.245954705066815,
+              15.827534126054315,
+              0.1
+            ],
+            "local_translation_m": [
+              0.0105952722359139,
+              0.010595272235916,
+              0.186
+            ],
+            "local_translation_project_units": [
+              10.5952722359139,
+              10.595272235916,
+              186.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              50.2353594328309,
+              15.8169388538184,
+              -0.08600000000000001
+            ],
+            "local_translation_m": [
+              50.2353594328309,
+              15.8169388538184,
+              0.064
+            ],
+            "local_translation_project_units": [
+              50235.3594328309,
+              15816.9388538184,
+              64.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              -0.15
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              -0.15
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              -150.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "placement_global_id": null
+          }
+        ],
+        "port_global_id": "1MiHzau5b2NeD7NmRJV_2h",
+        "rejected_double_scaled_world_m": [
+          0.05024595470506681,
+          0.015827534126054317,
+          0.0001
+        ],
+        "scale_applications": 1,
+        "world_mesh_policy": "USE_WORLD_COORDS vertices are already metres and are not multiplied by the unit scale."
+      },
+      "placement": {
+        "composed_world_m": [
+          50.24595470506687,
+          15.8275341260543,
+          0.1
+        ],
+        "length_unit_scale_m": 0.001,
+        "nested_placement_chain_child_to_root": [
+          {
+            "composed_world_m": [
+              50.24595470506687,
+              15.8275341260543,
+              0.1
+            ],
+            "local_translation_m": [
+              1.965,
+              0.0315952722357705,
+              0.08
+            ],
+            "local_translation_project_units": [
+              1965.0,
+              31.5952722357705,
+              80.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              50.2143594328311,
+              17.7925341260543,
+              0.02
+            ],
+            "local_translation_m": [
+              50.2143594328311,
+              17.7925341260543,
+              0.17
+            ],
+            "local_translation_project_units": [
+              50214.3594328311,
+              17792.5341260543,
+              170.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              -0.15
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              -0.15
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              -150.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "placement_global_id": null
+          }
+        ],
+        "port_global_id": "3wgcw0GrbEsxHKzVrCPXai",
+        "rejected_double_scaled_world_m": [
+          0.050245954705066875,
+          0.0158275341260543,
+          0.0001
+        ],
+        "scale_applications": 1,
+        "world_mesh_policy": "USE_WORLD_COORDS vertices are already metres and are not multiplied by the unit scale."
+      },
+      "port_point_obstacle_hits": [
+        {
+          "decision": "RETAINED_MEP_OBSTACLE",
+          "file_role": "heating",
+          "global_id": "0KDl_Pd9bF6RK3eO7wIX_z",
+          "ifc_class": "IfcSpaceHeater",
+          "point_inside_inflated_aabb": true,
+          "point_inside_uninflated_aabb": true
+        }
+      ],
+      "projected": false,
+      "relocated": false,
+      "role": "start",
+      "status": "ENDPOINT_CELL_BLOCKED",
+      "voxel_center_m": [
+        50.25,
+        15.850000000000001,
+        0.1499999999999999
+      ]
+    },
+    {
+      "blocking_obstacles": [
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3A8hY1UoD7JhnLeZeDyU2I",
+          "ifc_class": "IfcBuildingElementProxy"
+        },
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3BmeJtEDj3AQO77Os2w6hN",
+          "ifc_class": "IfcSlab"
+        },
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3LJODRGPbDdfXHXShFL8tL",
+          "ifc_class": "IfcSlab"
+        },
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3LJODRGPbDdfXHXShFL93W",
+          "ifc_class": "IfcBuildingElementProxy"
+        },
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3LJODRGPbDdfXHXShFL9C7",
+          "ifc_class": "IfcBuildingElementProxy"
+        },
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3LJODRGPbDdfXHXShFLAnr",
+          "ifc_class": "IfcSlab"
+        }
+      ],
+      "cell_state": "BLOCKED",
+      "clamped": false,
+      "containing_index": [
+        15,
+        15,
+        15
+      ],
+      "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+      "immutable_interface_m": [
+        50.149955,
+        14.687534,
+        -0.12
+      ],
+      "normalized_coordinates": [
+        15.49954999999997,
+        15.87533999999998,
+        15.8
+      ],
+      "outside_axes": [],
+      "paired_port_placement": {
+        "composed_world_m": [
+          50.14995470506668,
+          14.6875341260544,
+          -0.11999995308914627
+        ],
+        "length_unit_scale_m": 0.001,
+        "nested_placement_chain_child_to_root": [
+          {
+            "composed_world_m": [
+              50.14995470506668,
+              14.6875341260544,
+              -0.11999995308914627
+            ],
+            "local_translation_m": [
+              0.0,
+              0.034,
+              2.34554119833419e-08
+            ],
+            "local_translation_project_units": [
+              0.0,
+              34.0,
+              2.34554119833419e-05
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              50.115954705066706,
+              14.6875341260544,
+              -0.12
+            ],
+            "local_translation_m": [
+              50.115954705066706,
+              14.6875341260544,
+              0.03
+            ],
+            "local_translation_project_units": [
+              50115.9547050667,
+              14687.5341260544,
+              30.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              -0.15
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              -0.15
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              -150.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "placement_global_id": null
+          }
+        ],
+        "port_global_id": "2PWvpmDYLD6hmN4OJjVyl4",
+        "rejected_double_scaled_world_m": [
+          0.05014995470506668,
+          0.0146875341260544,
+          -0.00011999995308914628
+        ],
+        "scale_applications": 1,
+        "world_mesh_policy": "USE_WORLD_COORDS vertices are already metres and are not multiplied by the unit scale."
+      },
+      "placement": {
+        "composed_world_m": [
+          50.1499547050666,
+          14.687534126054317,
+          -0.119999976544588
+        ],
+        "length_unit_scale_m": 0.001,
+        "nested_placement_chain_child_to_root": [
+          {
+            "composed_world_m": [
+              50.1499547050666,
+              14.687534126054317,
+              -0.119999976544588
+            ],
+            "local_translation_m": [
+              0.0,
+              0.010595272235916,
+              0.010595272235916
+            ],
+            "local_translation_project_units": [
+              0.0,
+              10.595272235916,
+              10.595272235916
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              50.1499547050666,
+              14.676938853818399,
+              -0.130595248780504
+            ],
+            "local_translation_m": [
+              50.1499547050666,
+              14.676938853818399,
+              0.019404751219496
+            ],
+            "local_translation_project_units": [
+              50149.9547050666,
+              14676.9388538184,
+              19.404751219496
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              -0.15
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              -0.15
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              -150.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "placement_global_id": null
+          },
+          {
+            "composed_world_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_m": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "local_translation_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "placement_global_id": null
+          }
+        ],
+        "port_global_id": "1mzi8tqTPBWOolCkIHAXe5",
+        "rejected_double_scaled_world_m": [
+          0.0501499547050666,
+          0.014687534126054317,
+          -0.00011999997654458799
+        ],
+        "scale_applications": 1,
+        "world_mesh_policy": "USE_WORLD_COORDS vertices are already metres and are not multiplied by the unit scale."
+      },
+      "port_point_obstacle_hits": [
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3A8hY1UoD7JhnLeZeDyU2I",
+          "ifc_class": "IfcBuildingElementProxy",
+          "point_inside_inflated_aabb": true,
+          "point_inside_uninflated_aabb": true
+        },
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3LJODRGPbDdfXHXShFL93W",
+          "ifc_class": "IfcBuildingElementProxy",
+          "point_inside_inflated_aabb": true,
+          "point_inside_uninflated_aabb": true
+        },
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3LJODRGPbDdfXHXShFL9C7",
+          "ifc_class": "IfcBuildingElementProxy",
+          "point_inside_inflated_aabb": true,
+          "point_inside_uninflated_aabb": true
+        },
+        {
+          "decision": "ARCHITECTURAL_OBSTACLE",
+          "file_role": "architecture",
+          "global_id": "3LJODRGPbDdfXHXShFLAnr",
+          "ifc_class": "IfcSlab",
+          "point_inside_inflated_aabb": true,
+          "point_inside_uninflated_aabb": true
+        },
+        {
+          "decision": "RETAINED_MEP_OBSTACLE",
+          "file_role": "heating",
+          "global_id": "08uzusf2n75OvoeaS_v52U",
+          "ifc_class": "IfcPipeSegment",
+          "point_inside_inflated_aabb": true,
+          "point_inside_uninflated_aabb": true
+        }
+      ],
+      "projected": false,
+      "relocated": false,
+      "role": "end",
+      "status": "ENDPOINT_CELL_BLOCKED",
+      "voxel_center_m": [
+        50.15,
+        14.650000000000002,
+        -0.15000000000000013
+      ]
+    }
+  ],
+  "voxel_size_m": 0.1,
+  "world_polyline_m": null
+}

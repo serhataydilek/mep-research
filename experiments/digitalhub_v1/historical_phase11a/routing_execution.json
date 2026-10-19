@@ -1,0 +1,210 @@
+{
+  "collision_validation": {
+    "additional_clearance_m": 0.0,
+    "body_half_extent_m": 0.009927100884469804,
+    "checked": true,
+    "confirmed_collision_result": false,
+    "excluded_obstacle_global_ids": [
+      "08uzusf2n75OvoeaS_v52U",
+      "0KDl_Pd9bF6RK3eO7wIX_k",
+      "0KDl_Pd9bF6RK3eO7wIX_s",
+      "0KDl_Pd9bF6RK3eO7wIX_z",
+      "1PO8_6BBT97gCnBagBctV7",
+      "2hMjjbZvP4CAN9xX2G5FAH",
+      "2hMjjbZvP4CAN9xX2G5FAP",
+      "2hMjjbZvP4CAN9xX2G5FAZ"
+    ],
+    "hit_count": 0,
+    "hit_sample": [],
+    "label": "BROAD_PHASE_ONLY",
+    "method": "BROAD_PHASE_SWEPT_AABB",
+    "note": "Swept route AABBs compared with obstacle AABBs. This is a broad-phase check, not a confirmed mesh collision result."
+  },
+  "discipline": "heating",
+  "end_offset_target_m": [
+    50.1521,
+    14.797433,
+    -0.118746
+  ],
+  "end_terminal": {
+    "exceeds_existing_two_voxel_tolerance": false,
+    "grid_index": [
+      15,
+      16,
+      17
+    ],
+    "snap_distance_m": 0.175298,
+    "voxel_center_m": [
+      50.15,
+      14.75,
+      0.05
+    ]
+  },
+  "expanded_node_count": 11,
+  "metrics": {
+    "bend_count": 0,
+    "expanded_node_count": 11,
+    "grid_route_length_m": 1.0,
+    "horizontal_step_count": 10,
+    "step_count": 10,
+    "vertical_step_count": 0,
+    "vertical_travel_m": 0.0
+  },
+  "no_path_diagnosis": null,
+  "path_cells": [
+    [
+      15,
+      26,
+      17
+    ],
+    [
+      15,
+      25,
+      17
+    ],
+    [
+      15,
+      24,
+      17
+    ],
+    [
+      15,
+      23,
+      17
+    ],
+    [
+      15,
+      22,
+      17
+    ],
+    [
+      15,
+      21,
+      17
+    ],
+    [
+      15,
+      20,
+      17
+    ],
+    [
+      15,
+      19,
+      17
+    ],
+    [
+      15,
+      18,
+      17
+    ],
+    [
+      15,
+      17,
+      17
+    ],
+    [
+      15,
+      16,
+      17
+    ]
+  ],
+  "path_found": true,
+  "physical_clash_freedom_claimed": false,
+  "physical_infeasibility_claimed": false,
+  "prior_attempts": [],
+  "process_memory": {
+    "peak_working_set_bytes": 1209798656,
+    "working_set_bytes": 251314176
+  },
+  "python_tracemalloc_peak_bytes": 6560,
+  "replaced_host_global_ids": [
+    "0KDl_Pd9bF6RK3eO7wIX_s",
+    "0KDl_Pd9bF6RK3eO7wIX_k",
+    "2hMjjbZvP4CAN9xX2G5FAP",
+    "2hMjjbZvP4CAN9xX2G5FAH",
+    "2hMjjbZvP4CAN9xX2G5FAZ",
+    "1PO8_6BBT97gCnBagBctV7"
+  ],
+  "router": "src.routing.astar_3d",
+  "routing_executed": true,
+  "runtime_seconds": 0.000642,
+  "search_completed": true,
+  "search_status": "COMPLETED_PATH_FOUND",
+  "start_offset_target_m": [
+    50.224799,
+    15.734954,
+    0.044635
+  ],
+  "start_terminal": {
+    "exceeds_existing_two_voxel_tolerance": false,
+    "grid_index": [
+      15,
+      26,
+      17
+    ],
+    "snap_distance_m": 0.076485,
+    "voxel_center_m": [
+      50.15,
+      15.75,
+      0.05
+    ]
+  },
+  "voxel_size_m": 0.1,
+  "world_polyline_m": [
+    [
+      50.15,
+      15.75,
+      0.05
+    ],
+    [
+      50.15,
+      15.65,
+      0.05
+    ],
+    [
+      50.15,
+      15.55,
+      0.05
+    ],
+    [
+      50.15,
+      15.45,
+      0.05
+    ],
+    [
+      50.15,
+      15.35,
+      0.05
+    ],
+    [
+      50.15,
+      15.25,
+      0.05
+    ],
+    [
+      50.15,
+      15.15,
+      0.05
+    ],
+    [
+      50.15,
+      15.05,
+      0.05
+    ],
+    [
+      50.15,
+      14.95,
+      0.05
+    ],
+    [
+      50.15,
+      14.85,
+      0.05
+    ],
+    [
+      50.15,
+      14.75,
+      0.05
+    ]
+  ]
+}

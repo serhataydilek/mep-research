@@ -1,0 +1,96 @@
+{
+  "acquisition_record": "C:\\Users\\serfu\\OneDrive\\Belgeler\\ChatGPT\\hvac_research\\validation\\ifc_samples\\external\\rwth_digitalhub_v1\\acquisition_record.json",
+  "dataset_id": "rwth-digitalhub-v1",
+  "files": [
+    {
+      "file_name": "FM_ARC_DigitalHub_v1.ifc",
+      "length_unit_scale_m": 1.0,
+      "length_units": [
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": null
+        },
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": "DECI"
+        }
+      ],
+      "role": "architecture",
+      "schema": "IFC4",
+      "sha256": "eff9b18a0a2fce6180d8f25c8cfe0e986d4d2e4a7a3ee69f375a105b20ca593c",
+      "size_bytes": 14322717,
+      "view_definition": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');"
+    },
+    {
+      "file_name": "FM_HZG_DigitalHub_v1.ifc",
+      "length_unit_scale_m": 0.001,
+      "length_units": [
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": "MILLI"
+        },
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": null
+        }
+      ],
+      "role": "heating",
+      "schema": "IFC4",
+      "sha256": "70a40f5d0782b53ae573b89cca8990f66b54b21229527daddd58e5dc2573fbb6",
+      "size_bytes": 9869500,
+      "view_definition": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');"
+    },
+    {
+      "file_name": "FM_LFT_DigitalHub_v1.ifc",
+      "length_unit_scale_m": 0.001,
+      "length_units": [
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": "MILLI"
+        },
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": null
+        }
+      ],
+      "role": "ventilation",
+      "schema": "IFC4",
+      "sha256": "8647e24ea0c0e2f4188fad6222662c1004de55978f9a0d0e1190445e149dbd6c",
+      "size_bytes": 7369265,
+      "view_definition": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');"
+    },
+    {
+      "file_name": "FM_SAN_DigitalHub_v1.ifc",
+      "length_unit_scale_m": 0.001,
+      "length_units": [
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": "MILLI"
+        },
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": null
+        }
+      ],
+      "role": "sanitary",
+      "schema": "IFC4",
+      "sha256": "5d6b7998d9060626132f56010a75c238ebc00ed6b0f937f2c1db0ac46fbff87a",
+      "size_bytes": 16846052,
+      "view_definition": "FILE_DESCRIPTION(('ViewDefinition [ReferenceView_V1.2]'),'2;1');"
+    }
+  ],
+  "license": "MIT",
+  "license_attribution": "Copyright (c) 2020 RWTH Aachen University - E3D Institute of Energy Efficiency and Sustainable Building",
+  "note": "SHA-256 values are computed from the local payloads. Schema and view definition are read from each file.",
+  "repository": "https://github.com/RWTH-E3D/DigitalHub",
+  "revision": "36565d529b4dadeca625de2b793d7e16700171e9",
+  "technical_report_doi": "10.18154/RWTH-2020-11683"
+}

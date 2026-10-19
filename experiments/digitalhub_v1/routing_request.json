@@ -1,0 +1,134 @@
+{
+  "boundary_host_global_ids": [
+    "0KDl_Pd9bF6RK3eO7wIX_z",
+    "08uzusf2n75OvoeaS_v52U"
+  ],
+  "discipline": "heating",
+  "end_interface": {
+    "classification_evidence": {
+      "mesh_distance_m": 0.008999999999997928,
+      "ports_agree": true
+    },
+    "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+    "geometric_gap_m": 0.001,
+    "not_a_native_source_to_terminal_design_request": true,
+    "ports_agree": true,
+    "relation_global_ids": [
+      "2BOjbykKP1qRuxj9M1ec_E"
+    ],
+    "replaced_host_global_id": "1PO8_6BBT97gCnBagBctV7",
+    "replaced_port_global_id": "2PWvpmDYLD6hmN4OJjVyl4",
+    "retained_host_global_id": "08uzusf2n75OvoeaS_v52U",
+    "retained_port_global_id": "1mzi8tqTPBWOolCkIHAXe5",
+    "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+    "world_m": [
+      50.149955,
+      14.687534,
+      -0.12
+    ]
+  },
+  "endpoint_policy": "CONTAINING_CELL_NO_RELOCATION",
+  "immutable_interface_coordinates": true,
+  "not_a_native_source_to_terminal_design_request": true,
+  "replaced_host_global_ids": [
+    "0KDl_Pd9bF6RK3eO7wIX_s",
+    "0KDl_Pd9bF6RK3eO7wIX_k",
+    "2hMjjbZvP4CAN9xX2G5FAP",
+    "2hMjjbZvP4CAN9xX2G5FAH",
+    "2hMjjbZvP4CAN9xX2G5FAZ",
+    "1PO8_6BBT97gCnBagBctV7"
+  ],
+  "request_kind": "EXISTING_SUBPATH_REPLACEMENT",
+  "route_body": {
+    "additional_clearance_m": 0.0,
+    "clearance_assumption": "NO_ADDITIONAL_CLEARANCE_BEYOND_MEASURED_BODY_HALF_EXTENT",
+    "elements": [
+      {
+        "global_id": "0KDl_Pd9bF6RK3eO7wIX_s",
+        "half_extent_m": 0.009000000000000001,
+        "ifc_class": "IfcPipeSegment",
+        "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7413416",
+        "profile_count": 1,
+        "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+      },
+      {
+        "global_id": "0KDl_Pd9bF6RK3eO7wIX_k",
+        "half_extent_m": 0.009927088740980139,
+        "ifc_class": "IfcPipeFitting",
+        "name": "Bogen Kupfer:Standard:7413424",
+        "profile_count": 0,
+        "source": "AABB_MIN_EDGE_HALF"
+      },
+      {
+        "global_id": "2hMjjbZvP4CAN9xX2G5FAP",
+        "half_extent_m": 0.009000000000000001,
+        "ifc_class": "IfcPipeSegment",
+        "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7491872",
+        "profile_count": 1,
+        "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+      },
+      {
+        "global_id": "2hMjjbZvP4CAN9xX2G5FAH",
+        "half_extent_m": 0.009927088740980534,
+        "ifc_class": "IfcPipeFitting",
+        "name": "Bogen Kupfer:Standard:7491880",
+        "profile_count": 0,
+        "source": "AABB_MIN_EDGE_HALF"
+      },
+      {
+        "global_id": "2hMjjbZvP4CAN9xX2G5FAZ",
+        "half_extent_m": 0.009000000000000001,
+        "ifc_class": "IfcPipeSegment",
+        "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7491866",
+        "profile_count": 1,
+        "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+      },
+      {
+        "global_id": "1PO8_6BBT97gCnBagBctV7",
+        "half_extent_m": 0.009927100884469804,
+        "ifc_class": "IfcPipeFitting",
+        "name": "Bogen Kupfer:Standard:7658325",
+        "profile_count": 0,
+        "source": "AABB_MIN_EDGE_HALF"
+      }
+    ],
+    "half_extent_m": 0.009927100884469804,
+    "voxel_quantization_note": "The existing routing grid is 0.1 m. A measured body smaller than one voxel cannot be represented exactly; obstacle inflation uses the measured half-extent even when it is below the voxel size."
+  },
+  "routing_terminal_offset_m": null,
+  "routing_terminal_offset_meaning": "Phase 11A.1 does not move an interface toward the replacement volume. The search node is the containing cell of the immutable interface coordinate.",
+  "selection_rule": "Same IfcSystem, then same storey, then element count nearest 6, then GlobalId order. Interior hosts are degree-2 IfcFlowSegment or IfcFlowFitting elements.",
+  "source_file": "FM_HZG_DigitalHub_v1.ifc",
+  "start_interface": {
+    "classification_evidence": {
+      "mesh_distance_m": 1.4921397515497946e-13,
+      "ports_agree": true
+    },
+    "coordinate_classification": "NATIVE_PORT_PLACEMENT",
+    "geometric_gap_m": 0.001521,
+    "not_a_native_source_to_terminal_design_request": true,
+    "ports_agree": true,
+    "relation_global_ids": [
+      "3O9xE_EPT0iu5QzbpCyjnR"
+    ],
+    "replaced_host_global_id": "0KDl_Pd9bF6RK3eO7wIX_s",
+    "replaced_port_global_id": "1MiHzau5b2NeD7NmRJV_2h",
+    "retained_host_global_id": "0KDl_Pd9bF6RK3eO7wIX_z",
+    "retained_port_global_id": "3wgcw0GrbEsxHKzVrCPXai",
+    "topology_evidence": "EXPLICIT_IFC_REL_CONNECTS_PORTS",
+    "world_m": [
+      50.245955,
+      15.827534,
+      0.1
+    ]
+  },
+  "storeys": [
+    "E00_OKRD"
+  ],
+  "system_global_ids": [
+    "0KDl_Pd9bF6RK3eO7wIX_b"
+  ],
+  "system_names": [
+    "H_RL 68"
+  ]
+}

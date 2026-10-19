@@ -1,0 +1,36 @@
+{
+  "astar_invoked": true,
+  "candidates_evaluated": 20,
+  "exact_port_to_port_connection": true,
+  "geometric_validation_status": "CLEARANCE_VIOLATION",
+  "original_h_rl_68_status": [
+    "QUALIFIED_BOUNDARY_ALLOWANCE",
+    "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID"
+  ],
+  "physical_route_length_m": 4.315585000000006,
+  "physical_vertical_travel_m": 0.1234260000000007,
+  "qualified_candidate_count": 6,
+  "search_status": "COMPLETED_PATH_FOUND",
+  "selected_request": {
+    "boundary_host_global_ids": [
+      "0IU610uqLBi9PW0cPG4ERE",
+      "33LHvKw7n5VOooYSuD9Xlz"
+    ],
+    "discipline": "ventilation",
+    "replaced_host_global_ids": [
+      "0JV3InQaz9UBog62O3UPgq",
+      "0IU610uqLBi9PW0cPG4EXn",
+      "0JV3InQaz9UBog62O3UPgs",
+      "0IU610uqLBi9PW0cPG4EXE",
+      "0IU610uqLBi9PW0cPG4EYQ",
+      "0IU610uqLBi9PW0cPG4EZe"
+    ],
+    "storeys": [
+      "E00_OKRD"
+    ],
+    "system_names": [
+      "ZUL_R 2"
+    ]
+  },
+  "start_and_goal_physically_qualified": true
+}

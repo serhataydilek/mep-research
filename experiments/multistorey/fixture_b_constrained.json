@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "fixture_id": "10rb-b-constrained",
+  "inherits": "fixture_a_known_feasible.json",
+  "description": "Two-storey office variant with a 1.0 m service corridor and one shared shaft lane. It is constrained, not labelled infeasible.",
+  "elements_append": [
+    {"id": "corridor-wall/south", "kind": "WALL", "bounds": [7.5, 11.75, 3.5, 3.75, 2.9, 7.0]},
+    {"id": "corridor-wall/north", "kind": "WALL", "bounds": [7.5, 11.75, 4.5, 4.75, 2.9, 7.0]}
+  ],
+  "endpoints": [
+    {"id": "hvac/source", "system": "hvac", "world_m": [2.0, 4.125, 3.125]}, {"id": "hvac/terminal", "system": "hvac", "world_m": [10.0, 4.125, 6.625]},
+    {"id": "drainage/terminal", "system": "drainage", "world_m": [10.0, 4.125, 6.625]}, {"id": "drainage/source", "system": "drainage", "world_m": [2.0, 4.125, 3.125]},
+    {"id": "water/source", "system": "water", "world_m": [2.0, 4.125, 3.125]}, {"id": "water/terminal", "system": "water", "world_m": [10.0, 4.125, 6.375]},
+    {"id": "fire/source", "system": "fire", "world_m": [2.0, 4.125, 3.125]}, {"id": "fire/terminal", "system": "fire", "world_m": [10.0, 4.125, 6.625]},
+    {"id": "electrical/source", "system": "electrical", "world_m": [2.0, 4.125, 3.125]}, {"id": "electrical/terminal", "system": "electrical", "world_m": [10.0, 4.125, 6.375]}
+  ]
+}

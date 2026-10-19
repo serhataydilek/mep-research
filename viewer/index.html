@@ -18,11 +18,35 @@
     <option value="multi_system_entry_fixture.json">s01 multi-system — benchmark controlled entry (grid complete ≠ connector validated)</option>
     <option value="multi_system_snap_fixture.json">s01 multi-system — evidence-snapped endpoints (exploratory legacy)</option>
     <option value="multi_system_coordinated_fixture.json">s01 multi-system — sequential reservation (9E.0; completeness ≠ zero-clash)</option>
+    <option value="phase10r_failing_fixture.json">Phase 10R — reproducible failing s01/d01 conflict case (read-only)</option>
+    <option value="multistorey_feasible_fixture.json">Phase 10R-B — two-storey Fixture A (grid/AABB-valid proxy)</option>
+    <option value="multistorey_constrained_fixture.json">Phase 10R-B — two-storey Fixture B (constrained corridor)</option>
+    <option value="medical_dental_clinic_progressive.json">Phase 10R-B3.3 — Medical-Dental Clinic (chunked complete floor)</option>
+    <option value="digitalhub_phase11b_fixture.json">Phase 11D — DigitalHub V1 real IFC routing comparison</option>
   </select></label>
+  <div id="digitalhub-panel" hidden>
+    <h4>DigitalHub Phase 11B comparison</h4>
+    <label>Experiment <select id="dh-experiment"></select></label>
+    <label><input id="dh-original" type="checkbox" checked> Original IFC route</label>
+    <label><input id="dh-generated" type="checkbox" checked> Generated A* route</label>
+    <label><input id="dh-architecture" type="checkbox"> Architecture / ceilings / slabs</label>
+    <label><input id="dh-mep" type="checkbox"> Retained MEP obstacles</label>
+    <label><input id="dh-evidence" type="checkbox"> Clearance / clash evidence</label>
+    <label><input id="dh-envelope" type="checkbox"> Route-body envelope</label>
+    <button id="dh-both" type="button">Show Both</button> <button id="dh-original-only" type="button">Original Only</button> <button id="dh-generated-only" type="button">Generated Only</button><br>
+    <button id="dh-context" type="button">Context</button> <button id="dh-isolated" type="button">Isolated</button> <button id="dh-clashes" type="button">Clashes Only</button>
+    <button id="dh-fit" type="button">Fit to Routes</button> <button id="dh-fit-context" type="button">Fit to Context</button>
+  </div>
   <div id="warning">Grid routing only — physical geometry and zero-clash validation pending.</div>
   <div id="summary"></div>
   <label><input id="obstacles" type="checkbox" checked> Obstacle AABBs</label>
   <label><input id="conflicts" type="checkbox" checked> Highlight grid-detected conflicts</label>
+  <label><input id="clearance" type="checkbox"> Clearance envelopes (AABB proxy)</label>
+  <label>Clash visibility <select id="clash-mode"><option value="all">All Elements</option><option value="clashes">Clashes Only</option><option value="selected">Selected Clash</option></select></label>
+  <label><input id="clash-context" type="checkbox"> Show Context (architecture / structure)</label>
+  <button id="previous-clash" type="button">Previous Clash</button> <button id="next-clash" type="button">Next Clash</button>
+  <label>Section top elevation <input id="clip-z" type="range" disabled> <span id="clip-z-value">off</span></label>
+  <button id="reset-view" type="button">Reset view</button>
   <div id="systems"></div>
   <div class="legend">MAIN = solid line · BRANCH = dashed line · faded = excluded from diagnostics · <span class="swatch marker"></span>endpoint <span class="swatch junction"></span>junction (wireframe = incomplete network) <span class="swatch snap"></span>snap cell <span class="swatch conflict"></span>conflict</div>
   <div id="status">Loading viewer module…</div>
@@ -34,24 +58,33 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 const $=s=>document.querySelector(s),status=$('#status'),selection=$('#selection'),scene=new THREE.Scene();scene.background=new THREE.Color(0x101317);
-const camera=new THREE.PerspectiveCamera(55,1,.01,100000);camera.up.set(0,0,1);const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));document.body.append(renderer.domElement);
+const camera=new THREE.PerspectiveCamera(55,1,.01,100000);camera.up.set(0,0,1);const renderer=new THREE.WebGLRenderer({antialias:true});renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.localClippingEnabled=true;document.body.append(renderer.domElement);
+const sectionPlane=new THREE.Plane(new THREE.Vector3(0,0,-1),Infinity);renderer.clippingPlanes=[sectionPlane];
 const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.enablePan=true;
-const obstacles=new THREE.Group(),routes=new THREE.Group(),markers=new THREE.Group(),conflictGroup=new THREE.Group();scene.add(obstacles,routes,markers,conflictGroup);
+scene.add(new THREE.HemisphereLight(0xffffff,0x24303a,2.2));const sun=new THREE.DirectionalLight(0xffffff,1.4);sun.position.set(20,-20,30);scene.add(sun);
+const obstacles=new THREE.Group(),routes=new THREE.Group(),markers=new THREE.Group(),conflictGroup=new THREE.Group(),clearanceGroup=new THREE.Group(),guideGroup=new THREE.Group();scene.add(obstacles,routes,markers,conflictGroup,clearanceGroup,guideGroup);
+clearanceGroup.visible=false;
 const SYSTEM_COLORS={hvac:0xff9f1c,drainage:0xb08968,water:0x00b4d8,fire:0xd62828,electrical:0x9b5de5},FALLBACK=0xcccccc,CONFLICT=0x39ff14,HILITE=0xffffff;
 const pickables=[],raycaster=new THREE.Raycaster(),pointer=new THREE.Vector2(),vector=p=>new THREE.Vector3(p[0],p[1],p[2]);raycaster.params.Line.threshold=.16;
-const lineByEdge=new Map();let fixture=null,highlighted=[];
+const lineByEdge=new Map(),layerGroups=new Map(),meshBySource=new Map();let fixture=null,highlighted=[],activeClash=-1;
 const esc=s=>String(s??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const xyz=p=>`(${p.map(v=>v.toFixed(3)).join(', ')})`;
 function fail(error){console.error(error);status.className='error';status.textContent=`Viewer error: ${error.message||error}`}
-function fit(bounds){if(bounds.isEmpty())throw new Error('Fixture contains no renderable geometry.');const center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3()),radius=Math.max(size.length()/2,.5),distance=radius/Math.sin(THREE.MathUtils.degToRad(camera.fov/2));camera.near=Math.max(.01,distance/1000);camera.far=distance*100;camera.position.copy(center).add(new THREE.Vector3(distance*.8,-distance*.8,distance*.55));camera.updateProjectionMatrix();controls.target.copy(center);controls.maxDistance=distance*20;controls.update()}
+function fit(bounds){if(bounds.isEmpty())throw new Error('Fixture contains no renderable geometry.');const center=bounds.getCenter(new THREE.Vector3()),size=bounds.getSize(new THREE.Vector3()),radius=Math.max(size.length()/2,.5),distance=radius/Math.sin(THREE.MathUtils.degToRad(camera.fov/2));camera.near=Math.max(.01,distance/1000);camera.far=distance*100;camera.position.copy(center).add(new THREE.Vector3(distance*.8,-distance*.8,distance*.55));camera.updateProjectionMatrix();controls.target.copy(center);controls.maxDistance=distance*20;controls.update();window.__viewerCamera={position:camera.position.toArray(),target:controls.target.toArray(),fov:camera.fov}}
 // Schema 1 (single SHARED_MAIN group) is normalized into the schema 2 shape; nothing is added that the fixture lacks.
 function normalize(d){
+  if(d&&d.schema_version===4&&d.kind==='REAL_IFC_FEDERATED_VIEWER'){
+    if(d.units!=='m'||!Array.isArray(d.layers)||d.applied_alignment_transform!==null)throw new Error('Invalid real IFC federation fixture or unauthorized alignment transform.');
+    return {...d,obstacles:[],edges:[],connections:[],conflicts:[],junctions:[],endpoints:[],systems:d.layers.map(x=>x.id),certification_warning:(d.warnings||[]).join(' ')};
+  }
   if(d&&d.schema_version===1){
     if(d.units!=='m'||!Array.isArray(d.obstacles)||!d.network||!d.network.main||!Array.isArray(d.network.branches))throw new Error('Invalid viewer fixture schema (expected schema_version 1 with obstacle and network geometry).');
     const edges=[[d.network.main,'MAIN'],...d.network.branches.map(b=>[b,'BRANCH'])].map(([e,role])=>({...e,physical_edge_id:e.edge_id,role,world_polyline_m:e.world_centerline_m,grid_cell_count:e.world_centerline_m.length,connection_ids:[]}));
     return {...d,systems:[...new Set(edges.map(e=>e.system))],edges,connections:[],conflicts:[],junctions:d.junction?[{node_key:d.junction.node_id,system:d.network.main.system,world_m:d.junction.world_m}]:[],summary:null,certification_warning:d.disclaimer};
   }
-  if(!d||d.schema_version!==2||d.kind!=='MULTI_SYSTEM'||d.units!=='m'||!Array.isArray(d.edges)||!Array.isArray(d.connections)||!Array.isArray(d.conflicts))throw new Error('Invalid viewer fixture schema (expected schema_version 1 or 2).');
+  const phase10r=d&&d.schema_version===3&&d.kind==='PHASE10R_VISUAL_FEASIBILITY_DEBUG',multistorey=d&&d.schema_version===3&&d.kind==='MULTISTOREY_MEP_DEBUG';
+  if(!d||(!(phase10r||multistorey)&&(d.schema_version!==2||d.kind!=='MULTI_SYSTEM'))||d.units!=='m'||!Array.isArray(d.edges)||!Array.isArray(d.connections)||!Array.isArray(d.conflicts))throw new Error('Invalid viewer fixture schema (expected schema_version 1, 2, or supported schema 3 debug fixture).');
+  if(phase10r&&(!d.source_identity||d.failure_case?.grid_level_verdict!=='CONFLICTS_DETECTED'))throw new Error('Phase 10R fixture is missing its source identity or failing-case evidence.');
   if(d.geometric_clash_certified!==false)throw new Error('Fixture claims geometric clash certification; refusing to display it as a debug result.');
   if(d.connector_engagement_validated===true)throw new Error('Fixture claims connector engagement validation; refusing to display it as complete physical routing.');
   return d;
@@ -64,6 +97,11 @@ function addRoute(edge,bounds){
   const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),material);if(edge.role!=='MAIN')line.computeLineDistances();
   line.userData={edge,color};routes.add(line);pickables.push(line);lineByEdge.set(edge.physical_edge_id,line);
 }
+function addIfcLayer(layer,bounds){
+  const group=new THREE.Group(),colors={architecture:0x9cadbc,structure:0x6c7a89,hvac:0xff9f1c,plumbing:0x00b4d8,electrical:0x9b5de5};
+  for(const element of layer.meshes||[]){const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(element.positions,3));geometry.setIndex(element.indices);geometry.computeVertexNormals();const material=new THREE.MeshBasicMaterial({color:colors[layer.id]??FALLBACK,transparent:true,opacity:(layer.id==='architecture'||layer.id==='structure')?.18:.45,side:THREE.DoubleSide});const mesh=new THREE.Mesh(geometry,material);mesh.userData={element,layer,baseColor:material.color.getHex(),baseOpacity:material.opacity};group.add(mesh);pickables.push(mesh);meshBySource.set(`${layer.id}:${element.global_id}`,mesh);bounds.expandByObject(mesh)}layerGroups.set(layer.id,group);scene.add(group);
+}
+function applyClashMode(){const clashes=fixture?.clash_baseline?.clashes||[],mode=$('#clash-mode').value,context=$('#clash-context').checked,c=clashes[activeClash];for(const mesh of meshBySource.values()){mesh.visible=mode==='all';mesh.material.color.setHex(mesh.userData.baseColor);mesh.material.opacity=mesh.userData.baseOpacity}conflictGroup.visible=mode!=='all';if(mode==='all'||!clashes.length)return;const ids=mode==='clashes'?new Set(clashes.flatMap(x=>[`${x.source_a}:${x.element_a_global_id}`,`${x.source_b}:${x.element_b_global_id}`])):new Set([`${c.source_a}:${c.element_a_global_id}`,`${c.source_b}:${c.element_b_global_id}`]);for(const id of ids){const mesh=meshBySource.get(id);if(mesh)mesh.visible=true}if(context)for(const mesh of meshBySource.values())if(mesh.userData.layer.id==='architecture'||mesh.userData.layer.id==='structure'){mesh.visible=true;mesh.material.opacity=.05}if(mode==='selected'&&c){const a=meshBySource.get(`${c.source_a}:${c.element_a_global_id}`),b=meshBySource.get(`${c.source_b}:${c.element_b_global_id}`);if(a){a.material.color.setHex(0x00ffff);a.material.opacity=1}if(b){b.material.color.setHex(0xff00ff);b.material.opacity=1}if(a&&b){const box=new THREE.Box3().setFromObject(a).union(new THREE.Box3().setFromObject(b));fit(box)}selection.textContent=`BROAD_PHASE_CANDIDATE_ONLY\n${c.discipline_pair}\n${c.element_a_global_id} × ${c.element_b_global_id}\nAABB overlap only; not a confirmed physical collision.`}}
 function addSphere(point,color,radius,group,bounds){const mesh=new THREE.Mesh(new THREE.SphereGeometry(radius,16,12),new THREE.MeshBasicMaterial({color}));mesh.position.copy(vector(point));group.add(mesh);if(bounds)bounds.expandByPoint(mesh.position);return mesh}
 function boxFrom(b){return {size:new THREE.Vector3(b.max_x_m-b.min_x_m,b.max_y_m-b.min_y_m,b.max_z_m-b.min_z_m),center:new THREE.Vector3((b.min_x_m+b.max_x_m)/2,(b.min_y_m+b.max_y_m)/2,(b.min_z_m+b.max_z_m)/2)}}
 function addConflict(c,index){
@@ -72,6 +110,10 @@ function addConflict(c,index){
   for(const r of c.hard_overlap_regions_shown||[]){const {size,center}=boxFrom(r);const w=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(Math.max(size.x,.01),Math.max(size.y,.01),Math.max(size.z,.01))),new THREE.LineBasicMaterial({color:CONFLICT}));w.position.copy(center);group.add(w)}
   conflictGroup.add(group);return group;
 }
+function addClearance(edge){
+  for(const b of edge.clearance_envelopes||[]){const {size,center}=boxFrom(b);const line=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(Math.max(size.x,.01),Math.max(size.y,.01),Math.max(size.z,.01))),new THREE.LineBasicMaterial({color:SYSTEM_COLORS[edge.system]??FALLBACK,transparent:true,opacity:.32}));line.position.copy(center);clearanceGroup.add(line)}
+}
+function addGuideBox(bounds,color){const {size,center}=boxFrom(bounds),line=new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(Math.max(size.x,.01),Math.max(size.y,.01),Math.max(size.z,.01))),new THREE.LineBasicMaterial({color,transparent:true,opacity:.8}));line.position.copy(center);guideGroup.add(line);return line}
 function clearHighlight(){for(const l of highlighted)l.material.color.setHex(l.userData.color);highlighted=[]}
 function highlight(ids){clearHighlight();for(const id of ids){const l=lineByEdge.get(id);if(l){l.material.color.setHex(HILITE);highlighted.push(l)}}}
 function edgeText(e){const w=e.world_polyline_m||[];return [`${e.role} ${e.physical_edge_id}`,`system ${e.system} · status ${e.status}${e.reason?' · reason '+e.reason:''}`,`candidate ${e.candidate_id??'n/a'} · connections ${(e.connection_ids||[]).join(', ')||'n/a'}`,`grid length ${e.grid_path_length_m==null?'n/a':e.grid_path_length_m.toFixed(2)+' m'} · ${e.grid_cell_count??'n/a'} cells · ${e.expanded_node_count??'n/a'} expansions`,w.length?`start ${xyz(w[0])} → end ${xyz(w[w.length-1])} m`:'no routed geometry',`policy ${e.policy_id??'n/a'}`,e.diagnostics_evaluated===false?'EXCLUDED from conflict diagnostics: its network/connections are not fully routed (drawn faded).':''].filter(Boolean).join('\n')}
@@ -94,23 +136,57 @@ function renderSummary(d){
   $('#summary').innerHTML=`<h4>Summary · ${esc(d.endpoint_cell_mode)}</h4>Required <b>${s.required_connection_count}</b> · routed <b class="ROUTED">${s.routed_connection_count}</b> · failed <b class="FAILED">${s.failed_connection_count}</b> · unresolved <b class="UNRESOLVED">${s.unresolved_connection_count}</b> · unsupported <b class="UNSUPPORTED">${s.unsupported_connection_count}</b><br>Grid verdict: <b>${esc(v.grid_level_verdict)}</b> · inter-system pairs ${v.inter_system_conflicting_pair_count} (shared-cell ${v.inter_system_shared_cell_pair_count}) · same-system unresolved overlaps ${v.same_system_unexplained_overlap_pair_count}`;
 }
 function resize(){camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight,false)}
-renderer.domElement.addEventListener('click',event=>{const r=renderer.domElement.getBoundingClientRect();pointer.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(pickables.filter(l=>l.visible),false)[0];if(hit)showEdge(hit.object.userData.edge)});addEventListener('resize',resize);resize();
+renderer.domElement.addEventListener('click',event=>{const r=renderer.domElement.getBoundingClientRect();pointer.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(pickables.filter(l=>l.visible),false)[0];if(hit?.object.userData.edge)showEdge(hit.object.userData.edge);else if(hit?.object.userData.clash){activeClash=(fixture.clash_baseline.clashes||[]).indexOf(hit.object.userData.clash);$('#clash-mode').value='selected';applyClashMode()}else if(hit?.object.userData.element){const e=hit.object.userData.element,l=hit.object.userData.layer;selection.textContent=`IFC ELEMENT\n${e.ifc_class} · ${e.name||'unnamed'}\nGlobalId ${e.global_id}\nlayer ${l.id} · source ${l.source_file}\nstoreys ${(e.storeys||[]).join(', ')||'uncontained'}\nbounds ${JSON.stringify(e.bounds_m)}`}});addEventListener('resize',resize);resize();
+function dhSetVisible(group,input){group.visible=input.checked}
+function dhSegmentEnvelope(a,b,radius,group){const start=vector(a),end=vector(b),mid=start.clone().add(end).multiplyScalar(.5),length=start.distanceTo(end);if(!length)return;const mesh=new THREE.Mesh(new THREE.CylinderGeometry(radius,radius,length,12,1,true),new THREE.MeshBasicMaterial({color:0x00e5ff,transparent:true,opacity:.16,depthWrite:false}));mesh.position.copy(mid);mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0,1,0),end.clone().sub(start).normalize());group.add(mesh)}
+function dhAddMarker(point,color,label,group){const mesh=addSphere(point,color,.12,group);mesh.userData={dhLabel:label};pickables.push(mesh)}
+function dhAddMesh(record,groups,bounds){const geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(record.positions,3));geometry.setIndex(record.indices);geometry.computeVertexNormals();const category=record.viewer_category;const config=category==='ORIGINAL_REPLACED_HOST'?{color:0x668fbd,opacity:.78,group:groups.original}:category==='RETAINED_BOUNDARY_HOST'?{color:0xd4e7ff,opacity:.86,group:groups.original}:category==='VALIDATION_OFFENDER'?{color:0xff3b30,opacity:.92,group:groups.evidence}:category==='ARCHITECTURE'?{color:0x8796a5,opacity:.2,group:groups.architecture}:{color:0xa668bd,opacity:.38,group:groups.mep};const material=new THREE.MeshBasicMaterial({color:config.color,transparent:true,opacity:config.opacity,side:THREE.DoubleSide,depthWrite:category!=='ARCHITECTURE'});const mesh=new THREE.Mesh(geometry,material);mesh.userData={element:record,layer:{id:record.role,source_file:fixture.dataset_manifest.files.find(x=>x.role===record.role)?.file_name||record.role}};config.group.add(mesh);pickables.push(mesh);bounds.expandByObject(mesh)}
+async function loadDigitalHub(manifest){
+  fixture=manifest;$('#digitalhub-panel').hidden=false;$('#warning').textContent=(manifest.warnings||[]).join(' ');$('#summary').innerHTML='';$('#systems').innerHTML='';$('#explorer').innerHTML='';
+  const select=$('#dh-experiment');select.innerHTML=manifest.experiments.map(x=>`<option value="${esc(x.request_id)}">${esc(x.request_id)} · ${esc(x.discipline)} · ${esc(x.system_names.join(', '))}</option>`).join('');
+  const groups={original:new THREE.Group(),generated:new THREE.Group(),architecture:new THREE.Group(),mep:new THREE.Group(),evidence:new THREE.Group(),envelope:new THREE.Group(),markers:new THREE.Group()};Object.values(groups).forEach(x=>scene.add(x));let current=null,currentBounds=null;
+  function applyVisibility(){dhSetVisible(groups.original,$('#dh-original'));dhSetVisible(groups.generated,$('#dh-generated'));dhSetVisible(groups.architecture,$('#dh-architecture'));dhSetVisible(groups.mep,$('#dh-mep'));dhSetVisible(groups.evidence,$('#dh-evidence'));dhSetVisible(groups.envelope,$('#dh-envelope'));groups.markers.visible=true}
+  function showEvent(event){selection.textContent=`VALIDATION EVENT\n${event.status}\nOffending GlobalId ${event.global_id}\nMeasured distance ${Number(event.min_centerline_distance_m).toFixed(6)} m\nRequired distance ${Number(event.required_separation_m).toFixed(6)} m\nMethod ${event.measurement}\nValidation ${event.validation_method||'n/a'}`}
+  async function selectExperiment(){
+    const item=manifest.experiments.find(x=>x.request_id===select.value);status.textContent=`Loading ${item.request_id} bounded IFC geometry…`;for(const group of Object.values(groups)){group.clear()}pickables.splice(0,pickables.length);const response=await fetch(`./${item.chunk}`);if(!response.ok)throw new Error(`DigitalHub geometry chunk failed: ${item.chunk}`);const chunk=await response.json();if(chunk.request_id!==item.request_id)throw new Error('DigitalHub chunk request identity mismatch.');current=chunk;const bounds=new THREE.Box3();for(const mesh of chunk.meshes)dhAddMesh(mesh,groups,bounds);const route=chunk.route;dhAddMarker(route.start_m,0xf5f06c,`START\n${xyz(route.start_m)}`,groups.markers);dhAddMarker(route.goal_m,0xff4fd8,`GOAL\n${xyz(route.goal_m)}`,groups.markers);for(const event of route.events){const offender=chunk.meshes.find(x=>x.global_id===event.global_id);if(offender){const center=[(offender.bounds_m.min_x_m+offender.bounds_m.max_x_m)/2,(offender.bounds_m.min_y_m+offender.bounds_m.max_y_m)/2,(offender.bounds_m.min_z_m+offender.bounds_m.max_z_m)/2];const mark=addSphere(center,0xff3b30,.16,groups.evidence);mark.userData={dhEvent:event};pickables.push(mark)}}
+    if(route.generated_polyline_m.length){const points=route.generated_polyline_m.map(vector),line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:0x00f5d4,linewidth:2}));line.userData={edge:{physical_edge_id:item.request_id,role:'GENERATED_ASTAR',system:item.discipline,status:'ROUTED',world_polyline_m:route.generated_polyline_m,expanded_node_count:route.expanded_node_count,reason:route.validation_label}};groups.generated.add(line);pickables.push(line);for(let i=1;i<route.generated_polyline_m.length;i++)dhSegmentEnvelope(route.generated_polyline_m[i-1],route.generated_polyline_m[i],route.body_half_extent_m,groups.envelope)}
+    currentBounds=bounds;fit(bounds);applyVisibility();const generated=route.generated_polyline_m.length?'GENERATED A* ROUTE PRESENT':'NO GENERATED ROUTE';$('#status').className='ok';status.textContent=`${item.request_id} · ${route.search_state} · ${route.validation_label||'NOT_RUN'} · ${generated} · ${chunk.selected_mesh_count} source IFC meshes loaded`;selection.textContent=`${item.request_id}\n${route.search_state}\n${route.validation_label||'NOT_RUN'}\n${generated}\nOriginal source-host meshes: ${route.original_host_global_ids.join(', ')}\nStart ${xyz(route.start_m)} · Goal ${xyz(route.goal_m)}`;
+  }
+  renderer.domElement.addEventListener('click',event=>{const r=renderer.domElement.getBoundingClientRect();pointer.set((event.clientX-r.left)/r.width*2-1,-(event.clientY-r.top)/r.height*2+1);raycaster.setFromCamera(pointer,camera);const hit=raycaster.intersectObjects(pickables.filter(x=>x.visible),false)[0];if(hit?.object.userData.dhEvent)showEvent(hit.object.userData.dhEvent);else if(hit?.object.userData.dhLabel)selection.textContent=hit.object.userData.dhLabel});
+  for(const input of ['#dh-original','#dh-generated','#dh-architecture','#dh-mep','#dh-evidence','#dh-envelope'])$(input).onchange=applyVisibility;
+  const routeBounds=()=>{const b=new THREE.Box3();for(const mesh of current.meshes)if(mesh.viewer_category==='ORIGINAL_REPLACED_HOST'||mesh.viewer_category==='RETAINED_BOUNDARY_HOST'){const q=mesh.bounds_m;b.expandByPoint(new THREE.Vector3(q.min_x_m,q.min_y_m,q.min_z_m));b.expandByPoint(new THREE.Vector3(q.max_x_m,q.max_y_m,q.max_z_m))}for(const point of [current.route.start_m,current.route.goal_m,...current.route.generated_polyline_m])b.expandByPoint(vector(point));return b.isEmpty()?currentBounds:b};$('#dh-both').onclick=()=>{$('#dh-original').checked=true;$('#dh-generated').checked=true;applyVisibility()};$('#dh-original-only').onclick=()=>{$('#dh-original').checked=true;$('#dh-generated').checked=false;applyVisibility()};$('#dh-generated-only').onclick=()=>{$('#dh-original').checked=false;$('#dh-generated').checked=true;applyVisibility()};$('#dh-context').onclick=()=>{$('#dh-architecture').checked=true;$('#dh-mep').checked=true;$('#dh-evidence').checked=true;applyVisibility()};$('#dh-isolated').onclick=()=>{$('#dh-architecture').checked=false;$('#dh-mep').checked=false;$('#dh-evidence').checked=false;applyVisibility()};$('#dh-clashes').onclick=()=>{$('#dh-architecture').checked=false;$('#dh-mep').checked=false;$('#dh-evidence').checked=true;applyVisibility()};$('#dh-fit').onclick=()=>fit(routeBounds());$('#dh-fit-context').onclick=()=>fit(currentBounds);select.onchange=()=>selectExperiment().then(()=>fit(routeBounds())).catch(fail);await selectExperiment();fit(routeBounds());
+}
 const params=new URLSearchParams(location.search),fixtureName=params.get('fixture')||'viewer_fixture.json';$('#fixture').value=fixtureName;$('#fixture').onchange=e=>{params.set('fixture',e.target.value);location.search=params.toString()};
 try{
   if(!/^[\w.-]+\.json$/.test(fixtureName))throw new Error('Fixture name must be a local JSON file name.');
   status.textContent='Loading fixture…';const response=await fetch(`./${fixtureName}`);if(!response.ok)throw new Error(`Fixture request failed (${response.status} ${response.statusText}).`);
-  const d=normalize(await response.json());fixture=d;const bounds=new THREE.Box3();
+  let raw=await response.json();if(raw.schema_version===5&&raw.kind==='REAL_IFC_PROGRESSIVE_MANIFEST'){let done=0,total=raw.layers.reduce((n,l)=>n+l.chunks.length,0);for(const layer of raw.layers){layer.meshes=[];for(const ref of layer.chunks){status.textContent=`Loading geometry chunk ${++done}/${total}: ${layer.id}`;const r=await fetch(`./${ref.url}`);if(!r.ok)throw new Error(`Geometry chunk failed: ${ref.url}`);const chunk=await r.json();layer.meshes.push(...chunk.meshes)}}const baseline=await fetch('./medical_dental_clashes.json');if(baseline.ok)raw.clash_baseline=await baseline.json();raw.schema_version=4;raw.kind='REAL_IFC_FEDERATED_VIEWER'}
+  if(raw.schema_version===6&&raw.kind==='DIGITALHUB_PHASE11B_COMPARISON_MANIFEST'){await loadDigitalHub(raw)}else{
+  const d=normalize(raw);fixture=d;const bounds=new THREE.Box3();
   for(const o of d.obstacles){const b=o.bounds;if(!b)throw new Error(`Obstacle ${o.global_id||'<unknown>'} has missing bounds.`);const {size,center}=boxFrom(b);if(size.x<0||size.y<0||size.z<0)throw new Error(`Obstacle ${o.global_id||'<unknown>'} has invalid bounds.`);const mesh=new THREE.Mesh(new THREE.BoxGeometry(size.x,size.y,size.z),new THREE.MeshBasicMaterial({color:0x9cadbc,transparent:true,opacity:.14,depthWrite:false}));mesh.position.copy(center);obstacles.add(mesh);bounds.expandByObject(mesh)}
+  for(const layer of d.layers||[])addIfcLayer(layer,bounds);
   for(const e of d.edges)addRoute(e,bounds);
+  for(const e of d.edges)addClearance(e);
+  if(d.shaft?.bounds){const line=addGuideBox(d.shaft.bounds,0x7df9ff);bounds.expandByObject(line)}
+  for(const opening of d.openings||[]){const line=addGuideBox(opening.bounds,0xf5f06c);bounds.expandByObject(line)}
+  for(const space of d.spaces||[]){const line=addGuideBox(space.bounds,0x4d6276);bounds.expandByObject(line)}
   for(const ep of d.endpoints||[]){addSphere(ep.world_m,0xf5f06c,.12,markers,bounds);if(ep.snap){addSphere(ep.snap.snap_world_m,0x7df9ff,.07,markers,bounds);markers.add(new THREE.Line(new THREE.BufferGeometry().setFromPoints([vector(ep.world_m),vector(ep.snap.snap_world_m)]),new THREE.LineBasicMaterial({color:0x7df9ff})))}}
   for(const j of d.junctions||[]){const m=addSphere(j.world_m,0xff4fd8,.13,markers,bounds);if(j.network_complete===false)m.material.wireframe=true}
   d.conflicts.forEach(addConflict);fit(bounds);
-  $('#obstacles').onchange=e=>obstacles.visible=e.target.checked;$('#conflicts').onchange=e=>conflictGroup.visible=e.target.checked;
-  const systems=[...d.systems];$('#systems').innerHTML=systems.map(s=>{const routed=d.edges.filter(e=>e.system===s&&e.status==='ROUTED').length,total=d.edges.filter(e=>e.system===s).length;return `<label><input type="checkbox" checked data-system="${esc(s)}"> <span class="swatch" style="background:#${(SYSTEM_COLORS[s]??FALLBACK).toString(16).padStart(6,'0')}"></span>${esc(s)} — ${routed}/${total} edges routed</label>`}).join('');
-  $('#systems').querySelectorAll('input').forEach(input=>input.onchange=()=>routes.children.forEach(line=>{if(line.userData.edge.system===input.dataset.system)line.visible=input.checked}));
+  for(const clash of d.clash_baseline?.clashes||[]){const marker=addSphere(clash.world_m,0xffcc00,.3,conflictGroup,bounds);marker.userData={clash};pickables.push(marker)}
+  $('#clash-mode').onchange=applyClashMode;$('#clash-context').onchange=applyClashMode;$('#previous-clash').onclick=()=>{const n=d.clash_baseline?.clashes.length||0;if(n){activeClash=(activeClash+n-1)%n;$('#clash-mode').value='selected';applyClashMode()}};$('#next-clash').onclick=()=>{const n=d.clash_baseline?.clashes.length||0;if(n){activeClash=(activeClash+1)%n;$('#clash-mode').value='selected';applyClashMode()}};
+  const clip=$('#clip-z'),clipValue=$('#clip-z-value'),minimum=bounds.min.z,maximum=bounds.max.z;
+  clip.min=minimum;clip.max=maximum;clip.step=Math.max((maximum-minimum)/200,.01);clip.value=maximum;clip.disabled=false;
+  clip.oninput=()=>{const value=Number(clip.value);sectionPlane.constant=value;clipValue.textContent=`z ≤ ${value.toFixed(2)} m`};sectionPlane.constant=Infinity;clipValue.textContent='off';
+  $('#reset-view').onclick=()=>fit(bounds);
+  $('#obstacles').onchange=e=>obstacles.visible=e.target.checked;$('#conflicts').onchange=e=>conflictGroup.visible=e.target.checked;$('#clearance').onchange=e=>clearanceGroup.visible=e.target.checked;
+  const systems=[...d.systems];$('#systems').innerHTML=d.layers?d.layers.map(layer=>`<label><input type="checkbox" checked data-layer="${esc(layer.id)}"> ${esc(layer.label)} — ${layer.mesh_count}/${layer.candidate_product_count} source meshes</label>`).join(''):systems.map(s=>{const routed=d.edges.filter(e=>e.system===s&&e.status==='ROUTED').length,total=d.edges.filter(e=>e.system===s).length;return `<label><input type="checkbox" checked data-system="${esc(s)}"> <span class="swatch" style="background:#${(SYSTEM_COLORS[s]??FALLBACK).toString(16).padStart(6,'0')}"></span>${esc(s)} — ${routed}/${total} edges routed</label>`}).join('');
+  $('#systems').querySelectorAll('input[data-system]').forEach(input=>input.onchange=()=>routes.children.forEach(line=>{if(line.userData.edge.system===input.dataset.system)line.visible=input.checked}));
+  $('#systems').querySelectorAll('input[data-layer]').forEach(input=>input.onchange=()=>{layerGroups.get(input.dataset.layer).visible=input.checked});
   $('#warning').textContent=d.certification_warning||d.disclaimer;renderSummary(d);renderExplorer(d);
   const routedEdges=d.edges.filter(e=>e.status==='ROUTED'),mains=routedEdges.filter(e=>e.role==='MAIN').length;
-  status.className='ok';status.textContent=`Fixture loaded successfully · ${routedEdges.length} routed physical edges of ${d.edges.length} · ${mains} MAIN / ${routedEdges.length-mains} BRANCH · ${d.conflicts.length} conflict records · ${d.obstacles.length} obstacle boxes · ${d.scenario_id} · ${d.coordinate_frame}`;
+  status.className='ok';status.textContent=`Fixture loaded successfully · ${routedEdges.length} routed physical edges of ${d.edges.length} · ${mains} MAIN / ${routedEdges.length-mains} BRANCH · ${d.conflicts.length} conflict records · ${d.obstacles.length} obstacle boxes · ${d.scenario_id} · ${d.coordinate_frame}${d.source_identity?` · source ${d.source_identity.git_commit.slice(0,12)}`:''}`;
+  }
 }catch(error){fail(error)}
 function animate(){requestAnimationFrame(animate);controls.update();renderer.render(scene,camera)}animate();
 </script>

@@ -1,0 +1,3046 @@
+{
+  "geometry_failures": [
+    {
+      "file_role": "architecture",
+      "geometry_failure_count": 0,
+      "geometry_failure_sample": []
+    },
+    {
+      "file_role": "heating",
+      "geometry_failure_count": 0,
+      "geometry_failure_sample": []
+    },
+    {
+      "file_role": "ventilation",
+      "geometry_failure_count": 0,
+      "geometry_failure_sample": []
+    },
+    {
+      "file_role": "sanitary",
+      "geometry_failure_count": 0,
+      "geometry_failure_sample": []
+    }
+  ],
+  "geometry_failures_are_not_treated_as_blocked": true,
+  "grid": {
+    "blocked_cell_count": 40816,
+    "cell_count": 84630,
+    "free_cell_count": 43814,
+    "nx": 35,
+    "ny": 62,
+    "nz": 39,
+    "origin_m": [
+      48.6,
+      13.100000000000001,
+      -1.7000000000000002
+    ]
+  },
+  "neighbourhood": [
+    "+X",
+    "-X",
+    "+Y",
+    "-Y",
+    "+Z",
+    "-Z"
+  ],
+  "obstacle_class_counts": {
+    "architecture:IfcBuildingElementProxy": 7,
+    "architecture:IfcColumn": 1,
+    "architecture:IfcDoor": 2,
+    "architecture:IfcSlab": 6,
+    "architecture:IfcWall": 5,
+    "heating:IfcPipeFitting": 25,
+    "heating:IfcPipeSegment": 28,
+    "heating:IfcSpaceHeater": 3,
+    "sanitary:IfcPipeFitting": 44,
+    "sanitary:IfcPipeSegment": 60,
+    "sanitary:IfcSanitaryTerminal": 8,
+    "sanitary:IfcUnitaryEquipment": 4,
+    "ventilation:IfcDuctSegment": 1
+  },
+  "obstacle_count": 194,
+  "obstacle_inflation_m": 0.009927100884469804,
+  "obstacles": [
+    {
+      "bounds_m": [
+        13.825,
+        63.175,
+        13.625,
+        13.825,
+        -3.67,
+        -0.37
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "0CWDnGbzX4Sf1BesL9Tj9B",
+      "ifc_class": "IfcWall",
+      "marked_cell_count": 910
+    },
+    {
+      "bounds_m": [
+        7.375,
+        69.625,
+        7.375,
+        26.225,
+        -0.57,
+        -0.37
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "0CWDnGbzX4Sf1BesL9TjKx",
+      "ifc_class": "IfcSlab",
+      "marked_cell_count": 4200
+    },
+    {
+      "bounds_m": [
+        50.475,
+        55.875,
+        13.875,
+        14.025,
+        -0.15,
+        3.5
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "0N58olkxr7Mww1RX8p2dmh",
+      "ifc_class": "IfcWall",
+      "marked_cell_count": 384
+    },
+    {
+      "bounds_m": [
+        50.325,
+        50.475,
+        13.875,
+        19.725,
+        -0.15,
+        3.5
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "0N58olkxr7Mww1RX8p2dt_",
+      "ifc_class": "IfcWall",
+      "marked_cell_count": 2592
+    },
+    {
+      "bounds_m": [
+        13.825,
+        63.175,
+        13.825,
+        14.125,
+        -3.37,
+        -0.37
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "23Np8uMAvEN9H6Ds49djm8",
+      "ifc_class": "IfcWall",
+      "marked_cell_count": 1155
+    },
+    {
+      "bounds_m": [
+        50.475,
+        55.875,
+        16.475,
+        16.875,
+        -0.15,
+        3.5
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "279opIq2rEtREtELGBVxSS",
+      "ifc_class": "IfcWall",
+      "marked_cell_count": 1536
+    },
+    {
+      "bounds_m": [
+        50.395,
+        50.562,
+        14.105,
+        15.015,
+        -0.0,
+        2.055
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "279opIq2rEtREtELGBVxTT",
+      "ifc_class": "IfcDoor",
+      "marked_cell_count": 189
+    },
+    {
+      "bounds_m": [
+        50.395,
+        50.562,
+        18.585,
+        19.495,
+        -0.0,
+        2.055
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "279opIq2rEtREtELGBVxUT",
+      "ifc_class": "IfcDoor",
+      "marked_cell_count": 147
+    },
+    {
+      "bounds_m": [
+        -0.0,
+        77.825002,
+        -3.06,
+        26.724999,
+        0.0,
+        0.0
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3A8hY1UoD7JhnLeZeDyQc9",
+      "ifc_class": "IfcBuildingElementProxy",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        -18.183363,
+        141.125003,
+        -11.298168,
+        26.724999,
+        -0.20116,
+        0.0
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3A8hY1UoD7JhnLeZeDyU2I",
+      "ifc_class": "IfcBuildingElementProxy",
+      "marked_cell_count": 3964
+    },
+    {
+      "bounds_m": [
+        -18.183364,
+        141.125,
+        -11.298168,
+        26.725,
+        -0.201,
+        -0.2
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3A8hY1UoD7JhnLeZeDyU2J",
+      "ifc_class": "IfcSlab",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        -18.183363,
+        141.125003,
+        -22.125,
+        41.404854,
+        0.0,
+        0.0
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3A8hY1UoD7JhnLeZeDyU4B",
+      "ifc_class": "IfcBuildingElementProxy",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        -18.183363,
+        141.125003,
+        -12.798168,
+        26.724999,
+        0.0,
+        0.0
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3A8hY1UoD7JhnLeZeDyUs3",
+      "ifc_class": "IfcBuildingElementProxy",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        48.875,
+        49.125,
+        13.875,
+        14.125,
+        -0.15,
+        3.5
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3BmeJtEDj3AQO77Os2w6X$",
+      "ifc_class": "IfcColumn",
+      "marked_cell_count": 88
+    },
+    {
+      "bounds_m": [
+        6.875,
+        70.125,
+        6.875,
+        26.725,
+        -0.37,
+        -0.15
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3BmeJtEDj3AQO77Os2w6hN",
+      "ifc_class": "IfcSlab",
+      "marked_cell_count": 4340
+    },
+    {
+      "bounds_m": [
+        6.875,
+        70.125,
+        6.875,
+        26.725,
+        -0.82,
+        -0.37
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3LJODRGPbDdfXHXShFL8ox",
+      "ifc_class": "IfcBuildingElementProxy",
+      "marked_cell_count": 3990
+    },
+    {
+      "bounds_m": [
+        13.825,
+        63.175,
+        13.825,
+        26.725,
+        -0.37,
+        -0.15
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3LJODRGPbDdfXHXShFL8tL",
+      "ifc_class": "IfcSlab",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        13.825,
+        63.174998,
+        13.825,
+        26.724999,
+        -3.67116,
+        -0.0
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3LJODRGPbDdfXHXShFL93W",
+      "ifc_class": "IfcBuildingElementProxy",
+      "marked_cell_count": 16380
+    },
+    {
+      "bounds_m": [
+        6.875,
+        70.125,
+        6.875,
+        26.725,
+        -0.371,
+        -0.37
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3LJODRGPbDdfXHXShFL9C6",
+      "ifc_class": "IfcSlab",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        6.875,
+        70.125002,
+        6.875,
+        26.724999,
+        -0.37116,
+        -0.0
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3LJODRGPbDdfXHXShFL9C7",
+      "ifc_class": "IfcBuildingElementProxy",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        7.125,
+        69.875,
+        7.125,
+        26.475,
+        -0.15,
+        0.0
+      ],
+      "decision": "ARCHITECTURAL_OBSTACLE",
+      "file_role": "architecture",
+      "global_id": "3LJODRGPbDdfXHXShFLAnr",
+      "ifc_class": "IfcSlab",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.149955,
+        50.595286,
+        14.678534,
+        14.696534,
+        -0.128934,
+        -0.111066
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "08uzusf2n75OvoeaS_v52U",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.211955,
+        50.255955,
+        15.867607,
+        15.887461,
+        -0.13,
+        -0.086
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIX_m",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.236955,
+        50.254955,
+        15.8686,
+        15.886469,
+        -0.086,
+        0.1
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIX_u",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.215955,
+        50.275955,
+        15.702534,
+        17.792534,
+        0.02,
+        0.7
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIX_z",
+      "ifc_class": "IfcSpaceHeater",
+      "marked_cell_count": 147
+    },
+    {
+      "bounds_m": [
+        50.523955,
+        50.583955,
+        17.992534,
+        18.482534,
+        0.02,
+        0.5
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIXui",
+      "ifc_class": "IfcSpaceHeater",
+      "marked_cell_count": 25
+    },
+    {
+      "bounds_m": [
+        50.547955,
+        50.573955,
+        18.301578,
+        18.31349,
+        -0.126,
+        -0.1
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY2w",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.547955,
+        50.573955,
+        18.351578,
+        18.36349,
+        -0.126,
+        -0.1
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY3R",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.548955,
+        50.558955,
+        15.502571,
+        15.512498,
+        -0.1,
+        0.0723
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY3W",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.544028,
+        50.563882,
+        15.547534,
+        15.567534,
+        0.0723,
+        0.1
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY3Y",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.548955,
+        50.558955,
+        15.552571,
+        15.562498,
+        -0.1,
+        0.0723
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY3a",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 1
+    },
+    {
+      "bounds_m": [
+        50.523955,
+        50.583955,
+        15.192534,
+        15.682534,
+        0.02,
+        0.5
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY3f",
+      "ifc_class": "IfcSpaceHeater",
+      "marked_cell_count": 24
+    },
+    {
+      "bounds_m": [
+        50.548955,
+        50.558955,
+        18.352571,
+        18.362498,
+        -0.1,
+        0.0723
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY4j",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.548955,
+        50.558955,
+        18.302571,
+        18.312498,
+        -0.1,
+        0.0723
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY5D",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.544028,
+        50.563882,
+        18.347534,
+        18.367534,
+        0.0723,
+        0.1
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY5Q",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.544028,
+        50.563882,
+        18.297534,
+        18.317534,
+        0.0723,
+        0.1
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIY5t",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.573955,
+        50.616744,
+        15.552534,
+        15.562534,
+        -0.124964,
+        -0.115036
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIYCS",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.544028,
+        50.563882,
+        15.497534,
+        15.517534,
+        0.0723,
+        0.1
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "0KDl_Pd9bF6RK3eO7wIYCU",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.706855,
+        55.388067,
+        14.628534,
+        14.646534,
+        -0.128946,
+        -0.111066
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBct3F",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.68486,
+        50.709612,
+        15.551796,
+        15.563786,
+        -0.097432,
+        -0.078703
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctK0",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.674696,
+        50.684903,
+        15.552708,
+        15.562752,
+        -0.089666,
+        -0.079739
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctK2",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.649987,
+        50.674739,
+        15.551675,
+        15.563664,
+        -0.097432,
+        -0.078703
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctK4",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.631456,
+        50.657742,
+        15.552562,
+        15.562633,
+        -0.115961,
+        -0.089679
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctK6",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.719449,
+        50.744201,
+        15.551937,
+        15.563927,
+        -0.125998,
+        -0.10727
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctK8",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.744179,
+        50.784183,
+        15.552971,
+        15.562971,
+        -0.124962,
+        -0.115035
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctKA",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.784183,
+        50.807623,
+        15.540531,
+        15.575411,
+        -0.125955,
+        -0.114042
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctKC",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.701857,
+        50.727204,
+        15.552828,
+        15.562895,
+        -0.115022,
+        -0.089679
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctKS",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.616744,
+        50.639211,
+        15.551575,
+        15.56352,
+        -0.126,
+        -0.108208
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctL2",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.547955,
+        50.573955,
+        15.551578,
+        15.56349,
+        -0.126,
+        -0.1
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctLU",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.796623,
+        50.806623,
+        14.704974,
+        15.540531,
+        -0.124962,
+        -0.115035
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctPn",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.781623,
+        50.807623,
+        18.337534,
+        18.363534,
+        -0.125956,
+        -0.114044
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctS_",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.828523,
+        55.332231,
+        14.678534,
+        14.696534,
+        -0.128934,
+        -0.111066
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctSk",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.618929,
+        50.648512,
+        14.678534,
+        14.696534,
+        -0.113907,
+        -0.084324
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctU9",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.767424,
+        50.774723,
+        14.678534,
+        14.696534,
+        -0.128934,
+        -0.111066
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctUB",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.635124,
+        50.67463,
+        14.677607,
+        14.697461,
+        -0.097712,
+        -0.067206
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctUD",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.67463,
+        50.68663,
+        14.678534,
+        14.696534,
+        -0.08614,
+        -0.068272
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctUF",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.68663,
+        50.726136,
+        14.677607,
+        14.697461,
+        -0.097712,
+        -0.067206
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctUn",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.712748,
+        50.741306,
+        14.678534,
+        14.696534,
+        -0.112882,
+        -0.084324
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctUp",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.727918,
+        50.767424,
+        14.677607,
+        14.697461,
+        -0.13,
+        -0.099494
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctUr",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.774723,
+        50.828523,
+        14.677534,
+        14.704974,
+        -0.129927,
+        -0.110073
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctUx",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.595286,
+        50.632318,
+        14.677607,
+        14.697461,
+        -0.13,
+        -0.100519
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1PO8_6BBT97gCnBagBctV5",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        33.015346,
+        55.606955,
+        19.290534,
+        19.332534,
+        -0.465847,
+        -0.424153
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1S7VbM5Mr9wBCUw2MH77xv",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.055955,
+        50.099955,
+        14.627534,
+        14.671534,
+        -0.12994,
+        -0.110085
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1_iL4uYlj8i8E82DrFR2I5",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.099955,
+        50.653055,
+        14.628534,
+        14.646534,
+        -0.128947,
+        -0.111078
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1_iL4uYlj8i8E82DrFR2Ia",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.653055,
+        50.706855,
+        14.627534,
+        14.654974,
+        -0.129938,
+        -0.110084
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "1_iL4uYlj8i8E82DrFR2Id",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.573955,
+        50.662515,
+        15.502534,
+        15.512534,
+        -0.124964,
+        -0.115036
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5F23",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.674955,
+        50.684955,
+        14.654974,
+        15.490094,
+        -0.124975,
+        -0.115036
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5F2B",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.547955,
+        50.573955,
+        15.501578,
+        15.51349,
+        -0.126,
+        -0.1
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5F3$",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.674955,
+        50.684955,
+        15.524974,
+        18.287534,
+        -0.124964,
+        -0.115036
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5F3w",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.662515,
+        50.685955,
+        15.490094,
+        15.524974,
+        -0.125956,
+        -0.114044
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5F3x",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.796623,
+        50.806623,
+        15.575411,
+        18.337534,
+        -0.124964,
+        -0.115036
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5F5a",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.659955,
+        50.685955,
+        18.287534,
+        18.313534,
+        -0.125956,
+        -0.114044
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5F8Z",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.573955,
+        50.659955,
+        18.302534,
+        18.312534,
+        -0.124964,
+        -0.115036
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5F8h",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.099955,
+        50.211955,
+        15.868534,
+        15.886534,
+        -0.128934,
+        -0.111066
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5FA0",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.056955,
+        50.074955,
+        14.671534,
+        15.843534,
+        -0.128947,
+        -0.111066
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5FA8",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.573955,
+        50.781623,
+        18.352534,
+        18.362534,
+        -0.124964,
+        -0.115036
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5FBF",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.055955,
+        50.099955,
+        15.843534,
+        15.887534,
+        -0.129927,
+        -0.110073
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "heating",
+      "global_id": "2hMjjbZvP4CAN9xX2G5FBu",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.554852,
+        52.044852,
+        16.378034,
+        16.528534,
+        -0.2345,
+        1.0955
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWA",
+      "ifc_class": "IfcSanitaryTerminal",
+      "marked_cell_count": 66
+    },
+    {
+      "bounds_m": [
+        50.599967,
+        51.199967,
+        15.867534,
+        16.467534,
+        0.502114,
+        0.850114
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWC",
+      "ifc_class": "IfcSanitaryTerminal",
+      "marked_cell_count": 144
+    },
+    {
+      "bounds_m": [
+        51.49997,
+        52.09997,
+        15.867534,
+        16.467534,
+        0.502114,
+        0.850114
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWD",
+      "ifc_class": "IfcSanitaryTerminal",
+      "marked_cell_count": 120
+    },
+    {
+      "bounds_m": [
+        50.654852,
+        51.144852,
+        16.378034,
+        16.528534,
+        -0.2345,
+        1.0955
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DW_",
+      "ifc_class": "IfcSanitaryTerminal",
+      "marked_cell_count": 42
+    },
+    {
+      "bounds_m": [
+        51.237266,
+        51.25479,
+        16.732822,
+        16.782822,
+        0.121418,
+        0.171418
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWb",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.251096,
+        51.443956,
+        16.730322,
+        16.785322,
+        0.117031,
+        0.228219
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWd",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.945417,
+        51.358348,
+        16.615776,
+        16.655776,
+        0.063779,
+        0.47671
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWf",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.250491,
+        51.278788,
+        16.580776,
+        16.690776,
+        -0.054199,
+        0.056226
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWi",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.654852,
+        51.144852,
+        16.803981,
+        16.954481,
+        -0.2345,
+        1.0955
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWm",
+      "ifc_class": "IfcSanitaryTerminal",
+      "marked_cell_count": 66
+    },
+    {
+      "bounds_m": [
+        51.554852,
+        52.044852,
+        16.806534,
+        16.957034,
+        -0.2345,
+        1.0955
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWn",
+      "ifc_class": "IfcSanitaryTerminal",
+      "marked_cell_count": 66
+    },
+    {
+      "bounds_m": [
+        50.599852,
+        51.199852,
+        16.867534,
+        17.467534,
+        0.502,
+        0.85
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWo",
+      "ifc_class": "IfcSanitaryTerminal",
+      "marked_cell_count": 120
+    },
+    {
+      "bounds_m": [
+        51.50058,
+        52.10058,
+        16.867534,
+        17.467534,
+        0.5023,
+        0.8503
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWp",
+      "ifc_class": "IfcSanitaryTerminal",
+      "marked_cell_count": 120
+    },
+    {
+      "bounds_m": [
+        50.879967,
+        50.919989,
+        16.467526,
+        16.55154,
+        0.502114,
+        0.542137
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWr",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.879852,
+        50.919852,
+        16.842066,
+        16.867534,
+        0.502,
+        0.542
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DWt",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.443431,
+        52.106305,
+        16.732822,
+        16.782822,
+        0.112907,
+        0.169528
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DX2",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.772989,
+        51.878651,
+        16.551532,
+        16.662776,
+        0.443476,
+        0.549137
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DXD",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.178352,
+        51.252467,
+        16.571776,
+        16.699776,
+        -0.062758,
+        0.06642
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DXH",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.77986,
+        51.820572,
+        16.841494,
+        16.868106,
+        0.5023,
+        0.5423
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DXJ",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.77997,
+        51.819989,
+        16.467527,
+        16.551539,
+        0.502114,
+        0.542137
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DXL",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.845417,
+        52.273546,
+        16.615776,
+        16.655776,
+        0.048581,
+        0.47671
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DXN",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.179266,
+        51.237266,
+        16.725822,
+        16.789822,
+        0.114418,
+        0.178418
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DXP",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.872989,
+        50.978651,
+        16.551532,
+        16.662776,
+        0.443476,
+        0.549137
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DXR",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.548824,
+        52.193986,
+        16.580776,
+        16.690776,
+        -0.069397,
+        0.051272
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DXS",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.276887,
+        51.550726,
+        16.576276,
+        16.695276,
+        -0.063213,
+        0.093831
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DXT",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.102642,
+        51.239577,
+        16.730822,
+        16.784822,
+        0.23988,
+        0.354423
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Di$",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.714284,
+        51.777346,
+        16.792431,
+        16.854981,
+        0.561252,
+        0.592121
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Di1",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.827649,
+        51.878383,
+        16.792685,
+        16.815277,
+        0.585238,
+        0.611147
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Di3",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.872852,
+        50.965357,
+        16.730822,
+        16.842066,
+        0.435543,
+        0.549
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Di5",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.924654,
+        50.965525,
+        16.737822,
+        16.777822,
+        0.428252,
+        0.459043
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Di7",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.963556,
+        50.986149,
+        16.857534,
+        16.920084,
+        0.42575,
+        0.4883
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Di9",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.813582,
+        50.876597,
+        16.792431,
+        16.854981,
+        0.560977,
+        0.592225
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiB",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.923645,
+        50.974682,
+        16.792685,
+        16.815277,
+        0.585488,
+        0.61155
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiD",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.773897,
+        51.831098,
+        16.796481,
+        16.811481,
+        0.575593,
+        0.601786
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiF",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.817467,
+        50.832467,
+        16.745371,
+        16.760371,
+        0.5276,
+        0.531114
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiH",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.81367,
+        50.836263,
+        16.701871,
+        16.764421,
+        0.46505,
+        0.5276
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiJ",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.713674,
+        51.736267,
+        16.701887,
+        16.764437,
+        0.46505,
+        0.5276
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiL",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.967352,
+        50.982352,
+        16.901034,
+        16.916034,
+        0.423,
+        0.42575
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiN",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.817467,
+        50.832467,
+        16.745371,
+        16.760371,
+        0.613114,
+        0.973014
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiP",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.813417,
+        50.875967,
+        16.741575,
+        16.764167,
+        0.973014,
+        1.035564
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiR",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.71747,
+        51.73247,
+        16.745387,
+        16.760387,
+        0.5276,
+        0.531114
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiT",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.71747,
+        51.73247,
+        16.745387,
+        16.760387,
+        0.613114,
+        0.980506
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DiV",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.831006,
+        51.957637,
+        16.730822,
+        16.784822,
+        0.313146,
+        0.441341
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dif",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.984347,
+        52.120342,
+        16.730822,
+        16.784822,
+        0.20181,
+        0.325119
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dih",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.772852,
+        51.865357,
+        16.730822,
+        16.842066,
+        0.435843,
+        0.5493
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Din",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.824654,
+        51.871709,
+        16.737822,
+        16.777822,
+        0.417841,
+        0.459343
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dip",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.932955,
+        52.009029,
+        16.737822,
+        16.777822,
+        0.285122,
+        0.353144
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dir",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        52.087066,
+        52.132413,
+        16.737822,
+        16.777822,
+        0.189655,
+        0.235002
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dit",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.038945,
+        51.119485,
+        16.737822,
+        16.777822,
+        0.310545,
+        0.373302
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Div",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.924822,
+        51.055788,
+        16.730822,
+        16.784822,
+        0.329424,
+        0.451752
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dix",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.206113,
+        51.281148,
+        16.737822,
+        16.777822,
+        0.198167,
+        0.273202
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Diz",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.875967,
+        50.933852,
+        16.745371,
+        16.760371,
+        1.016514,
+        1.031514
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dj8",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.933852,
+        51.015852,
+        16.741575,
+        16.764167,
+        0.980477,
+        1.035563
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dj9",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.916584,
+        52.717852,
+        16.745371,
+        16.760371,
+        1.016504,
+        1.031513
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DjE",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.015852,
+        51.683971,
+        16.745371,
+        16.760371,
+        1.016506,
+        1.031513
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DjG",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.683971,
+        51.765971,
+        16.741575,
+        16.764167,
+        0.980503,
+        1.035556
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DjH",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.765971,
+        51.834584,
+        16.745371,
+        16.760371,
+        1.016505,
+        1.031506
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DjK",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.834584,
+        51.916584,
+        16.741575,
+        16.764167,
+        0.980488,
+        1.035555
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DjL",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.967467,
+        50.982467,
+        16.467534,
+        16.494981,
+        0.564614,
+        0.579614
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dk$",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.722467,
+        50.737467,
+        16.477534,
+        16.494981,
+        0.608909,
+        0.623909
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dk1",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.71867,
+        50.741263,
+        16.414984,
+        16.477534,
+        0.565409,
+        0.627959
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dk3",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.817467,
+        50.832467,
+        16.477534,
+        16.701871,
+        0.4691,
+        0.4841
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dk5",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.81367,
+        50.836263,
+        16.414984,
+        16.477534,
+        0.4256,
+        0.48815
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dk7",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.622467,
+        51.637467,
+        16.419034,
+        16.434034,
+        0.423,
+        0.562893
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dk9",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.717467,
+        51.732467,
+        16.419034,
+        16.434034,
+        0.423,
+        0.4256
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DkB",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.817467,
+        50.832467,
+        16.419034,
+        16.434034,
+        0.423,
+        0.4256
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DkD",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.722467,
+        50.737467,
+        16.419034,
+        16.434034,
+        0.423,
+        0.565409
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DkF",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.582467,
+        51.772467,
+        16.385534,
+        16.467534,
+        0.27,
+        0.423
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DkM",
+      "ifc_class": "IfcUnitaryEquipment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.682467,
+        50.872467,
+        16.385534,
+        16.467534,
+        0.27,
+        0.423
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DkN",
+      "ifc_class": "IfcUnitaryEquipment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.61867,
+        51.641263,
+        16.414984,
+        16.477534,
+        0.562893,
+        0.625443
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DkX",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.618417,
+        51.680967,
+        16.494981,
+        16.557531,
+        0.602597,
+        0.62519
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DkZ",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.751931,
+        51.828014,
+        16.538481,
+        16.553481,
+        0.578974,
+        0.614041
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkb",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.703797,
+        51.756497,
+        16.534685,
+        16.557277,
+        0.598133,
+        0.625443
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkd",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.71367,
+        51.736263,
+        16.414984,
+        16.477534,
+        0.4256,
+        0.48815
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkf",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.713674,
+        51.736267,
+        16.709387,
+        16.764437,
+        0.531114,
+        0.613114
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkh",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.680967,
+        51.703797,
+        16.538481,
+        16.553481,
+        0.606393,
+        0.621393
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkj",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.622467,
+        51.637467,
+        16.477534,
+        16.494981,
+        0.606393,
+        0.621393
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkl",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.817467,
+        50.832467,
+        16.467534,
+        16.709371,
+        0.564614,
+        0.579614
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkn",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.86747,
+        51.88247,
+        16.467534,
+        16.494981,
+        0.564614,
+        0.579614
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkp",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.71747,
+        51.73247,
+        16.467534,
+        16.709387,
+        0.564614,
+        0.579614
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkr",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.717467,
+        51.73247,
+        16.477534,
+        16.701887,
+        0.4691,
+        0.4841
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkt",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.81367,
+        50.836263,
+        16.709371,
+        16.764421,
+        0.531114,
+        0.613114
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkv",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.780967,
+        50.8478,
+        16.538481,
+        16.553481,
+        0.608909,
+        0.623909
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkx",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.718417,
+        50.780967,
+        16.494981,
+        16.557531,
+        0.605112,
+        0.627705
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dkz",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.96308,
+        51.97808,
+        16.854981,
+        16.857534,
+        0.592097,
+        0.607097
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dl$",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.963555,
+        50.986148,
+        16.741144,
+        16.803694,
+        0.4652,
+        0.52775
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dl1",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.974682,
+        51.018852,
+        16.796481,
+        16.811481,
+        0.5925,
+        0.6075
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dl3",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.018852,
+        51.081402,
+        16.792431,
+        16.854981,
+        0.588704,
+        0.611296
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dl5",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.87298,
+        50.927262,
+        16.796481,
+        16.811481,
+        0.575829,
+        0.601891
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dl7",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.96308,
+        51.97808,
+        16.901034,
+        16.916034,
+        0.423,
+        0.548597
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dl9",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.062352,
+        51.077352,
+        16.854981,
+        16.857534,
+        0.5925,
+        0.6075
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlB",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.058556,
+        51.081149,
+        16.857534,
+        16.920084,
+        0.549,
+        0.61155
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlD",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.967352,
+        50.982352,
+        16.803694,
+        16.857534,
+        0.46925,
+        0.48425
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlF",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.967352,
+        50.982352,
+        16.796194,
+        16.867534,
+        0.5645,
+        0.5795
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlH",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.817352,
+        50.832352,
+        16.854981,
+        16.867534,
+        0.5645,
+        0.5795
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlJ",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.71808,
+        51.73308,
+        16.854981,
+        16.867534,
+        0.5648,
+        0.5798
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlL",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.86808,
+        51.88308,
+        16.795628,
+        16.867534,
+        0.5648,
+        0.5798
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlN",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.823449,
+        51.886068,
+        16.494981,
+        16.557531,
+        0.561256,
+        0.594882
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlP",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.927352,
+        51.117352,
+        16.867534,
+        16.949534,
+        0.27,
+        0.423
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlQ",
+      "ifc_class": "IfcUnitaryEquipment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.82808,
+        52.01808,
+        16.867534,
+        16.949534,
+        0.27,
+        0.423
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlR",
+      "ifc_class": "IfcUnitaryEquipment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.86808,
+        51.88308,
+        16.901034,
+        16.916034,
+        0.423,
+        0.42575
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlT",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.062352,
+        51.077352,
+        16.901034,
+        16.916034,
+        0.423,
+        0.549
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlV",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.897244,
+        50.9314,
+        16.538481,
+        16.553481,
+        0.585959,
+        0.612133
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8DlZ",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.8478,
+        50.903961,
+        16.534685,
+        16.557277,
+        0.597007,
+        0.627959
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlb",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.924683,
+        50.985522,
+        16.494981,
+        16.557531,
+        0.56179,
+        0.601085
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dld",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.864284,
+        51.886877,
+        16.740578,
+        16.803128,
+        0.4652,
+        0.52775
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlf",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.878383,
+        51.91958,
+        16.796481,
+        16.811481,
+        0.592097,
+        0.607097
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlh",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.91958,
+        51.98213,
+        16.792431,
+        16.854981,
+        0.5883,
+        0.610893
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlj",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.86808,
+        51.88308,
+        16.744628,
+        16.759628,
+        0.52775,
+        0.5313
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlk",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.864284,
+        51.886877,
+        16.740578,
+        16.795628,
+        0.5313,
+        0.6133
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dll",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.959284,
+        51.981877,
+        16.857534,
+        16.920084,
+        0.548597,
+        0.611147
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dln",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.86808,
+        51.88308,
+        16.803128,
+        16.857534,
+        0.46925,
+        0.48425
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlp",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.864284,
+        51.886877,
+        16.857534,
+        16.920084,
+        0.42575,
+        0.4883
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlr",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        51.86808,
+        51.883084,
+        16.744628,
+        16.760292,
+        0.613286,
+        0.980518
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlt",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.967352,
+        50.982352,
+        16.745194,
+        16.760194,
+        0.613,
+        0.980514
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlv",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.967352,
+        50.982352,
+        16.745194,
+        16.760194,
+        0.52775,
+        0.531
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlw",
+      "ifc_class": "IfcPipeSegment",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        50.963555,
+        50.986148,
+        16.741144,
+        16.796194,
+        0.531,
+        0.613
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "sanitary",
+      "global_id": "37fQjlRFnBxAG9S0ji8Dlx",
+      "ifc_class": "IfcPipeFitting",
+      "marked_cell_count": 0
+    },
+    {
+      "bounds_m": [
+        48.084676,
+        56.469955,
+        14.392436,
+        15.042436,
+        -1.77,
+        -1.12
+      ],
+      "decision": "RETAINED_MEP_OBSTACLE",
+      "file_role": "ventilation",
+      "global_id": "0Q5MmehFrFp8w7cVe9Oirp",
+      "ifc_class": "IfcDuctSegment",
+      "marked_cell_count": 0
+    }
+  ],
+  "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+  "openings_in_roi": [
+    {
+      "bounds_m": [
+        50.325,
+        50.475,
+        18.605,
+        19.475,
+        -0.0,
+        2.035
+      ],
+      "decision": "OPENING_INVENTORIED_NOT_SUBTRACTED",
+      "file_role": "architecture",
+      "global_id": "279opIq2rEtREtEKSBVxUT",
+      "ifc_class": "IfcOpeningElement",
+      "name": "TU DF 1 - Stahl-Eckzarge Falzt\u00fcre:DL - 800 x 2000:2699940:1",
+      "void_relationships": [
+        {
+          "host_global_id": "0N58olkxr7Mww1RX8p2dt_",
+          "relation_global_id": "279opIq2rEtREtEK0BVxUT"
+        }
+      ]
+    },
+    {
+      "bounds_m": [
+        50.325,
+        50.475,
+        14.125,
+        14.995,
+        -0.0,
+        2.035
+      ],
+      "decision": "OPENING_INVENTORIED_NOT_SUBTRACTED",
+      "file_role": "architecture",
+      "global_id": "279opIq2rEtREtEKSBVxTT",
+      "ifc_class": "IfcOpeningElement",
+      "name": "TU DF 1 - Stahl-Eckzarge Falzt\u00fcre:DL - 800 x 2000:2699876:1",
+      "void_relationships": [
+        {
+          "host_global_id": "0N58olkxr7Mww1RX8p2dt_",
+          "relation_global_id": "279opIq2rEtREtEK0BVxTT"
+        }
+      ]
+    }
+  ],
+  "replaced_hosts_excluded": [
+    "0KDl_Pd9bF6RK3eO7wIX_k",
+    "0KDl_Pd9bF6RK3eO7wIX_s",
+    "1PO8_6BBT97gCnBagBctV7",
+    "2hMjjbZvP4CAN9xX2G5FAH",
+    "2hMjjbZvP4CAN9xX2G5FAP",
+    "2hMjjbZvP4CAN9xX2G5FAZ"
+  ],
+  "roi_bounds_m": [
+    48.6,
+    52.1,
+    13.100000000000001,
+    19.3,
+    -1.7000000000000002,
+    2.2
+  ],
+  "roi_margin_m": 1.5,
+  "router": "src.routing.astar_3d",
+  "source_files": {
+    "architecture": "FM_ARC_DigitalHub_v1.ifc",
+    "heating": "FM_HZG_DigitalHub_v1.ifc",
+    "sanitary": "FM_SAN_DigitalHub_v1.ifc",
+    "ventilation": "FM_LFT_DigitalHub_v1.ifc"
+  },
+  "synthetic_building_obstacles_used": false,
+  "voxel_size_m": 0.1
+}

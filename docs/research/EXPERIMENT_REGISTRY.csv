@@ -1,0 +1,23 @@
+experiment_id,phase,date,dataset,algorithm,execution_status,result_classification,evidence_paths,provenance
+B0,Phase 3,2026-09-22,controlled synthetic,independent 3D A*,292/292 completed; 1256 hard conflicts,VERIFIED,experiments/results/phase8_final_synthesis.json,commit 25fa753 and 1984af8
+B1,Phase 3,2026-09-22,controlled synthetic,fixed-priority sequential A*,144/292 completed; 148 unrouted,VERIFIED,experiments/results/phase8_final_synthesis.json,commit d977e32
+B2,Phase 5,2026-09-22,controlled synthetic,selective conflict repair,292/292 completed; 936 hard conflicts,VERIFIED,experiments/results/phase8_final_synthesis.json,commit 7576f8c
+C0,Phase 4,2026-09-22,controlled synthetic,simplified constructability check,0 hard-feasible cases,PARTIALLY_VERIFIED,experiments/results/phase8_final_synthesis.json,commit 43abb9d
+GRAVITY,Phase 5,2026-09-22,controlled synthetic,gravity-aware drainage,implemented and tested; not engineering approval,PARTIALLY_VERIFIED,docs/KNOWN_LIMITATIONS.md,commits bacadd3 and 31b970a
+PCORE-SEED,Phase 6,2026-09-22,controlled synthetic,P-CORE seed,292/292 completed; 1020 hard conflicts,VERIFIED,experiments/results/phase8_final_synthesis.json,commit ee22fe7
+PCORE-6C2B,Phase 6,2026-09-22,controlled synthetic,multi-round P-CORE,292/292 completed; 747 hard conflicts,VERIFIED,experiments/results/phase8_final_synthesis.json,commit 563536c
+IFC-HARNESS,Phase 8,2026-09-26,external IFC models,inspection and guarded voxel reasoning,parsing/inspection only,PARTIALLY_VERIFIED,REAL_IFC_VALIDATION.md,commits c4d1de8 and 7d358de
+MEDICAL-DENTAL,Phase 10R,2026-10-13 to 2026-10-18,Medical-Dental Clinic,bounded IFC extraction and viewer,source mesh/viewer evidence; physical routing gated,PARTIALLY_VERIFIED,docs/PHASE_10R_B3_4_UNIT_SCALE_AND_ROUTING_READINESS.md,reachable commits 1c7cccfa..ae992a5
+LEVEL-A-B,Phase 10R,2026-10-13,external IFC Level A/B,bounded source inspection,inspection evidence only; no route-feasibility claim,PARTIALLY_VERIFIED,docs/CURRENT_RESEARCH_BASELINE.md,source-geometry and metadata review
+MD-FEDERATION,Phase 10R,2026-10-14 to 2026-10-16,Medical-Dental Clinic,mesh extraction and registration,reviewable viewer fixture; registration conclusions bounded,PARTIALLY_VERIFIED,docs/PHASE_10R_B3_4_UNIT_SCALE_AND_ROUTING_READINESS.md,not an engineering-coordination result
+MD-READINESS,Phase 10R,2026-10-17,Medical-Dental Clinic,unit-scale and routing-readiness gate,unresolved gate blocks physical-routing claim,VERIFIED,docs/PHASE_10R_B3_4_UNIT_SCALE_AND_ROUTING_READINESS.md,negative gate retained
+MD-NATIVE-PORT,Phase 10R,2026-10-18,Medical-Dental Clinic,native-port routing pilot,qualified port and clearance diagnostics; no success claim,PARTIALLY_VERIFIED,docs/PHASE_10R_B4_FIRST_REAL_IFC_ROUTING_PILOT.md,negative and qualified evidence retained
+DH11A,Phase 11A,UNKNOWN,DigitalHub V1,historical proxy routing,voxel-centre route; not real port-to-port,INVALIDATED,experiments/digitalhub_v1/historical_phase11a/LABEL.json,preserved historical artifact
+DH11A.1,Phase 11A.1,UNKNOWN,DigitalHub V1,immutable endpoint correction,endpoint blocked outcomes retained,VERIFIED,docs/PHASE_11A_1_ENDPOINT_GRID_INTEGRITY.md,endpoint diagnostics artifact
+DH11A.2,Phase 11A.2,UNKNOWN,DigitalHub V1,physical port-to-port pilot,route exists but clearance violation prevents acceptance,PARTIALLY_VERIFIED,experiments/digitalhub_v1/historical_phase11a2/LABEL.json,frozen artifact hashes
+DH11B-V1,Phase 11B,UNKNOWN,DigitalHub V1,frozen A* plus mesh-distance validation,SEARCH_PATH_FOUND; CLEARANCE_VIOLATION,VERIFIED,experiments/digitalhub_v1/phase11b_results.json,request/result/evidence artifacts
+DH11B-H1,Phase 11B,UNKNOWN,DigitalHub V1,frozen A*,SEARCH_NO_PATH,VERIFIED,experiments/digitalhub_v1/phase11b_results.json,request/result artifacts
+DH11B-H2,Phase 11B,UNKNOWN,DigitalHub V1,frozen A*,SEARCH_NO_PATH,VERIFIED,experiments/digitalhub_v1/phase11b_results.json,request/result artifacts
+DH11B-S1,Phase 11B,UNKNOWN,DigitalHub V1,frozen A*,SEARCH_NO_PATH,VERIFIED,experiments/digitalhub_v1/phase11b_results.json,request/result artifacts
+DH11B-S2,Phase 11B,UNKNOWN,DigitalHub V1,frozen A*,SEARCH_NO_PATH,VERIFIED,experiments/digitalhub_v1/phase11b_results.json,request/result artifacts
+DH11D,Phase 11D,UNKNOWN,DigitalHub V1,real IFC comparison viewer,viewer renders source meshes and saved results,PARTIALLY_VERIFIED,viewer/digitalhub_phase11b_fixture.json,uncommitted working-tree evidence

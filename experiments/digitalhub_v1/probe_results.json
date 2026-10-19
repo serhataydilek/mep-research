@@ -1,0 +1,2053 @@
+{
+  "dataset_manifest": {
+    "acquisition_record": "C:\\Users\\serfu\\OneDrive\\Belgeler\\ChatGPT\\hvac_research\\validation\\ifc_samples\\external\\rwth_digitalhub_v1\\acquisition_record.json",
+    "dataset_id": "rwth-digitalhub-v1",
+    "files": [
+      {
+        "file_name": "FM_ARC_DigitalHub_v1.ifc",
+        "length_unit_scale_m": 1.0,
+        "length_units": [
+          {
+            "ifc_class": "IfcSIUnit",
+            "name": "METRE",
+            "prefix": null
+          },
+          {
+            "ifc_class": "IfcSIUnit",
+            "name": "METRE",
+            "prefix": "DECI"
+          }
+        ],
+        "role": "architecture",
+        "schema": "IFC4",
+        "sha256": "eff9b18a0a2fce6180d8f25c8cfe0e986d4d2e4a7a3ee69f375a105b20ca593c",
+        "size_bytes": 14322717,
+        "view_definition": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');"
+      },
+      {
+        "file_name": "FM_HZG_DigitalHub_v1.ifc",
+        "length_unit_scale_m": 0.001,
+        "length_units": [
+          {
+            "ifc_class": "IfcSIUnit",
+            "name": "METRE",
+            "prefix": "MILLI"
+          },
+          {
+            "ifc_class": "IfcSIUnit",
+            "name": "METRE",
+            "prefix": null
+          }
+        ],
+        "role": "heating",
+        "schema": "IFC4",
+        "sha256": "70a40f5d0782b53ae573b89cca8990f66b54b21229527daddd58e5dc2573fbb6",
+        "size_bytes": 9869500,
+        "view_definition": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');"
+      },
+      {
+        "file_name": "FM_LFT_DigitalHub_v1.ifc",
+        "length_unit_scale_m": 0.001,
+        "length_units": [
+          {
+            "ifc_class": "IfcSIUnit",
+            "name": "METRE",
+            "prefix": "MILLI"
+          },
+          {
+            "ifc_class": "IfcSIUnit",
+            "name": "METRE",
+            "prefix": null
+          }
+        ],
+        "role": "ventilation",
+        "schema": "IFC4",
+        "sha256": "8647e24ea0c0e2f4188fad6222662c1004de55978f9a0d0e1190445e149dbd6c",
+        "size_bytes": 7369265,
+        "view_definition": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');"
+      },
+      {
+        "file_name": "FM_SAN_DigitalHub_v1.ifc",
+        "length_unit_scale_m": 0.001,
+        "length_units": [
+          {
+            "ifc_class": "IfcSIUnit",
+            "name": "METRE",
+            "prefix": "MILLI"
+          },
+          {
+            "ifc_class": "IfcSIUnit",
+            "name": "METRE",
+            "prefix": null
+          }
+        ],
+        "role": "sanitary",
+        "schema": "IFC4",
+        "sha256": "5d6b7998d9060626132f56010a75c238ebc00ed6b0f937f2c1db0ac46fbff87a",
+        "size_bytes": 16846052,
+        "view_definition": "FILE_DESCRIPTION(('ViewDefinition [ReferenceView_V1.2]'),'2;1');"
+      }
+    ],
+    "license": "MIT",
+    "license_attribution": "Copyright (c) 2020 RWTH Aachen University - E3D Institute of Energy Efficiency and Sustainable Building",
+    "note": "SHA-256 values are computed from the local payloads. Schema and view definition are read from each file.",
+    "repository": "https://github.com/RWTH-E3D/DigitalHub",
+    "revision": "36565d529b4dadeca625de2b793d7e16700171e9",
+    "technical_report_doi": "10.18154/RWTH-2020-11683"
+  },
+  "federation": {
+    "bounds_overlap_establishes_verified_federation": false,
+    "note": "Matching origins, storey elevations, or bounding-box overlap do not verify element-level federation.",
+    "pairwise_bounds_overlap": [
+      {
+        "bounds_overlap": true,
+        "left": "architecture",
+        "right": "heating"
+      },
+      {
+        "bounds_overlap": true,
+        "left": "architecture",
+        "right": "sanitary"
+      },
+      {
+        "bounds_overlap": true,
+        "left": "architecture",
+        "right": "ventilation"
+      },
+      {
+        "bounds_overlap": true,
+        "left": "heating",
+        "right": "sanitary"
+      },
+      {
+        "bounds_overlap": true,
+        "left": "heating",
+        "right": "ventilation"
+      },
+      {
+        "bounds_overlap": true,
+        "left": "sanitary",
+        "right": "ventilation"
+      }
+    ],
+    "shared_storey_elevations": [
+      {
+        "elevation_m_by_file": {
+          "architecture": -0.15,
+          "heating": -0.15,
+          "sanitary": -0.15,
+          "ventilation": -0.15
+        },
+        "max_abs_difference_m": 0.0,
+        "storey_name": "E00_OKRD"
+      },
+      {
+        "elevation_m_by_file": {
+          "architecture": 3.75,
+          "heating": 3.75,
+          "sanitary": 3.75,
+          "ventilation": 3.75
+        },
+        "max_abs_difference_m": 0.0,
+        "storey_name": "E01_OKRD"
+      }
+    ],
+    "site_placement_origin_m": {
+      "architecture": [
+        4.5e-05,
+        1.9e-05,
+        0.0
+      ],
+      "heating": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "sanitary": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "ventilation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "status": "PLACEMENT_AND_BOUNDS_COMPARED_NOT_GEOMETRICALLY_VERIFIED",
+    "verified_federation": false
+  },
+  "files": {
+    "architecture": {
+      "building_placement_origin_m": [
+        4.5e-05,
+        1.9e-05,
+        0.0
+      ],
+      "counts": {
+        "IfcBeam": 14,
+        "IfcBuildingStorey": 3,
+        "IfcColumn": 62,
+        "IfcDistributionPort": 0,
+        "IfcDoor": 70,
+        "IfcFlowController": 0,
+        "IfcFlowFitting": 0,
+        "IfcFlowSegment": 0,
+        "IfcFlowTerminal": 0,
+        "IfcOpeningElement": 248,
+        "IfcProduct": 1037,
+        "IfcRelConnectsPorts": 0,
+        "IfcRelNests": 0,
+        "IfcRelVoidsElement": 248,
+        "IfcSlab": 24,
+        "IfcSpace": 64,
+        "IfcSystem": 0,
+        "IfcWall": 178,
+        "IfcWindow": 47
+      },
+      "explicit_port_connections": {
+        "both_hosts_resolved_count": 0,
+        "count": 0,
+        "host_unresolved_count": 0,
+        "sample": []
+      },
+      "file_name": "FM_ARC_DigitalHub_v1.ifc",
+      "geometry": {
+        "coordinate_policy": "IFCOPENSHELL_USE_WORLD_COORDS_SI_METRES_UNSCALED",
+        "geometry_failure_count": 0,
+        "geometry_failure_sample": [],
+        "product_with_representation_count": 1017,
+        "tessellated_count": 1017,
+        "world_bounds_m": {
+          "max_m": [
+            141.125003,
+            41.404854,
+            10.68128
+          ],
+          "min_m": [
+            -18.183364,
+            -22.125,
+            -3.87
+          ]
+        }
+      },
+      "header": {
+        "file_description": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');",
+        "file_schema_header": "FILE_SCHEMA(('IFC4'));",
+        "step_physical_file": true,
+        "view_definition": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');"
+      },
+      "length_unit_scale_m": 1.0,
+      "length_units": [
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": null
+        },
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": "DECI"
+        }
+      ],
+      "openings": {
+        "opening_count": 248,
+        "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+        "opening_policy_note": "Openings and void relationships are inventoried. Host occupancy keeps the host AABB. Opening solids are not subtracted, because subtracting an opening AABB can mark solid material as free.",
+        "void_relationship_count": 248,
+        "void_relationships_sample": [
+          {
+            "host_global_id": "12bPoIwbv0tBGfPfnvCUq4",
+            "opening_global_id": "0ehNcYPbH3JQicvYMLHP2C",
+            "relation_global_id": "0$iLzb_F10MwKpf8NZj5_f"
+          },
+          {
+            "host_global_id": "03fYK2KZb9bQXMSPptFYXl",
+            "opening_global_id": "1QHSJBYLL8O8ehx76k9bHP",
+            "relation_global_id": "010gdxkLP6q8FQTs5zqybP"
+          },
+          {
+            "host_global_id": "1DnXIsP9rDi8TggM6J4G7S",
+            "opening_global_id": "1DnXIsP9rDi8TggM6J4G1r",
+            "relation_global_id": "01pUZThInAsg93La1uFdtv"
+          },
+          {
+            "host_global_id": "12bPoIwbv0tBGfPfnvCU$y",
+            "opening_global_id": "03iwAedpj2TfaeVgkaw$xv",
+            "relation_global_id": "02sM6x0VP1APf$VlR0fQpj"
+          },
+          {
+            "host_global_id": "09DVD6VyjAQPA6lucynkDP",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYJv",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYJv"
+          },
+          {
+            "host_global_id": "09DVD6VyjAQPA6lucynkDP",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYK6",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYK6"
+          },
+          {
+            "host_global_id": "09DVD6VyjAQPA6lucynkDP",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYLQ",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYLQ"
+          },
+          {
+            "host_global_id": "09DVD6VyjAQPA6lucynkDP",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYNK",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYNK"
+          },
+          {
+            "host_global_id": "03fYK2KZb9bQXMSPptFY_S",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYOs",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYOs"
+          },
+          {
+            "host_global_id": "03fYK2KZb9bQXMSPptFYaq",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYPu",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYPu"
+          },
+          {
+            "host_global_id": "03fYK2KZb9bQXMSPptFYxY",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYQ4",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYQ4"
+          },
+          {
+            "host_global_id": "03fYK2KZb9bQXMSPptFY_S",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYRK",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYRK"
+          },
+          {
+            "host_global_id": "03fYK2KZb9bQXMSPptFYXl",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYV5",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYV5"
+          },
+          {
+            "host_global_id": "09DVD6VyjAQPA6lucynkDP",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYf$",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYf$"
+          },
+          {
+            "host_global_id": "09DVD6VyjAQPA6lucynkDP",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYku",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYku"
+          },
+          {
+            "host_global_id": "09DVD6VyjAQPA6lucynkDP",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYlU",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYlU"
+          },
+          {
+            "host_global_id": "09DVD6VyjAQPA6lucynkDP",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFYlo",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFYlo"
+          },
+          {
+            "host_global_id": "03fYK2KZb9bQXMSPptFY5w",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFZay",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFZay"
+          },
+          {
+            "host_global_id": "03fYK2KZb9bQXMSPptFY5w",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFZbq",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFZbq"
+          },
+          {
+            "host_global_id": "03fYK2KZb9bQXMSPptFYAq",
+            "opening_global_id": "03fYK2KZb9bQXMSO$tFZdK",
+            "relation_global_id": "03fYK2KZb9bQXMSOZtFZdK"
+          }
+        ]
+      },
+      "placement_mesh_consistency": {
+        "double_project_scale_applied": false,
+        "interpretation": "Agreement between the once-scaled placement origin and the world mesh supports the metre frame. It does not by itself verify federation with another discipline file.",
+        "sample_count": 8,
+        "samples": [
+          {
+            "global_id": "01stVPrLX10ucLvg1EXOAh",
+            "mesh_contains_scaled_origin": false,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              7.125,
+              7.0,
+              3.75
+            ]
+          },
+          {
+            "global_id": "03fYK2KZb9bQXMSO$tFYJv",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": true,
+            "placement_origin_m": [
+              47.435,
+              20.8975,
+              -0.0
+            ]
+          },
+          {
+            "global_id": "03fYK2KZb9bQXMSO$tFYK6",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": true,
+            "placement_origin_m": [
+              61.435,
+              20.8975,
+              -0.0
+            ]
+          },
+          {
+            "global_id": "03fYK2KZb9bQXMSO$tFYLQ",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": true,
+            "placement_origin_m": [
+              63.475,
+              20.8975,
+              -0.0
+            ]
+          },
+          {
+            "global_id": "03fYK2KZb9bQXMSO$tFYNK",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": true,
+            "placement_origin_m": [
+              49.475,
+              20.8975,
+              -0.0
+            ]
+          },
+          {
+            "global_id": "03fYK2KZb9bQXMSO$tFYOs",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": true,
+            "placement_origin_m": [
+              62.875,
+              12.7775,
+              -0.0
+            ]
+          },
+          {
+            "global_id": "03fYK2KZb9bQXMSO$tFYPu",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": true,
+            "placement_origin_m": [
+              14.025,
+              12.7775,
+              -0.0
+            ]
+          },
+          {
+            "global_id": "03fYK2KZb9bQXMSO$tFYQ4",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": true,
+            "placement_origin_m": [
+              62.975,
+              13.8675,
+              -0.0
+            ]
+          }
+        ],
+        "scaled_origin_outside_mesh_count": 1
+      },
+      "placement_policy": "GET_LOCAL_PLACEMENT_TRANSLATION_TIMES_PROJECT_LENGTH_SCALE_ONCE",
+      "ports": {
+        "identity_local_origin_count": 0,
+        "missing_placement_count": 0,
+        "native_placement_rule": "A port coordinate is NATIVE_PORT_PLACEMENT only when its composed world point uses a non-identity local origin and lies near the host mesh. An identity local origin is not treated as a connection point.",
+        "nonzero_local_origin_count": 0,
+        "port_count": 0,
+        "samples": []
+      },
+      "project_global_id": "1OVsTAdVr0zxMeLRosmk1W",
+      "schema": "IFC4",
+      "sha256": "eff9b18a0a2fce6180d8f25c8cfe0e986d4d2e4a7a3ee69f375a105b20ca593c",
+      "site_placement_origin_m": [
+        4.5e-05,
+        1.9e-05,
+        0.0
+      ],
+      "size_bytes": 14322717,
+      "storeys": [
+        {
+          "elevation_m": 3.75,
+          "elevation_project_units": 3.75,
+          "global_id": "1OVsTAdVr0zxMeLRn9FNmI",
+          "name": "E01_OKRD",
+          "placement_origin_m": [
+            4.5e-05,
+            1.9e-05,
+            3.75
+          ]
+        },
+        {
+          "elevation_m": -3.37,
+          "elevation_project_units": -3.37,
+          "global_id": "1OVsTAdVr0zxMeLRn9FNo$",
+          "name": "B01_OKRD",
+          "placement_origin_m": [
+            4.5e-05,
+            1.9e-05,
+            -3.37
+          ]
+        },
+        {
+          "elevation_m": -0.15,
+          "elevation_project_units": -0.15,
+          "global_id": "1OVsTAdVr0zxMeLRn9FNzI",
+          "name": "E00_OKRD",
+          "placement_origin_m": [
+            4.5e-05,
+            1.9e-05,
+            -0.15
+          ]
+        }
+      ],
+      "systems": [],
+      "world_mesh_policy": "IFCOPENSHELL_USE_WORLD_COORDS_SI_METRES_UNSCALED"
+    },
+    "heating": {
+      "building_placement_origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "counts": {
+        "IfcBeam": 0,
+        "IfcBuildingStorey": 3,
+        "IfcColumn": 0,
+        "IfcDistributionPort": 3567,
+        "IfcDoor": 0,
+        "IfcFlowController": 54,
+        "IfcFlowFitting": 712,
+        "IfcFlowSegment": 867,
+        "IfcFlowTerminal": 63,
+        "IfcOpeningElement": 0,
+        "IfcProduct": 5279,
+        "IfcRelConnectsPorts": 1771,
+        "IfcRelNests": 1707,
+        "IfcRelVoidsElement": 0,
+        "IfcSlab": 0,
+        "IfcSpace": 0,
+        "IfcSystem": 36,
+        "IfcWall": 0,
+        "IfcWindow": 0
+      },
+      "explicit_port_connections": {
+        "both_hosts_resolved_count": 1771,
+        "count": 1771,
+        "host_unresolved_count": 0,
+        "sample": [
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "3xZIHu$zHEXugu3xVQCDVo",
+            "related_port_global_id": "3$CaaxqD9A6ujxvnoq0cvd",
+            "relating_host_global_id": "3xZIHu$zHEXugu3xVQCDVq",
+            "relating_port_global_id": "0EPGLznYL3UP_VV7uCWQTw",
+            "relation_global_id": "0$0xN6zrvFLRn3v5FE$$WB"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "0WErJv5cj6NB5b$ofJagFk",
+            "related_port_global_id": "1Gc3Z9T4L0RfE8x$CUdfyd",
+            "relating_host_global_id": "0WErJv5cj6NB5b$ofJagDF",
+            "relating_port_global_id": "3vrHWV4WTF_BHk4RcjPb7J",
+            "relation_global_id": "0$HPyclWT91eHO_vdDFWPz"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "1_iL4uYlj8i8E82DrFR3ZP",
+            "related_port_global_id": "1zV3MUYTjE0Og50DhsdyKl",
+            "relating_host_global_id": "1_iL4uYlj8i8E82DrFR3ZV",
+            "relating_port_global_id": "2D1bHg2d9EYwVI8LTTCykG",
+            "relation_global_id": "0$Ja$VByb8KQE5Gc1Jp5ex"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "1sz7SlB2j11BEHXGLw$1qj",
+            "related_port_global_id": "3awEMDiWD4VxJYu9UBJ9ih",
+            "relating_host_global_id": "1sz7SlB2j11BEHXGLw$1w8",
+            "relating_port_global_id": "0NDI2FLhH3G84e4QVnOcZp",
+            "relation_global_id": "0$Ox1BUgzFqBW1OvCKKluk"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "2$yp0JaPPFPACueFUHZEqr",
+            "related_port_global_id": "2lBWCe2TfEeA704sgcqO8B",
+            "relating_host_global_id": "2$yp0JaPPFPACueFUHZEsp",
+            "relating_port_global_id": "1Eghl3dsjDIBjoGaXqXIui",
+            "relation_global_id": "0$Pys2ysDBtQR7cKsuIoAJ"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "2MToEQgCj7AuBOk0JK$slE",
+            "related_port_global_id": "0icqz63$LDAwI9v$TQh9NN",
+            "relating_host_global_id": "2MToEQgCj7AuBOk0JK$siq",
+            "relating_port_global_id": "1jL3rr0W5DKAyp59tB0UqB",
+            "relation_global_id": "0$TEgIjxHDNANLo4rY3cbW"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "2hMjjbZvP4CAN9xX2G5EsB",
+            "related_port_global_id": "1BUDj0QjnB88IvqKvxR9Vr",
+            "relating_host_global_id": "3UKNiXo0b0q90ggSpIhhhr",
+            "relating_port_global_id": "0fUoBunPnEDO4qiZEsCVVn",
+            "relation_global_id": "0$TL0amw10YAnbt5tS38As"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "31uXLqO9j8GfohxObGkT6Y",
+            "related_port_global_id": "0J5GUT4MP4EhLoDJ72zWKH",
+            "relating_host_global_id": "31uXLqO9j8GfohxObGkT5k",
+            "relating_port_global_id": "11gO5O4vn7CwET1i529_Nf",
+            "relation_global_id": "0$WDH5ZKzEzP7xMtsBSSHZ"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "16ftRrEjL5mA59Olan9oE3",
+            "related_port_global_id": "2sCp63cXf8iOxwcNywQQ9A",
+            "relating_host_global_id": "16ftRrEjL5mA59Olan9oE1",
+            "relating_port_global_id": "1Q0n8JfvP8jgv30nUABtVF",
+            "relation_global_id": "0$WfGVeQnAQO0xiILorPjq"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "0WErJv5cj6NB5b$ofJajXb",
+            "related_port_global_id": "3XaOsbI7z86en3pbm$he7P",
+            "relating_host_global_id": "0WErJv5cj6NB5b$ofJajcT",
+            "relating_port_global_id": "03zDsEWrz5xPhnFErS9UyK",
+            "relation_global_id": "0$fQ2qg9v7IR7j4SuH2C88"
+          }
+        ]
+      },
+      "file_name": "FM_HZG_DigitalHub_v1.ifc",
+      "geometry": {
+        "coordinate_policy": "IFCOPENSHELL_USE_WORLD_COORDS_SI_METRES_UNSCALED",
+        "geometry_failure_count": 0,
+        "geometry_failure_sample": [],
+        "product_with_representation_count": 1707,
+        "tessellated_count": 1707,
+        "world_bounds_m": {
+          "max_m": [
+            69.825955,
+            26.418534,
+            6.2
+          ],
+          "min_m": [
+            7.173955,
+            7.18434,
+            -3.27
+          ]
+        }
+      },
+      "header": {
+        "file_description": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');",
+        "file_schema_header": "FILE_SCHEMA(('IFC4'));",
+        "step_physical_file": true,
+        "view_definition": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');"
+      },
+      "length_unit_scale_m": 0.001,
+      "length_units": [
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": "MILLI"
+        },
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": null
+        }
+      ],
+      "openings": {
+        "opening_count": 0,
+        "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+        "opening_policy_note": "Openings and void relationships are inventoried. Host occupancy keeps the host AABB. Opening solids are not subtracted, because subtracting an opening AABB can mark solid material as free.",
+        "void_relationship_count": 0,
+        "void_relationships_sample": []
+      },
+      "placement_mesh_consistency": {
+        "double_project_scale_applied": false,
+        "interpretation": "Agreement between the once-scaled placement origin and the world mesh supports the metre frame. It does not by itself verify federation with another discipline file.",
+        "sample_count": 8,
+        "samples": [
+          {
+            "global_id": "07A6w8_$f0cOjMq1whJX9A",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              18.204359,
+              26.280534,
+              -0.130595
+            ]
+          },
+          {
+            "global_id": "07A6w8_$f0cOjMq1whJX9o",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              18.214955,
+              26.258534,
+              -0.12
+            ]
+          },
+          {
+            "global_id": "07A6w8_$f0cOjMq1whJX9t",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              18.214955,
+              26.388534,
+              -0.12
+            ]
+          },
+          {
+            "global_id": "08uzusf2n75OvoeaS_v4hM",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              55.634359,
+              7.385319,
+              -0.133937
+            ]
+          },
+          {
+            "global_id": "08uzusf2n75OvoeaS_v52U",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              50.149955,
+              14.676939,
+              -0.130595
+            ]
+          },
+          {
+            "global_id": "08uzusf2n75OvoeaS_v5EK",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              57.040089,
+              26.124784,
+              -0.12
+            ]
+          },
+          {
+            "global_id": "0AmLCSWKn3YvhN$b7Sbh8I",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              26.430122,
+              18.467662,
+              3.77987
+            ]
+          },
+          {
+            "global_id": "0AmLCSWKn3YvhN$b7Sbh8L",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              26.908955,
+              18.467524,
+              3.78
+            ]
+          }
+        ],
+        "scaled_origin_outside_mesh_count": 0
+      },
+      "placement_policy": "GET_LOCAL_PLACEMENT_TRANSLATION_TIMES_PROJECT_LENGTH_SCALE_ONCE",
+      "ports": {
+        "identity_local_origin_count": 47,
+        "missing_placement_count": 0,
+        "native_placement_rule": "A port coordinate is NATIVE_PORT_PLACEMENT only when its composed world point uses a non-identity local origin and lies near the host mesh. An identity local origin is not treated as a connection point.",
+        "nonzero_local_origin_count": 3520,
+        "port_count": 3567,
+        "samples": [
+          {
+            "global_id": "0$61ig41P5r970VFNpVBZL",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              3438.19999999999,
+              12.5952722359156,
+              12.595272235916
+            ],
+            "world_origin_m": [
+              39.300155,
+              7.478284,
+              -0.12
+            ]
+          },
+          {
+            "global_id": "0$KKhWpnz29hgE5QKJ1fn2",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              -13.9995576978305,
+              0.0,
+              0.0
+            ],
+            "world_origin_m": [
+              7.344413,
+              18.632537,
+              3.815294
+            ]
+          },
+          {
+            "global_id": "0$ULv$fDTCjenIqdoTuO_Z",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              12.5952722359091,
+              12.5952722359156,
+              18.0
+            ],
+            "world_origin_m": [
+              19.548955,
+              15.972659,
+              -0.162
+            ]
+          },
+          {
+            "global_id": "0$URE6T8f7UAv11neKgCTv",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              0.0,
+              -17.4400000000203,
+              0.0
+            ],
+            "world_origin_m": [
+              50.662515,
+              16.907534,
+              3.779999
+            ]
+          },
+          {
+            "global_id": "0$cJELZrfEMwokT11lDmZT",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              6.59527223591476,
+              2762.55999999999,
+              6.595272235916
+            ],
+            "world_origin_m": [
+              26.344955,
+              18.060094,
+              -0.12
+            ]
+          }
+        ]
+      },
+      "project_global_id": "1kcIN18Hz2eOa6YRqZkvKM",
+      "schema": "IFC4",
+      "sha256": "70a40f5d0782b53ae573b89cca8990f66b54b21229527daddd58e5dc2573fbb6",
+      "site_placement_origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_bytes": 9869500,
+      "storeys": [
+        {
+          "elevation_m": -3.27,
+          "elevation_project_units": -3270.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAXpp",
+          "name": "B01_OKFB",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            -3.27
+          ]
+        },
+        {
+          "elevation_m": -0.15,
+          "elevation_project_units": -150.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAehG",
+          "name": "E00_OKRD",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            -0.15
+          ]
+        },
+        {
+          "elevation_m": 3.75,
+          "elevation_project_units": 3750.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAhK8",
+          "name": "E01_OKRD",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            3.75
+          ]
+        }
+      ],
+      "systems": [
+        {
+          "global_id": "0KDl_Pd9bF6RK3eO7wIX_a",
+          "ifc_class": "IfcSystem",
+          "member_count": 97,
+          "name": "H_VL 68"
+        },
+        {
+          "global_id": "0KDl_Pd9bF6RK3eO7wIX_b",
+          "ifc_class": "IfcSystem",
+          "member_count": 169,
+          "name": "H_RL 68"
+        },
+        {
+          "global_id": "0kQMUG4wr9rfkr2b6o_NAL",
+          "ifc_class": "IfcSystem",
+          "member_count": 2,
+          "name": "S_TWK 1"
+        },
+        {
+          "global_id": "1VftVhKi90xOk7vkeB$0x2",
+          "ifc_class": "IfcSystem",
+          "member_count": 97,
+          "name": "H_VL 33"
+        },
+        {
+          "global_id": "1VftVhKi90xOk7vkeB$0x3",
+          "ifc_class": "IfcSystem",
+          "member_count": 193,
+          "name": "H_RL 33"
+        },
+        {
+          "global_id": "1VftVhKi90xOk7vkeB$0zP",
+          "ifc_class": "IfcSystem",
+          "member_count": 103,
+          "name": "H_VL 46"
+        },
+        {
+          "global_id": "1VftVhKi90xOk7vkeB$0zU",
+          "ifc_class": "IfcSystem",
+          "member_count": 178,
+          "name": "H_RL 46"
+        },
+        {
+          "global_id": "1VftVhKi90xOk7vkeB$1S0",
+          "ifc_class": "IfcSystem",
+          "member_count": 184,
+          "name": "H_RL 26"
+        },
+        {
+          "global_id": "1VftVhKi90xOk7vkeB$1S3",
+          "ifc_class": "IfcSystem",
+          "member_count": 112,
+          "name": "H_VL 26"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1a0",
+          "ifc_class": "IfcSystem",
+          "member_count": 163,
+          "name": "H_RL 47"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1a1",
+          "ifc_class": "IfcSystem",
+          "member_count": 109,
+          "name": "H_VL 15"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1aA",
+          "ifc_class": "IfcSystem",
+          "member_count": 187,
+          "name": "H_RL 41"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1aB",
+          "ifc_class": "IfcSystem",
+          "member_count": 109,
+          "name": "H_VL 12"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1aG",
+          "ifc_class": "IfcSystem",
+          "member_count": 259,
+          "name": "H_RL 25"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1aI",
+          "ifc_class": "IfcSystem",
+          "member_count": 169,
+          "name": "H_RL 28"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1aJ",
+          "ifc_class": "IfcSystem",
+          "member_count": 97,
+          "name": "H_VL 6"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1aR",
+          "ifc_class": "IfcSystem",
+          "member_count": 145,
+          "name": "H_VL 1"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1bV",
+          "ifc_class": "IfcSystem",
+          "member_count": 97,
+          "name": "H_VL 40"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1bk",
+          "ifc_class": "IfcSystem",
+          "member_count": 145,
+          "name": "H_RL 74"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1bl",
+          "ifc_class": "IfcSystem",
+          "member_count": 97,
+          "name": "H_VL 29"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1bm",
+          "ifc_class": "IfcSystem",
+          "member_count": 169,
+          "name": "H_RL 66"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1bs",
+          "ifc_class": "IfcSystem",
+          "member_count": 256,
+          "name": "H_RL 59"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1bt",
+          "ifc_class": "IfcSystem",
+          "member_count": 145,
+          "name": "H_VL 24"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1by",
+          "ifc_class": "IfcSystem",
+          "member_count": 193,
+          "name": "H_RL 51"
+        },
+        {
+          "global_id": "1sz7SlB2j11BEHXGLw$1bz",
+          "ifc_class": "IfcSystem",
+          "member_count": 97,
+          "name": "H_VL 18"
+        },
+        {
+          "global_id": "2we3Epy6H86faCsXdTukvT",
+          "ifc_class": "IfcSystem",
+          "member_count": 112,
+          "name": "H_VL 39"
+        },
+        {
+          "global_id": "2we3Epy6H86faCsXdTukvZ",
+          "ifc_class": "IfcSystem",
+          "member_count": 184,
+          "name": "H_RL 39"
+        },
+        {
+          "global_id": "3M8bvm875AFQwasz10fvuQ",
+          "ifc_class": "IfcSystem",
+          "member_count": 109,
+          "name": "H_VL 63"
+        },
+        {
+          "global_id": "3M8bvm875AFQwasz10fvuT",
+          "ifc_class": "IfcSystem",
+          "member_count": 151,
+          "name": "H_RL 63"
+        },
+        {
+          "global_id": "3UKNiXo0b0q90ggSpIhhh2",
+          "ifc_class": "IfcSystem",
+          "member_count": 184,
+          "name": "H_RL 17"
+        },
+        {
+          "global_id": "3UKNiXo0b0q90ggSpIhhhD",
+          "ifc_class": "IfcSystem",
+          "member_count": 112,
+          "name": "H_VL 17"
+        },
+        {
+          "global_id": "3UKNiXo0b0q90ggSpIhhlc",
+          "ifc_class": "IfcSystem",
+          "member_count": 79,
+          "name": "H_VL 8"
+        },
+        {
+          "global_id": "3UKNiXo0b0q90ggSpIhhld",
+          "ifc_class": "IfcSystem",
+          "member_count": 133,
+          "name": "H_RL 8"
+        },
+        {
+          "global_id": "3ex4XNbP56dRvZoYYskTCA",
+          "ifc_class": "IfcSystem",
+          "member_count": 10,
+          "name": "H_VL 4"
+        },
+        {
+          "global_id": "3ex4XNbP56dRvZoYYskTCk",
+          "ifc_class": "IfcSystem",
+          "member_count": 369,
+          "name": "H_RL 83"
+        },
+        {
+          "global_id": "3ex4XNbP56dRvZoYYskUJA",
+          "ifc_class": "IfcSystem",
+          "member_count": 349,
+          "name": "H_VL 9"
+        }
+      ],
+      "world_mesh_policy": "IFCOPENSHELL_USE_WORLD_COORDS_SI_METRES_UNSCALED"
+    },
+    "sanitary": {
+      "building_placement_origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "counts": {
+        "IfcBeam": 0,
+        "IfcBuildingStorey": 4,
+        "IfcColumn": 0,
+        "IfcDistributionPort": 2135,
+        "IfcDoor": 0,
+        "IfcFlowController": 4,
+        "IfcFlowFitting": 411,
+        "IfcFlowSegment": 506,
+        "IfcFlowTerminal": 74,
+        "IfcOpeningElement": 0,
+        "IfcProduct": 3153,
+        "IfcRelConnectsPorts": 1028,
+        "IfcRelNests": 1012,
+        "IfcRelVoidsElement": 0,
+        "IfcSlab": 0,
+        "IfcSpace": 0,
+        "IfcSystem": 24,
+        "IfcWall": 0,
+        "IfcWindow": 0
+      },
+      "explicit_port_connections": {
+        "both_hosts_resolved_count": 1028,
+        "count": 1028,
+        "host_unresolved_count": 0,
+        "sample": [
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "37fQjlRFnBxAG9S0ji8Ds6",
+            "related_port_global_id": "02Do4fa1v4LeiVuTLq1kB8",
+            "relating_host_global_id": "37fQjlRFnBxAG9S0ji8E9x",
+            "relating_port_global_id": "2ldDAVqaP8m9bkdzerLJv4",
+            "relation_global_id": "0$BtxvxMn4XR5hraV_VcYJ"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "3vMBmM_KHFYRwIPWG3uOg6",
+            "related_port_global_id": "0Bvnj30h1DM8RBE0CjRSaK",
+            "relating_host_global_id": "14kK71eAf9rB9EcRWJPnxe",
+            "relating_port_global_id": "3VKbjCsC98_QHd4l6WqdOS",
+            "relation_global_id": "0$ZYRNsH518uo0UnpqgrV7"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "2YgTTWSK1CGxWNNthkG9tV",
+            "related_port_global_id": "2dtBaI$t9EohTpjfbDFPAH",
+            "relating_host_global_id": "1sqyz8NjrFnwxasCzs7CSC",
+            "relating_port_global_id": "3lOkf6N$1F09g4qizvIwyh",
+            "relation_global_id": "0$zF5MAfr7ZwRByfG9IsEW"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "1riHTaCTn6a8DjKsEzGiqc",
+            "related_port_global_id": "2l$oW5cCn1ugRxntSBEi3j",
+            "relating_host_global_id": "3vMBmM_KHFYRwIPWG3uOJo",
+            "relating_port_global_id": "2GniA2qkz5NwT0NG9XQt5p",
+            "relation_global_id": "002YTwPIX7U8MH73exWsqr"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "37fQjlRFnBxAG9S0ji8E9P",
+            "related_port_global_id": "05B5QKV3L6uO4xmmFxM7BK",
+            "relating_host_global_id": "37fQjlRFnBxAG9S0ji8E9v",
+            "relating_port_global_id": "0BwcSQTIb0EBusyxdYsmMD",
+            "relation_global_id": "00Bp4Hwv16yPNxpwdAgJnM"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "1sqyz8NjrFnwxasCzs7CS0",
+            "related_port_global_id": "2MvSgJDUP0f9xuYecTAcPg",
+            "relating_host_global_id": "2YgTTWSK1CGxWNNthkG9tV",
+            "relating_port_global_id": "2UdNgCGir9a8ryoTypLyOZ",
+            "relation_global_id": "00JOCEwwLBHvuLMWZrjH6E"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "37fQjlRFnBxAG9S0ji8Dkl",
+            "related_port_global_id": "1wTr0uR$z4J86T9N8nAFEA",
+            "relating_host_global_id": "37fQjlRFnBxAG9S0ji8DkZ",
+            "relating_port_global_id": "31R$SmR_LAJPmhaia3qYAr",
+            "relation_global_id": "00Nyb3OHH8YxIEALfF9BNH"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "37fQjlRFnBxAG9S0ji8DrI",
+            "related_port_global_id": "3sMrQYmEP7og_iAArb5lBS",
+            "relating_host_global_id": "37fQjlRFnBxAG9S0ji8DrG",
+            "relating_port_global_id": "005P1feET8cx5RXskl5Y1Z",
+            "relation_global_id": "00eK6lOBz8wxp3HTcsvAhM"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "37fQjlRFnBxAG9S0ji8E9n",
+            "related_port_global_id": "0qJq7IxDrFdejsSEIuP5Bq",
+            "relating_host_global_id": "37fQjlRFnBxAG9S0ji8E9m",
+            "relating_port_global_id": "3vRIi3Wvb0t9mSpUAvYiqM",
+            "relation_global_id": "00qg0eInPF8xESEnHeZH9X"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "2YgTTWSK1CGxWNNthkG9ak",
+            "related_port_global_id": "1GTnFAtRL5oAGSZdABY3FC",
+            "relating_host_global_id": "2YgTTWSK1CGxWNNthkG9ac",
+            "relating_port_global_id": "2OOz0BNMrA5gzjPobX6K7g",
+            "relation_global_id": "01Cj2r8nXFBBg3cpndTuI9"
+          }
+        ]
+      },
+      "file_name": "FM_SAN_DigitalHub_v1.ifc",
+      "geometry": {
+        "coordinate_policy": "IFCOPENSHELL_USE_WORLD_COORDS_SI_METRES_UNSCALED",
+        "geometry_failure_count": 0,
+        "geometry_failure_sample": [],
+        "product_with_representation_count": 1012,
+        "tessellated_count": 1012,
+        "world_bounds_m": {
+          "max_m": [
+            56.71785,
+            26.090251,
+            8.328746
+          ],
+          "min_m": [
+            12.999955,
+            13.753916,
+            -2.47
+          ]
+        }
+      },
+      "header": {
+        "file_description": "FILE_DESCRIPTION(('ViewDefinition [ReferenceView_V1.2]'),'2;1');",
+        "file_schema_header": "FILE_SCHEMA(('IFC4'));",
+        "step_physical_file": true,
+        "view_definition": "FILE_DESCRIPTION(('ViewDefinition [ReferenceView_V1.2]'),'2;1');"
+      },
+      "length_unit_scale_m": 0.001,
+      "length_units": [
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": "MILLI"
+        },
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": null
+        }
+      ],
+      "openings": {
+        "opening_count": 0,
+        "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+        "opening_policy_note": "Openings and void relationships are inventoried. Host occupancy keeps the host AABB. Opening solids are not subtracted, because subtracting an opening AABB can mark solid material as free.",
+        "void_relationship_count": 0,
+        "void_relationships_sample": []
+      },
+      "placement_mesh_consistency": {
+        "double_project_scale_applied": false,
+        "interpretation": "Agreement between the once-scaled placement origin and the world mesh supports the metre frame. It does not by itself verify federation with another discipline file.",
+        "sample_count": 8,
+        "samples": [
+          {
+            "global_id": "01eHGIFxj8nA$1BT8tX0XS",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              24.765955,
+              16.870149,
+              4.502464
+            ]
+          },
+          {
+            "global_id": "01eHGIFxj8nA$1BT8tX1IN",
+            "mesh_contains_scaled_origin": false,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              0.0,
+              0.0,
+              3.75
+            ]
+          },
+          {
+            "global_id": "01eHGIFxj8nA$1BT8tX1I_",
+            "mesh_contains_scaled_origin": false,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              0.0,
+              0.0,
+              3.75
+            ]
+          },
+          {
+            "global_id": "01eHGIFxj8nA$1BT8tX1W0",
+            "mesh_contains_scaled_origin": false,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              0.0,
+              0.0,
+              3.75
+            ]
+          },
+          {
+            "global_id": "01eHGIFxj8nA$1BT8tX1cj",
+            "mesh_contains_scaled_origin": false,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              0.0,
+              0.0,
+              3.75
+            ]
+          },
+          {
+            "global_id": "01eHGIFxj8nA$1BT8tX2r8",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              24.80855,
+              16.726054,
+              4.168609
+            ]
+          },
+          {
+            "global_id": "0GCqCT$XrEvxTPrCQs3p1A",
+            "mesh_contains_scaled_origin": false,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              0.0,
+              0.0,
+              -0.15
+            ]
+          },
+          {
+            "global_id": "0GCqCT$XrEvxTPrCQs3p1W",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              21.229972,
+              18.216811,
+              0.20917
+            ]
+          }
+        ],
+        "scaled_origin_outside_mesh_count": 5
+      },
+      "placement_policy": "GET_LOCAL_PLACEMENT_TRANSLATION_TIMES_PROJECT_LENGTH_SCALE_ONCE",
+      "ports": {
+        "identity_local_origin_count": 17,
+        "missing_placement_count": 0,
+        "native_placement_rule": "A port coordinate is NATIVE_PORT_PLACEMENT only when its composed world point uses a non-identity local origin and lies near the host mesh. An identity local origin is not treated as a connection point.",
+        "nonzero_local_origin_count": 2118,
+        "port_count": 2135,
+        "samples": [
+          {
+            "global_id": "0$$jUUGEH0_v9TkoSntfcu",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              43.0,
+              0.0,
+              0.0
+            ],
+            "world_origin_m": [
+              56.163852,
+              16.752874,
+              1.067014
+            ]
+          },
+          {
+            "global_id": "0$2GVYnWn11OsWW4ETdZQt",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              301.595272235924,
+              601.595272235901,
+              21.5952722359157
+            ],
+            "world_origin_m": [
+              52.274955,
+              16.892534,
+              4.423098
+            ]
+          },
+          {
+            "global_id": "0$NW$mrIX1CP1F2N0xp2hg",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              24881.5347079252,
+              16757.8215597526,
+              353.949080473284
+            ],
+            "world_origin_m": [
+              24.881535,
+              16.757822,
+              0.203949
+            ]
+          },
+          {
+            "global_id": "0$OAPMC0r61vwOS$fspuwM",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              22231.7997087665,
+              18200.9809868714,
+              674.755509719157
+            ],
+            "world_origin_m": [
+              22.2318,
+              18.200981,
+              4.424756
+            ]
+          },
+          {
+            "global_id": "0$_EV7HgjDpu4kG2cNO3vC",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              20817.2259724363,
+              18517.1179415378,
+              2786.73982433589
+            ],
+            "world_origin_m": [
+              20.817226,
+              18.517118,
+              -0.48326
+            ]
+          }
+        ]
+      },
+      "project_global_id": "1kcIN18Hz2eOa6YRqZkvKM",
+      "schema": "IFC4",
+      "sha256": "5d6b7998d9060626132f56010a75c238ebc00ed6b0f937f2c1db0ac46fbff87a",
+      "site_placement_origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_bytes": 16846052,
+      "storeys": [
+        {
+          "elevation_m": -3.27,
+          "elevation_project_units": -3270.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAXpp",
+          "name": "B01_OKFB",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            -3.27
+          ]
+        },
+        {
+          "elevation_m": -0.15,
+          "elevation_project_units": -150.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAehG",
+          "name": "E00_OKRD",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            -0.15
+          ]
+        },
+        {
+          "elevation_m": -3.67,
+          "elevation_project_units": -3670.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAetL",
+          "name": "B01_UKRD",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            -3.67
+          ]
+        },
+        {
+          "elevation_m": 3.75,
+          "elevation_project_units": 3750.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAhK8",
+          "name": "E01_OKRD",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            3.75
+          ]
+        }
+      ],
+      "systems": [
+        {
+          "global_id": "01eHGIFxj8nA$1BT8tX21I",
+          "ifc_class": "IfcSystem",
+          "member_count": 1345,
+          "name": "S_TWK 1"
+        },
+        {
+          "global_id": "01eHGIFxj8nA$1BT8tX2zl",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 1"
+        },
+        {
+          "global_id": "0KOcsEQWz1e9gsltwTOyFB",
+          "ifc_class": "IfcSystem",
+          "member_count": 25,
+          "name": "S_TWW 7"
+        },
+        {
+          "global_id": "0KOcsEQWz1e9gsltwTOyFr",
+          "ifc_class": "IfcSystem",
+          "member_count": 2,
+          "name": "S_TWK 2"
+        },
+        {
+          "global_id": "0Pdu2ymOrE7vG77852IpkR",
+          "ifc_class": "IfcSystem",
+          "member_count": 2,
+          "name": "S_TWK 10"
+        },
+        {
+          "global_id": "14kK71eAf9rB9EcRWJPnQ_",
+          "ifc_class": "IfcSystem",
+          "member_count": 2,
+          "name": "S_RW 5"
+        },
+        {
+          "global_id": "14kK71eAf9rB9EcRWJPnwX",
+          "ifc_class": "IfcSystem",
+          "member_count": 1203,
+          "name": "S_SW 3"
+        },
+        {
+          "global_id": "14kK71eAf9rB9EcRWJPnwx",
+          "ifc_class": "IfcSystem",
+          "member_count": 2,
+          "name": "S_RW 2"
+        },
+        {
+          "global_id": "1nuAVNMg17$eyPK_m_3nKJ",
+          "ifc_class": "IfcSystem",
+          "member_count": 2,
+          "name": "S_SW 2"
+        },
+        {
+          "global_id": "2D_jCc3KnFaAfYWg6MWsqR",
+          "ifc_class": "IfcSystem",
+          "member_count": 25,
+          "name": "S_TWW 15"
+        },
+        {
+          "global_id": "2D_jCc3KnFaAfYWg6MWsse",
+          "ifc_class": "IfcSystem",
+          "member_count": 25,
+          "name": "S_TWW 16"
+        },
+        {
+          "global_id": "2YgTTWSK1CGxWNNthkG9$c",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 3"
+        },
+        {
+          "global_id": "2YgTTWSK1CGxWNNthkG9vA",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 4"
+        },
+        {
+          "global_id": "2YgTTWSK1CGxWNNthkGMFB",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 2"
+        },
+        {
+          "global_id": "2_VEPQWorFkOKLsbi5Nz7X",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 5"
+        },
+        {
+          "global_id": "2_VEPQWorFkOKLsbi5Nz9h",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 6"
+        },
+        {
+          "global_id": "37fQjlRFnBxAG9S0ji8Dh7",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 13"
+        },
+        {
+          "global_id": "37fQjlRFnBxAG9S0ji8DhB",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 12"
+        },
+        {
+          "global_id": "37fQjlRFnBxAG9S0ji8DhM",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 10"
+        },
+        {
+          "global_id": "37fQjlRFnBxAG9S0ji8Dhu",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 14"
+        },
+        {
+          "global_id": "37fQjlRFnBxAG9S0ji8Do2",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 11"
+        },
+        {
+          "global_id": "37fQjlRFnBxAG9S0ji8Do8",
+          "ifc_class": "IfcSystem",
+          "member_count": 31,
+          "name": "S_TWW 8"
+        },
+        {
+          "global_id": "37fQjlRFnBxAG9S0ji8DoF",
+          "ifc_class": "IfcSystem",
+          "member_count": 25,
+          "name": "S_TWW 9"
+        },
+        {
+          "global_id": "3MAuuRcTTA$PwY8cM9WWzs",
+          "ifc_class": "IfcSystem",
+          "member_count": 89,
+          "name": "S_RW 1"
+        }
+      ],
+      "world_mesh_policy": "IFCOPENSHELL_USE_WORLD_COORDS_SI_METRES_UNSCALED"
+    },
+    "ventilation": {
+      "building_placement_origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "counts": {
+        "IfcBeam": 0,
+        "IfcBuildingStorey": 3,
+        "IfcColumn": 0,
+        "IfcDistributionPort": 2656,
+        "IfcDoor": 0,
+        "IfcFlowController": 18,
+        "IfcFlowFitting": 538,
+        "IfcFlowSegment": 594,
+        "IfcFlowTerminal": 148,
+        "IfcOpeningElement": 0,
+        "IfcProduct": 3970,
+        "IfcRelConnectsPorts": 1310,
+        "IfcRelNests": 1309,
+        "IfcRelVoidsElement": 0,
+        "IfcSlab": 0,
+        "IfcSpace": 0,
+        "IfcSystem": 8,
+        "IfcWall": 0,
+        "IfcWindow": 0
+      },
+      "explicit_port_connections": {
+        "both_hosts_resolved_count": 1310,
+        "count": 1310,
+        "host_unresolved_count": 0,
+        "sample": [
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "2$Y8t649D0_QTajdlpndTL",
+            "related_port_global_id": "0V6QQaavX2kg4BSFyUk68f",
+            "relating_host_global_id": "2$Y8t649D0_QTajdlpndTe",
+            "relating_port_global_id": "0_WQQys4X8ThBh8RMbf16z",
+            "relation_global_id": "0$4Aiw9sHA8Bntb3n6h3nt"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "1mk18BBqjCgw0nNhOZtlly",
+            "related_port_global_id": "0xefp98eT0RRn0t$BBEBQs",
+            "relating_host_global_id": "1mk18BBqjCgw0nNhOZtlbb",
+            "relating_port_global_id": "2o54JLTh1AV8uMB1TcEmh8",
+            "relation_global_id": "0$4QhFSqP8te6H$64un5C_"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "0jtDHSSkj4_OFGECwGB6Vv",
+            "related_port_global_id": "3UAAk$U0n9DgFXnvqOw0k0",
+            "relating_host_global_id": "0jtDHSSkj4_OFGECwGB6U3",
+            "relating_port_global_id": "3zqWh5kETAtwVCjlXdwwQj",
+            "relation_global_id": "0$JnTGS3fANv_ECefYr0tw"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "0whK6vVjP3v8pDjTik37xg",
+            "related_port_global_id": "15FVFoJLjFiBP0ebnzWkp_",
+            "relating_host_global_id": "0whK6vVjP3v8pDjTik37xw",
+            "relating_port_global_id": "0zFH3PXAL9sQ_aVIgcZgaW",
+            "relation_global_id": "0$Qf5$$xjD7QWKz7EcdvOR"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "2jx2Vysjb2cxO7V2OSc299",
+            "related_port_global_id": "164ZU2Dhr9OR9EdhK4cPjg",
+            "relating_host_global_id": "2jx2Vysjb2cxO7V2OSc29M",
+            "relating_port_global_id": "2MBcBE65f2fwBznALbqU7W",
+            "relation_global_id": "0$SLS346H249XHeKiu6w2F"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "332o6Ols1FoxttAWqlQ$Ef",
+            "related_port_global_id": "1Swz$EXVj7_9Z154$CSZTk",
+            "relating_host_global_id": "332o6Ols1FoxttAWqlQ$E_",
+            "relating_port_global_id": "3VpYm7Z_T1OxU_tUUbrQ6j",
+            "relation_global_id": "0$keP7QQ16IPjjteh_BkeE"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "0JV3InQaz9UBog62O3UPgq",
+            "related_port_global_id": "0IDkeZ3DP6v9Hv9UtCliK$",
+            "relating_host_global_id": "0IU610uqLBi9PW0cPG4EXn",
+            "relating_port_global_id": "09h6O2Gd13LPvgRc_oEjnF",
+            "relation_global_id": "0$mkN_XuXCIAaCCpUQKGzO"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "3zerYVfpL39fVUkQaZYNRA",
+            "related_port_global_id": "2mVrbpNtL0fwNDPUldq98E",
+            "relating_host_global_id": "3qKjy37Xj5WA5IoTmUAlf0",
+            "relating_port_global_id": "3wN8v$Oov7eub2$cVyRHDG",
+            "relation_global_id": "004O85rlPAbgC4Xyr9VxOi"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "1AdyslRUr92A5EAFDSihVF",
+            "related_port_global_id": "1WMmDjkI52WenizyXk4HF4",
+            "relating_host_global_id": "1AdyslRUr92A5EAFDSihVi",
+            "relating_port_global_id": "30JgYsig511BZAoh0AGL1r",
+            "relation_global_id": "00YuwPB$TC0wld54$bj_r7"
+          },
+          {
+            "host_association": "EXPLICIT_NEST_OR_PORT_TO_ELEMENT",
+            "related_host_global_id": "1a9fkGNITEw9uzOqc3Q1_U",
+            "related_port_global_id": "2VLMIJPqXE6umQvFZr_vIL",
+            "relating_host_global_id": "1a9fkGNITEw9uzOqc3Q1$n",
+            "relating_port_global_id": "1UoSQjntfFqgfMrFfuFasd",
+            "relation_global_id": "00Z$Z8xdr9xf7S$0_q6R7$"
+          }
+        ]
+      },
+      "file_name": "FM_LFT_DigitalHub_v1.ifc",
+      "geometry": {
+        "coordinate_policy": "IFCOPENSHELL_USE_WORLD_COORDS_SI_METRES_UNSCALED",
+        "geometry_failure_count": 0,
+        "geometry_failure_sample": [],
+        "product_with_representation_count": 1309,
+        "tessellated_count": 1309,
+        "world_bounds_m": {
+          "max_m": [
+            69.794955,
+            26.394981,
+            8.935029
+          ],
+          "min_m": [
+            7.204955,
+            7.147534,
+            -3.3
+          ]
+        }
+      },
+      "header": {
+        "file_description": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');",
+        "file_schema_header": "FILE_SCHEMA(('IFC4'));",
+        "step_physical_file": true,
+        "view_definition": "FILE_DESCRIPTION(('ViewDefinition [DesignTransferView_V1.0]'),'2;1');"
+      },
+      "length_unit_scale_m": 0.001,
+      "length_units": [
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": "MILLI"
+        },
+        {
+          "ifc_class": "IfcSIUnit",
+          "name": "METRE",
+          "prefix": null
+        }
+      ],
+      "openings": {
+        "opening_count": 0,
+        "opening_policy": "CONSERVATIVE_HOST_AABB_RETAINS_VOID_SPACE",
+        "opening_policy_note": "Openings and void relationships are inventoried. Host occupancy keeps the host AABB. Opening solids are not subtracted, because subtracting an opening AABB can mark solid material as free.",
+        "void_relationship_count": 0,
+        "void_relationships_sample": []
+      },
+      "placement_mesh_consistency": {
+        "double_project_scale_applied": false,
+        "interpretation": "Agreement between the once-scaled placement origin and the world mesh supports the metre frame. It does not by itself verify federation with another discipline file.",
+        "sample_count": 8,
+        "samples": [
+          {
+            "global_id": "03Vo9IXXn9pPeCD9ZrAaif",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              40.273014,
+              17.582481,
+              -3.27
+            ]
+          },
+          {
+            "global_id": "03yA$B7yP6BhT8dvTJ$G5s",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              24.499955,
+              19.859981,
+              3.0
+            ]
+          },
+          {
+            "global_id": "03yA$B7yP6BhT8dvTJ$GDC",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              16.899955,
+              23.729981,
+              3.0
+            ]
+          },
+          {
+            "global_id": "03yA$B7yP6BhT8dvTJ$GDc",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              9.899955,
+              23.729981,
+              3.0
+            ]
+          },
+          {
+            "global_id": "03yA$B7yP6BhT8dvTJ$GK0",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              25.199955,
+              18.217534,
+              3.0
+            ]
+          },
+          {
+            "global_id": "03yA$B7yP6BhT8dvTJ$GKv",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              25.199955,
+              15.399981,
+              3.000121
+            ]
+          },
+          {
+            "global_id": "03yA$B7yP6BhT8dvTJ$GQK",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              10.499955,
+              19.859981,
+              3.0
+            ]
+          },
+          {
+            "global_id": "03yA$B7yP6BhT8dvTJ$GQP",
+            "mesh_contains_scaled_origin": true,
+            "mesh_contains_unscaled_project_origin": false,
+            "placement_origin_m": [
+              17.499955,
+              19.859981,
+              3.0
+            ]
+          }
+        ],
+        "scaled_origin_outside_mesh_count": 0
+      },
+      "placement_policy": "GET_LOCAL_PLACEMENT_TRANSLATION_TIMES_PROJECT_LENGTH_SCALE_ONCE",
+      "ports": {
+        "identity_local_origin_count": 411,
+        "missing_placement_count": 0,
+        "native_placement_rule": "A port coordinate is NATIVE_PORT_PLACEMENT only when its composed world point uses a non-identity local origin and lies near the host mesh. An identity local origin is not treated as a connection point.",
+        "nonzero_local_origin_count": 2245,
+        "port_count": 2656,
+        "samples": [
+          {
+            "global_id": "0$2CcmKq9BqQrBLbpePCGz",
+            "local_origin_identity": true,
+            "local_origin_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "world_origin_m": [
+              54.055855,
+              20.202287,
+              7.125
+            ]
+          },
+          {
+            "global_id": "0$FVAEZsTBHAN7Yyu1OiSu",
+            "local_origin_identity": false,
+            "local_origin_project_units": [
+              160.0,
+              0.0,
+              0.0
+            ],
+            "world_origin_m": [
+              17.499955,
+              19.972981,
+              7.025
+            ]
+          },
+          {
+            "global_id": "0$HEYvu_P6OhtbwNdh32V4",
+            "local_origin_identity": true,
+            "local_origin_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "world_origin_m": [
+              59.499955,
+              20.847481,
+              3.125
+            ]
+          },
+          {
+            "global_id": "0$IHptm5H9RwBaz34y1IBA",
+            "local_origin_identity": true,
+            "local_origin_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "world_origin_m": [
+              45.499955,
+              23.502481,
+              3.125
+            ]
+          },
+          {
+            "global_id": "0$W1aWjRz9pQHQ1rbUf9O0",
+            "local_origin_identity": true,
+            "local_origin_project_units": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "world_origin_m": [
+              22.826255,
+              12.002481,
+              3.15
+            ]
+          }
+        ]
+      },
+      "project_global_id": "1kcIN18Hz2eOa6YRqZkvKM",
+      "schema": "IFC4",
+      "sha256": "8647e24ea0c0e2f4188fad6222662c1004de55978f9a0d0e1190445e149dbd6c",
+      "site_placement_origin_m": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "size_bytes": 7369265,
+      "storeys": [
+        {
+          "elevation_m": -3.27,
+          "elevation_project_units": -3270.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAXpp",
+          "name": "B01_OKFB",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            -3.27
+          ]
+        },
+        {
+          "elevation_m": -0.15,
+          "elevation_project_units": -150.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAehG",
+          "name": "E00_OKRD",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            -0.15
+          ]
+        },
+        {
+          "elevation_m": 3.75,
+          "elevation_project_units": 3750.0,
+          "global_id": "1kcIN18Hz2eOa6YRtSAhK8",
+          "name": "E01_OKRD",
+          "placement_origin_m": [
+            0.0,
+            0.0,
+            3.75
+          ]
+        }
+      ],
+      "systems": [
+        {
+          "global_id": "03yA$B7yP6BhT8dvTJ$G28",
+          "ifc_class": "IfcSystem",
+          "member_count": 1912,
+          "name": "ZUL_R 2"
+        },
+        {
+          "global_id": "03yA$B7yP6BhT8dvTJ$JeJ",
+          "ifc_class": "IfcSystem",
+          "member_count": 1898,
+          "name": "ABL_R 3"
+        },
+        {
+          "global_id": "2aZryU65D0JBvWqV4woZw8",
+          "ifc_class": "IfcSystem",
+          "member_count": 4,
+          "name": "UML 1"
+        },
+        {
+          "global_id": "2jfPwJ7fP3WfBkHCTOooRS",
+          "ifc_class": "IfcSystem",
+          "member_count": 52,
+          "name": "FOL_R 1"
+        },
+        {
+          "global_id": "2jfPwJ7fP3WfBkHCTOooRU",
+          "ifc_class": "IfcSystem",
+          "member_count": 52,
+          "name": "AUL 1"
+        },
+        {
+          "global_id": "3pZtahKSHFPB_xPlmuXdRm",
+          "ifc_class": "IfcSystem",
+          "member_count": 7,
+          "name": "AUL 2"
+        },
+        {
+          "global_id": "3pZtahKSHFPB_xPlmuXevw",
+          "ifc_class": "IfcSystem",
+          "member_count": 7,
+          "name": "ABL_R 1"
+        },
+        {
+          "global_id": "3pZtahKSHFPB_xPlmuXewS",
+          "ifc_class": "IfcSystem",
+          "member_count": 7,
+          "name": "ABL_R 4"
+        }
+      ],
+      "world_mesh_policy": "IFCOPENSHELL_USE_WORLD_COORDS_SI_METRES_UNSCALED"
+    }
+  }
+}

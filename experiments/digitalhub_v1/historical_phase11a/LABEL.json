@@ -1,0 +1,4 @@
+{
+  "label": "PHASE_11A_HISTORICAL_PROXY_ROUTE",
+  "reason": "Preserved before Phase 11A.1 stopped offsetting ports and moving them to a nearby free cell. The polyline in routing_execution.json connects voxel centres, not the original IFC ports."
+}

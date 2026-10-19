@@ -1,0 +1,23 @@
+{
+  "dataset": "DigitalHub V1",
+  "dataset_manifest": "../dataset_manifest.json",
+  "experiment_id": "DH11B-V1",
+  "validation_status": "CLEARANCE_VIOLATION",
+  "viewport_px": [1440, 900],
+  "route_camera": {
+    "bounds_m": {"min": [7.624954704502249, 11.217480986871198, 3.0], "max": [12.924854705067, 12.150000000000002, 3.2700000000000005]},
+    "position_m": [14.942450832556528, 7.016194365663697, 6.343937962843183],
+    "target_m": [10.274904704784625, 11.6837404934356, 3.1350000000000002],
+    "fov_degrees": 55
+  },
+  "screenshots": [
+    {"file": "DH11B-V1__original_vs_generated.png", "layers": ["original IFC", "generated saved physical A*", "start/goal"], "camera": "route_camera"},
+    {"file": "DH11B-V1__context.png", "layers": ["original IFC", "generated saved physical A*", "architecture", "retained MEP", "validation evidence"], "camera": "context fit"},
+    {"file": "DH11B-V1__clearance_violation.png", "layers": ["original IFC", "generated saved physical A*", "validation evidence"], "camera": "route_camera"}
+  ],
+  "notes": [
+    "Original geometry remains source IFC meshes identified by GlobalId; no centerlines were invented.",
+    "The generated line is the saved 48-point Phase 11B physical execution polyline.",
+    "Red evidence identifies recorded clearance events, not confirmed solid intersection."
+  ]
+}

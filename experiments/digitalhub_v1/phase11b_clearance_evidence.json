@@ -1,0 +1,1001 @@
+{
+  "allowance_hosts_not_dropped": [
+    "0IU610uqLBi9PW0cPG4ERE",
+    "33LHvKw7n5VOooYSuD9Xlz"
+  ],
+  "artifact": "C:\\Users\\serfu\\OneDrive\\Belgeler\\ChatGPT\\hvac_research\\experiments\\digitalhub_v1\\historical_phase11a2\\first_valid_routing_execution.json",
+  "artifact_sha256": "a12621302dad789cdba065d19af4ececf5a31dff9795e557462b5aa7aed0b2dd",
+  "broad_phase_hit_count": 4,
+  "broad_phase_meaning": "BROAD_PHASE_CANDIDATE only. Mesh distance decides the violation.",
+  "case_validations": [
+    {
+      "additional_clearance_m": 0.0,
+      "geometric_state": "CLEARANCE_VIOLATION",
+      "mesh_refinement_fallback_count": 0,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "request_id": "DH11B-V1",
+      "search_state": "SEARCH_PATH_FOUND",
+      "validation": {
+        "additional_clearance_m": 0.0,
+        "allowance_segments_not_counted_against_boundary_host": [
+          "0IU610uqLBi9PW0cPG4ERE"
+        ],
+        "body_half_extent_m": 0.10500000000000043,
+        "broad_phase_hit_count": 4,
+        "clearance_violations": [
+          {
+            "body_half_extent_m": 0.10500000000000043,
+            "file_role": "ventilation",
+            "global_id": "0IU610uqLBi9PW0cPG4ERE",
+            "measurement": "MESH_SURFACE_DISTANCE_OF_CENTERLINE_SAMPLES",
+            "min_centerline_distance_m": 0.05039182939962755,
+            "required_separation_m": 0.10500000000000043
+          },
+          {
+            "body_half_extent_m": 0.10500000000000043,
+            "file_role": "architecture",
+            "global_id": "1U1xl08gr5ah9up5e9rM1u",
+            "measurement": "MESH_SURFACE_DISTANCE_OF_CENTERLINE_SAMPLES",
+            "min_centerline_distance_m": 0.024999999999999467,
+            "required_separation_m": 0.10500000000000043
+          }
+        ],
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": [],
+        "confirmed_separation": false,
+        "label": "CLEARANCE_VIOLATION",
+        "mesh_separated_samples": [
+          {
+            "body_half_extent_m": 0.10500000000000043,
+            "file_role": "architecture",
+            "global_id": "0tHIUa9tj2ZQQI_dPBF8Nk",
+            "measurement": "MESH_SURFACE_DISTANCE_OF_CENTERLINE_SAMPLES",
+            "min_centerline_distance_m": 2.216643013658187,
+            "required_separation_m": 0.10500000000000043
+          }
+        ],
+        "method": "SWEPT_AABB_THEN_LOCAL_MESH",
+        "note": "Mesh tests cover swept-AABB candidates only. Separation from those candidates is not clearance from every untested solid. Zero broad-phase hits would not be reported as confirmed separation.",
+        "required_separation_m": 0.10500000000000043,
+        "unresolved_global_ids": []
+      },
+      "voxel_size_m": 0.1
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "geometric_state": null,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN",
+      "request_id": "DH11B-V1",
+      "search_state": "ENDPOINT_BLOCKED",
+      "validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": null,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": null,
+        "label": "NOT_RUN_ENDPOINT_INVALID",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "voxel_size_m": 0.1
+    },
+    {
+      "additional_clearance_m": 0.025,
+      "geometric_state": null,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN",
+      "request_id": "DH11B-V1",
+      "search_state": "ENDPOINT_BLOCKED",
+      "validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": null,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": null,
+        "label": "NOT_RUN_ENDPOINT_INVALID",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "voxel_size_m": 0.1
+    },
+    {
+      "additional_clearance_m": 0.05,
+      "geometric_state": null,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN",
+      "request_id": "DH11B-V1",
+      "search_state": "ENDPOINT_BLOCKED",
+      "validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": null,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": null,
+        "label": "NOT_RUN_ENDPOINT_INVALID",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "voxel_size_m": 0.1
+    },
+    {
+      "additional_clearance_m": 0.1,
+      "geometric_state": null,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "CLEARANCE_AWARE_BODY_PLUS_DECLARED_MARGIN",
+      "request_id": "DH11B-V1",
+      "search_state": "ENDPOINT_BLOCKED",
+      "validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": null,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": null,
+        "label": "NOT_RUN_ENDPOINT_INVALID",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "voxel_size_m": 0.1
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "geometric_state": null,
+      "mesh_refinement_fallback_count": null,
+      "mode": "FINER_GRID_BODY_ENVELOPE_SENSITIVITY",
+      "request_id": "DH11B-V1",
+      "search_state": "NOT_RUN",
+      "validation": null,
+      "voxel_size_m": 0.05
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "geometric_state": null,
+      "mesh_refinement_fallback_count": 3,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "request_id": "DH11B-H1",
+      "search_state": "SEARCH_NO_PATH",
+      "validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": false,
+        "label": "NOT_RUN_NO_VOXEL_PATH",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "voxel_size_m": 0.1
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "geometric_state": null,
+      "mesh_refinement_fallback_count": 3,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "request_id": "DH11B-H2",
+      "search_state": "SEARCH_NO_PATH",
+      "validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": false,
+        "label": "NOT_RUN_NO_VOXEL_PATH",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "voxel_size_m": 0.1
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "geometric_state": null,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "request_id": "DH11B-S1",
+      "search_state": "SEARCH_NO_PATH",
+      "validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": false,
+        "label": "NOT_RUN_NO_VOXEL_PATH",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "voxel_size_m": 0.1
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "geometric_state": null,
+      "mesh_refinement_fallback_count": 0,
+      "mode": "BASELINE_BODY_AABB_1MM_COVERING",
+      "request_id": "DH11B-S2",
+      "search_state": "SEARCH_NO_PATH",
+      "validation": {
+        "additional_clearance_m": null,
+        "allowance_segments_not_counted_against_boundary_host": null,
+        "body_half_extent_m": null,
+        "broad_phase_hit_count": null,
+        "clearance_violations": null,
+        "confirmed_collision_result": false,
+        "confirmed_mesh_intersections": null,
+        "confirmed_separation": false,
+        "label": "NOT_RUN_NO_VOXEL_PATH",
+        "mesh_separated_samples": null,
+        "method": null,
+        "note": null,
+        "required_separation_m": null,
+        "unresolved_global_ids": null
+      },
+      "voxel_size_m": 0.1
+    }
+  ],
+  "clearance_aware_start_cell": {
+    "additional_clearance_m": 0.0,
+    "astar_invoked": false,
+    "goal_status": "QUALIFIED_BOUNDARY_ALLOWANCE",
+    "immutable_goal_m": [
+      12.263355,
+      11.335481,
+      3.126574
+    ],
+    "immutable_start_m": [
+      8.933234,
+      12.102481,
+      3.05
+    ],
+    "note": "The same suspended ceiling that is 25 mm from the baseline route occupies the start cell once covering contact equals the 105 mm body half-extent. The endpoint was not moved.",
+    "request_id": "DH11B-V1",
+    "required_contact_m": 0.10500000000000043,
+    "start_obstruction_global_id": "1U1xl08gr5ah9up5e9rM1u",
+    "start_obstruction_ifc_class": "IfcCovering",
+    "start_status": "CONTAINING_CELL_OCCUPIED_BY_NON_EXEMPT_SOLID"
+  },
+  "dataset": "DigitalHub V1",
+  "discipline": "ventilation",
+  "endpoint_class_is_not_native_port_placement": true,
+  "endpoint_evidence_class": [
+    "RELATIONSHIP_CONSTRAINED_GEOMETRIC",
+    "RELATIONSHIP_CONSTRAINED_GEOMETRIC"
+  ],
+  "expanded_node_count": 83,
+  "geometric_state": "CLEARANCE_VIOLATION",
+  "goal_m": [
+    12.263355,
+    11.335481,
+    3.126574
+  ],
+  "mesh_separated_broad_phase_candidates": [
+    {
+      "file_role": "architecture",
+      "global_id": "0tHIUa9tj2ZQQI_dPBF8Nk",
+      "measurement": "MESH_SURFACE_DISTANCE",
+      "min_centerline_distance_m": 2.216643013658187,
+      "note": "This broad-phase candidate was mesh-tested. It does not certify elements that produced no AABB hit.",
+      "state": "SEPARATED_UNDER_DECLARED_POLICY"
+    }
+  ],
+  "multi_system_status": "MULTI_SYSTEM_COMPARISON_NOT_YET_VALID",
+  "offenders": [
+    {
+      "additional_clearance_m": 0.0,
+      "any_recomputed_sample_enclosed_outside_allowance": false,
+      "body_half_extent_m": 0.10500000000000043,
+      "broad_phase_only_selected_the_candidate": true,
+      "file_role": "ventilation",
+      "global_id": "0IU610uqLBi9PW0cPG4ERE",
+      "inside_allowance_state": "BOUNDARY_HOST_CONNECTION_CONTACT",
+      "interpretation": "Contact inside the boundary-host allowance cell is the physical interface. A shorter separation outside that cell is a route-body violation against the retained host.",
+      "is_retained_boundary_host": true,
+      "measurement": "MESH_SURFACE_DISTANCE",
+      "mesh_recompute_available": true,
+      "min_distance_inside_allowance_cell_m": 5.400200391450232e-06,
+      "min_distance_outside_allowance_cell_m": 0.10334430999509239,
+      "non_intersection_is_not_sufficient_clearance": true,
+      "not_an_aabb_distance": true,
+      "outside_allowance_state": "CLEARANCE_VIOLATION",
+      "reported_min_centerline_distance_m": 0.05039182939962755,
+      "required_separation_m": 0.10500000000000043,
+      "samples_inside_boundary_allowance_cell": 13,
+      "samples_outside_boundary_allowance_cell": 222
+    },
+    {
+      "additional_clearance_m": 0.0,
+      "any_recomputed_sample_enclosed_outside_allowance": false,
+      "body_half_extent_m": 0.10500000000000043,
+      "broad_phase_only_selected_the_candidate": true,
+      "file_role": "architecture",
+      "global_id": "1U1xl08gr5ah9up5e9rM1u",
+      "inside_allowance_state": null,
+      "interpretation": "This element is not a boundary host. Proximity below the body half-extent is a clearance violation along the route.",
+      "is_retained_boundary_host": false,
+      "measurement": "MESH_SURFACE_DISTANCE",
+      "mesh_recompute_available": true,
+      "min_distance_inside_allowance_cell_m": null,
+      "min_distance_outside_allowance_cell_m": 0.024999999999999467,
+      "non_intersection_is_not_sufficient_clearance": true,
+      "not_an_aabb_distance": true,
+      "outside_allowance_state": "CLEARANCE_VIOLATION",
+      "reported_min_centerline_distance_m": 0.024999999999999467,
+      "required_separation_m": 0.10500000000000043,
+      "samples_inside_boundary_allowance_cell": 0,
+      "samples_outside_boundary_allowance_cell": 235
+    }
+  ],
+  "physical_bend_count": 9,
+  "physical_route_length_m": 4.315585000000006,
+  "physical_vertical_travel_m": 0.1234260000000007,
+  "policy_that_produced_clearance_violation": {
+    "additional_clearance_m": 0.0,
+    "benchmark_v1_50mm_was_not_this_rule": true,
+    "body_half_extent_m": 0.10500000000000043,
+    "confirmed_intersection_required": "Vertical section hits both below and above the sample.",
+    "label": "CLEARANCE_VIOLATION",
+    "method": "SWEPT_AABB_THEN_LOCAL_MESH",
+    "non_intersection_is_not_sufficient_clearance": true,
+    "required_separation_m": 0.10500000000000043,
+    "rule": "A centreline sample whose mesh surface distance is below the measured body half-extent is a clearance violation."
+  },
+  "replaced_host_global_ids": [
+    "0JV3InQaz9UBog62O3UPgq",
+    "0IU610uqLBi9PW0cPG4EXn",
+    "0JV3InQaz9UBog62O3UPgs",
+    "0IU610uqLBi9PW0cPG4EXE",
+    "0IU610uqLBi9PW0cPG4EYQ",
+    "0IU610uqLBi9PW0cPG4EZe"
+  ],
+  "requests": [
+    {
+      "bodies": [
+        {
+          "global_id": "0JV3InQaz9UBog62O3UPgq",
+          "half_extent_m": 0.10500000000000043,
+          "ifc_class": "IfcDuctFitting",
+          "name": "\u00dcbergang rechteck rund Flansch RS:Standard:7360566",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "0IU610uqLBi9PW0cPG4EXn",
+          "half_extent_m": 0.08,
+          "ifc_class": "IfcDuctSegment",
+          "name": "Rund:Bogen - Stutzen:7309862",
+          "profiles": [
+            {
+              "half_extent_m": 0.08,
+              "radius_m": 0.08,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "0JV3InQaz9UBog62O3UPgs",
+          "half_extent_m": 0.08000069063762072,
+          "ifc_class": "IfcDuctFitting",
+          "name": "Bogen rund:1.0 a:7360564",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "0IU610uqLBi9PW0cPG4EXE",
+          "half_extent_m": 0.08,
+          "ifc_class": "IfcDuctSegment",
+          "name": "Rund:Bogen - Stutzen:7309849",
+          "profiles": [
+            {
+              "half_extent_m": 0.08,
+              "radius_m": 0.08,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "0IU610uqLBi9PW0cPG4EYQ",
+          "half_extent_m": 0.07500000000000018,
+          "ifc_class": "IfcDuctFitting",
+          "name": "\u00dcbergang rund kurz:kurz:7310029",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "0IU610uqLBi9PW0cPG4EZe",
+          "half_extent_m": 0.0615,
+          "ifc_class": "IfcDuctSegment",
+          "name": "Rund:Bogen - Stutzen:7310015",
+          "profiles": [
+            {
+              "half_extent_m": 0.0615,
+              "radius_m": 0.0615,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        }
+      ],
+      "body_half_extent_m": 0.10500000000000043,
+      "boundary_host_global_ids": [
+        "0IU610uqLBi9PW0cPG4ERE",
+        "33LHvKw7n5VOooYSuD9Xlz"
+      ],
+      "discipline": "ventilation",
+      "endpoint_evidence_class": [
+        "RELATIONSHIP_CONSTRAINED_GEOMETRIC",
+        "RELATIONSHIP_CONSTRAINED_GEOMETRIC"
+      ],
+      "goal_m": [
+        12.263355,
+        11.335481,
+        3.126574
+      ],
+      "replaced_host_global_ids": [
+        "0JV3InQaz9UBog62O3UPgq",
+        "0IU610uqLBi9PW0cPG4EXn",
+        "0JV3InQaz9UBog62O3UPgs",
+        "0IU610uqLBi9PW0cPG4EXE",
+        "0IU610uqLBi9PW0cPG4EYQ",
+        "0IU610uqLBi9PW0cPG4EZe"
+      ],
+      "request_id": "DH11B-V1",
+      "roi_bounds_m": [
+        6.1000000000000005,
+        14.5,
+        9.700000000000001,
+        13.700000000000001,
+        1.5,
+        4.800000000000001
+      ],
+      "start_m": [
+        8.933234,
+        12.102481,
+        3.05
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "ZUL_R 2"
+      ],
+      "voxel_size_m": 0.1
+    },
+    {
+      "bodies": [
+        {
+          "global_id": "3ELBYKoMX93QrK7TjQe1dR",
+          "half_extent_m": 0.014,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7722020",
+          "profiles": [
+            {
+              "half_extent_m": 0.014,
+              "radius_m": 0.014,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "2OL8yBILvEUPk5cWM1VJEL",
+          "half_extent_m": 0.01538698754851986,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7722209",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "3ELBYKoMX93QrK7TjQe1dJ",
+          "half_extent_m": 0.014,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7722028",
+          "profiles": [
+            {
+              "half_extent_m": 0.014,
+              "radius_m": 0.014,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "2OL8yBILvEUPk5cWM1VJEN",
+          "half_extent_m": 0.015386987548517084,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7722211",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "2OL8yBILvEUPk5cWM1VJEZ",
+          "half_extent_m": 0.014,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7722199",
+          "profiles": [
+            {
+              "half_extent_m": 0.014,
+              "radius_m": 0.014,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "2OL8yBILvEUPk5cWM1VJEj",
+          "half_extent_m": 0.015386987548517084,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7722201",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        }
+      ],
+      "body_half_extent_m": 0.01538698754851986,
+      "boundary_host_global_ids": [
+        "3ELBYKoMX93QrK7TjQe1uy",
+        "3ELBYKoMX93QrK7TjQe1vS"
+      ],
+      "discipline": "heating",
+      "endpoint_evidence_class": [
+        "NATIVE_PORT_PLACEMENT",
+        "NATIVE_PORT_PLACEMENT"
+      ],
+      "goal_m": [
+        38.372146,
+        16.941981,
+        -3.1925
+      ],
+      "replaced_host_global_ids": [
+        "3ELBYKoMX93QrK7TjQe1dR",
+        "2OL8yBILvEUPk5cWM1VJEL",
+        "3ELBYKoMX93QrK7TjQe1dJ",
+        "2OL8yBILvEUPk5cWM1VJEN",
+        "2OL8yBILvEUPk5cWM1VJEZ",
+        "2OL8yBILvEUPk5cWM1VJEj"
+      ],
+      "request_id": "DH11B-H1",
+      "roi_bounds_m": [
+        36.5,
+        39.900000000000006,
+        14.200000000000001,
+        18.6,
+        -4.800000000000001,
+        1.1
+      ],
+      "start_m": [
+        38.095146,
+        15.765459,
+        -0.445
+      ],
+      "storeys": [
+        "B01_OKFB"
+      ],
+      "system_names": [
+        "H_VL 9"
+      ],
+      "voxel_size_m": 0.1
+    },
+    {
+      "bodies": [
+        {
+          "global_id": "1qX$MMTNzDlQyQrkUvXMyC",
+          "half_extent_m": 0.027,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7602199",
+          "profiles": [
+            {
+              "half_extent_m": 0.027,
+              "radius_m": 0.027,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "1S7VbM5Mr9wBCUw2MH76MR",
+          "half_extent_m": 0.028788557348843113,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7565250",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "1S7VbM5Mr9wBCUw2MH76MP",
+          "half_extent_m": 0.027,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7565248",
+          "profiles": [
+            {
+              "half_extent_m": 0.027,
+              "radius_m": 0.027,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        },
+        {
+          "global_id": "1S7VbM5Mr9wBCUw2MH76MT",
+          "half_extent_m": 0.028788557348846666,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen Kupfer:Standard:7565252",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "1S7VbM5Mr9wBCUw2MH77vV",
+          "half_extent_m": 0.027,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Kupfer - Hartgel\u00f6tet:7566342",
+          "profiles": [
+            {
+              "half_extent_m": 0.027,
+              "radius_m": 0.027,
+              "shape": "CIRCULAR"
+            }
+          ],
+          "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+        }
+      ],
+      "body_half_extent_m": 0.028788557348846666,
+      "boundary_host_global_ids": [
+        "2fZ7PNx81BzA_Qze7yXsj0",
+        "3ELBYKoMX93QrK7TjQe1s4"
+      ],
+      "discipline": "heating",
+      "endpoint_evidence_class": [
+        "NATIVE_PORT_PLACEMENT",
+        "NATIVE_PORT_PLACEMENT"
+      ],
+      "goal_m": [
+        32.953946,
+        19.385734,
+        -0.445
+      ],
+      "replaced_host_global_ids": [
+        "1qX$MMTNzDlQyQrkUvXMyC",
+        "1S7VbM5Mr9wBCUw2MH76MR",
+        "1S7VbM5Mr9wBCUw2MH76MP",
+        "1S7VbM5Mr9wBCUw2MH76MT",
+        "1S7VbM5Mr9wBCUw2MH77vV"
+      ],
+      "request_id": "DH11B-H2",
+      "roi_bounds_m": [
+        31.3,
+        36.7,
+        17.7,
+        27.900000000000002,
+        -3.1,
+        1.1
+      ],
+      "start_m": [
+        34.843955,
+        26.281034,
+        -1.400787
+      ],
+      "storeys": [
+        "B01_OKFB"
+      ],
+      "system_names": [
+        "H_VL 9"
+      ],
+      "voxel_size_m": 0.1
+    },
+    {
+      "bodies": [
+        {
+          "global_id": "13pKJiczr64fqA9_0X9imW",
+          "half_extent_m": 0.03750000000000142,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7461449",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9ih5",
+          "half_extent_m": 0.044500000000001094,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7462060",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9ihs",
+          "half_extent_m": 0.03750000000000142,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7462047",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9i$m",
+          "half_extent_m": 0.045530268932769014,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7461273",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9iyZ",
+          "half_extent_m": 0.037499999999999645,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7461194",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "13pKJiczr64fqA9_0X9iyP",
+          "half_extent_m": 0.045530268932769014,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7461232",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        }
+      ],
+      "body_half_extent_m": 0.045530268932769014,
+      "boundary_host_global_ids": [
+        "13pKJiczr64fqA9_0X9is5",
+        "13pKJiczr64fqA9_0X9izn"
+      ],
+      "discipline": "sanitary",
+      "endpoint_evidence_class": [
+        "NATIVE_PORT_PLACEMENT",
+        "NATIVE_PORT_PLACEMENT"
+      ],
+      "goal_m": [
+        17.21509,
+        15.139942,
+        3.324673
+      ],
+      "replaced_host_global_ids": [
+        "13pKJiczr64fqA9_0X9imW",
+        "13pKJiczr64fqA9_0X9ih5",
+        "13pKJiczr64fqA9_0X9ihs",
+        "13pKJiczr64fqA9_0X9i$m",
+        "13pKJiczr64fqA9_0X9iyZ",
+        "13pKJiczr64fqA9_0X9iyP"
+      ],
+      "request_id": "DH11B-S1",
+      "roi_bounds_m": [
+        15.600000000000001,
+        22.200000000000003,
+        12.4,
+        18.2,
+        1.4000000000000001,
+        4.9
+      ],
+      "start_m": [
+        20.619955,
+        16.525318,
+        3.169519
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "S_SW 3"
+      ],
+      "voxel_size_m": 0.1
+    },
+    {
+      "bodies": [
+        {
+          "global_id": "1UpJeJrVD4fuuztpHsZjwW",
+          "half_extent_m": 0.05390003895104539,
+          "ifc_class": "IfcPipeFitting",
+          "name": "\u00dcbergang HT:Standard:7479028",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "1UpJeJrVD4fuuztpHsZjp$",
+          "half_extent_m": 0.03998742756870044,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7478443",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "1UpJeJrVD4fuuztpHsZjwu",
+          "half_extent_m": 0.0510665974285785,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7479020",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "2UK9EuqMj0HOetl3_go5E_",
+          "half_extent_m": 0.03750000000000142,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7476143",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "2UK9EuqMj0HOetl3_go5FX",
+          "half_extent_m": 0.04526065714171906,
+          "ifc_class": "IfcPipeFitting",
+          "name": "Bogen HT:Standard:7476208",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        },
+        {
+          "global_id": "2UK9EuqMj0HOetl3_go5BG",
+          "half_extent_m": 0.029476027075483024,
+          "ifc_class": "IfcPipeSegment",
+          "name": "Rohrtypen:Abwasser HT:7475905",
+          "profiles": [],
+          "source": "AABB_MIN_EDGE_HALF"
+        }
+      ],
+      "body_half_extent_m": 0.05390003895104539,
+      "boundary_host_global_ids": [
+        "1UpJeJrVD4fuuztpHsZjwa",
+        "2UK9EuqMj0HOetl3_go5Dk"
+      ],
+      "discipline": "sanitary",
+      "endpoint_evidence_class": [
+        "NATIVE_PORT_PLACEMENT",
+        "NATIVE_PORT_PLACEMENT"
+      ],
+      "goal_m": [
+        13.798977,
+        18.392719,
+        -0.444409
+      ],
+      "replaced_host_global_ids": [
+        "1UpJeJrVD4fuuztpHsZjwW",
+        "1UpJeJrVD4fuuztpHsZjp$",
+        "1UpJeJrVD4fuuztpHsZjwu",
+        "2UK9EuqMj0HOetl3_go5E_",
+        "2UK9EuqMj0HOetl3_go5FX",
+        "2UK9EuqMj0HOetl3_go5BG"
+      ],
+      "request_id": "DH11B-S2",
+      "roi_bounds_m": [
+        12.200000000000001,
+        22.200000000000003,
+        16.7,
+        20.5,
+        -2.2,
+        1.2000000000000002
+      ],
+      "start_m": [
+        20.541947,
+        18.722993,
+        -0.549903
+      ],
+      "storeys": [
+        "E00_OKRD"
+      ],
+      "system_names": [
+        "S_SW 3"
+      ],
+      "voxel_size_m": 0.1
+    }
+  ],
+  "route_body": {
+    "bodies": [
+      {
+        "global_id": "0JV3InQaz9UBog62O3UPgq",
+        "half_extent_m": 0.10500000000000043,
+        "ifc_class": "IfcDuctFitting",
+        "name": "\u00dcbergang rechteck rund Flansch RS:Standard:7360566",
+        "profiles": [],
+        "source": "AABB_MIN_EDGE_HALF"
+      },
+      {
+        "global_id": "0IU610uqLBi9PW0cPG4EXn",
+        "half_extent_m": 0.08,
+        "ifc_class": "IfcDuctSegment",
+        "name": "Rund:Bogen - Stutzen:7309862",
+        "profiles": [
+          {
+            "half_extent_m": 0.08,
+            "radius_m": 0.08,
+            "shape": "CIRCULAR"
+          }
+        ],
+        "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+      },
+      {
+        "global_id": "0JV3InQaz9UBog62O3UPgs",
+        "half_extent_m": 0.08000069063762072,
+        "ifc_class": "IfcDuctFitting",
+        "name": "Bogen rund:1.0 a:7360564",
+        "profiles": [],
+        "source": "AABB_MIN_EDGE_HALF"
+      },
+      {
+        "global_id": "0IU610uqLBi9PW0cPG4EXE",
+        "half_extent_m": 0.08,
+        "ifc_class": "IfcDuctSegment",
+        "name": "Rund:Bogen - Stutzen:7309849",
+        "profiles": [
+          {
+            "half_extent_m": 0.08,
+            "radius_m": 0.08,
+            "shape": "CIRCULAR"
+          }
+        ],
+        "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+      },
+      {
+        "global_id": "0IU610uqLBi9PW0cPG4EYQ",
+        "half_extent_m": 0.07500000000000018,
+        "ifc_class": "IfcDuctFitting",
+        "name": "\u00dcbergang rund kurz:kurz:7310029",
+        "profiles": [],
+        "source": "AABB_MIN_EDGE_HALF"
+      },
+      {
+        "global_id": "0IU610uqLBi9PW0cPG4EZe",
+        "half_extent_m": 0.0615,
+        "ifc_class": "IfcDuctSegment",
+        "name": "Rund:Bogen - Stutzen:7310015",
+        "profiles": [
+          {
+            "half_extent_m": 0.0615,
+            "radius_m": 0.0615,
+            "shape": "CIRCULAR"
+          }
+        ],
+        "source": "IFC_PROFILE_TIMES_LENGTH_SCALE_ONCE"
+      }
+    ],
+    "body_half_extent_m": 0.10500000000000043,
+    "cross_section_rule": "Measured IFC profile. Rectangular profiles use max(width, height) / 2 without applying the duct orientation."
+  },
+  "runtime_seconds": 0.004537,
+  "search_state": "SEARCH_PATH_FOUND",
+  "start_m": [
+    8.933234,
+    12.102481,
+    3.05
+  ],
+  "storeys": [
+    "E00_OKRD"
+  ],
+  "system_names": [
+    "ZUL_R 2"
+  ]
+}
